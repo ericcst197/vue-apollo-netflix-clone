@@ -31,6 +31,10 @@ module.exports = {
             transitionTimingFunction: {
                 "ease-in": "cubic-bezier(0.5, 0, 0.1, 1)",
             },
+            backgroundImage: {
+                "home-empty":
+                    "linear-gradient(180deg, rgba(0, 8, 29, 0) 0%, #00081D 93.46%)",
+            },
         },
     },
     plugins: [require("@tailwindcss/aspect-ratio")],

@@ -2,6 +2,7 @@ import { createApp } from "vue"
 
 // Global components
 import ContentContainerVue from "~/layouts/ContentContainer.vue";
+import Divider from "~/components/Divider.vue";
 
 import "./index.css"
 
@@ -14,4 +15,6 @@ app.use(router);
 
 
 app.component("content-container", ContentContainerVue);
+app.component("divider", Divider);
+
 app.mount('#app');
