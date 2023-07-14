@@ -8,6 +8,8 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@headlessui/vue": "^1.7.14",
+    "@prismicio/vue": "^4.0.2",
     "eslint": "^8.42.0",
     "vue": "^3.2.47",
     "vue-router": "^4.2.2"
