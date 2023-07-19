@@ -2,7 +2,7 @@ import { createPrismic } from "@prismicio/vue";
 import LinkResolver from "./LinkResolver";
 
 const prismic = createPrismic({
-    endpoint: "carmine",
+    endpoint: "Vue-netflix-clone",
     linkResolver: LinkResolver,
 });
 
