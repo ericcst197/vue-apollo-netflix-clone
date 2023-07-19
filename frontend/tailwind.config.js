@@ -12,7 +12,7 @@ module.exports = {
                 tablet: "600px",
                 laptop: "960px",
                 desktop: "1280px",
-                "xl-desktop": "1916px",
+                "xl-desktop": "1920px",
             },
             fontSize: {
                 "display-2xl": ["88px", "100px"],
@@ -20,7 +20,7 @@ module.exports = {
                 "display-lg": ["48px", "60px"],
                 "display-md": ["40px", "48px"],
                 "display-sm": ["32px", "40px"],
-                "display-xs": ["24px", "32px"],
+                "display-xs": ["24px", "36px"],
             },
             padding: {
                 "x-mobile": "min(10%, 1rem)",
@@ -34,6 +34,9 @@ module.exports = {
             backgroundImage: {
                 "home-empty":
                     "linear-gradient(180deg, rgba(0, 8, 29, 0) 0%, #00081D 93.46%)",
+            },
+            transitionTimingFunction: {
+                "faq-disclosure": "cubic-bezier(0.5, 0, 0.1, 1)",
             },
         },
     },
