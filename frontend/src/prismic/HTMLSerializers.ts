@@ -1,5 +1,8 @@
 import { Element } from "@prismicio/helpers";
 
+/**
+ * Homepage FAQ Serializer
+ */
 export function faqSerializer(type, element, content, children) {
     switch (type) {
         case Element.paragraph:

@@ -8,6 +8,9 @@ module.exports = {
     ],
     theme: {
         extend: {
+            animation: {
+                "spin-r": "spin-r 1s linear infinite",
+            },
             screens: {
                 tablet: "600px",
                 laptop: "960px",
@@ -21,6 +24,12 @@ module.exports = {
                 "display-md": ["40px", "48px"],
                 "display-sm": ["32px", "40px"],
                 "display-xs": ["24px", "36px"],
+            },
+            keyframes: {
+                "spin-r": {
+                    from: { transform: "rotate(0deg)" },
+                    to: { transform: "rotate(-360deg)" },
+                },
             },
             padding: {
                 "x-mobile": "min(10%, 1rem)",

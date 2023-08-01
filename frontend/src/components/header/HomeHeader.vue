@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import Button from '~/components/Button.vue';
 import LogoMark from '~/components/LogoMark.vue';
-import SvgIcon from './SvgIcon.vue';
+import SvgIcon from '~/components/SvgIcon.vue';
 
 // Icon
 import NetworkIcon from "~/assets/icons/network-icon.svg"
@@ -32,7 +33,7 @@ const { navlinks = false, auth = false, sticky = false, border = false } = defin
                     <SvgIcon :src="ChevronDown" :height="16" :width="16" class="absolute right-3 left-auto stroke-2 stroke-white" />
                 </div>
 
-                <button class="w-[77px] h-8 text-sm font-medium text-white rounded bg-[#e50914] hover:bg-[#c11119] ml-3">Sign In</button>
+                <Button mode="primary" class="w-[4.5rem] h-8 text-sm font-medium ml-3">Sign In</Button>
             </div>
         </div>
     </nav>

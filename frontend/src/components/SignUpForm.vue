@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Button from '~/components/Button.vue';
 import SvgIcon from './SvgIcon.vue';
 
 // Icon
@@ -20,23 +21,28 @@ const { id } = defineProps<Props>()
         <h3 class="text-start text-lg laptop:text-xl">Ready to watch? Enter your email to create or restart your membership.</h3>
         <div class="flex flex-col tablet:flex-row tablet:items-center pt-4">
             <div class="flex flex-col flex-1 max-w-[24rem] relative bg-zinc-900 rounded border border-zinc-500">
-                <input :id="id" class="w-full bg-transparent pt-5 px-4 pb-2 get-start-email hover:cursor-text " type="text" required>
-                <label :for="id" class="absolute inset-4 ease-[ease-in] duration-[150ms] hover:cursor-text">Email Address</label>
+                <input :id="id" type="email" class="w-full bg-transparent pt-5 px-4 pb-2 get-start-email hover:cursor-text" placeholder=" " required>
+                <label :for="id" class="absolute inset-4 ease-[ease-in] duration-[150ms] hover:cursor-text text-zinc-300">Email Address</label>
             </div>
 
-            <button class="flex items-center w-fit py-3.5 px-3 mt-4 tablet:mt-0 tablet:px-6 tablet:text-2xl font-medium text-white rounded bg-[#e50914] hover:bg-[#c11119] tablet:ml-2">
-                Get Started
-                <SvgIcon :src="ChevronRight" class="stroke-[3px] stroke-white ml-1" :height="24" :width="24"/>
-            </button>
+            <Button mode="primary" content-class="tablet:text-2xl" class="w-fit py-3.5 px-3 mt-4 tablet:mt-0 tablet:px-6 tablet:ml-2">
+                <template #default>
+                    Get Started
+                </template>
+                <template #right>
+                    <SvgIcon :src="ChevronRight" class="stroke-[3px] stroke-white ml-1=" :height="24" :width="24"/>
+                </template>
+            </Button>
         </div>
     </form>
 </template>
 
-<style scoped>
-.get-start-email:focus ~ label {
+<style>
+.get-start-email:focus ~ label,
+.get-start-email:not(:focus):not(:placeholder-shown) ~ label{
     top: 0.1rem;
     left: 0.75rem;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
 }
 .get-start-email:not(:focus):valid ~ label {
     top: 1rem;
