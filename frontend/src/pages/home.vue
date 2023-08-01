@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import Header from '~/components/Header.vue'
+import HomeHeader from '~/components/header/HomeHeader.vue'
+import HomeFooter from '~/components/footer/HomeFooter.vue'
 import SignUpForm from "~/components/SignUpForm.vue"
 import FaqDisclosure from '~/components/disclosure/FaqDisclosure.vue'
 
@@ -35,18 +36,21 @@ async function loadFAQs() {
     })
     generalFAQs.value = general.results
 }
+/**
+ * FEATURE : FAQs (END)
+ */
 
 onMounted(() => {
     // Populate faq
     loadFAQs()
 })
 </script>
-<!-- Hero section -->
+
 <template>
     <div class="bg-[#00081d] text-white tracking-normal">
         <!-- Hero section -->
         <section class="relative background bg-cover min-h-[56.25rem] xl-desktop:min-h-[64.125rem] px-6 tablet:px-8 desktop:px-12 ">
-            <Header />
+            <HomeHeader />
 
             <div class="pb-[26.25rem]">
                 <div class="mx-auto max-w-[100rem] px-4 tablet:px-0">
@@ -69,7 +73,7 @@ onMounted(() => {
         <!-- Page Content -->
         <section class="relative -mt-96 px-6 tablet:px-8 flex flex-col items-center">
             <!-- Overview -->
-            <div class="max-w-screen-2xl bg-[#090626] rounded-lg">
+            <div class="max-w-screen-2xl mt-6 w-full box-border bg-[#090626] rounded-lg">
                 <div
                     class="flex flex-col-reverse tablet:flex-row-reverse items-center py-2.5 px-4 tablet:py-3 tablet:px-x-tablet desktop:px-x-desktop xl-desktop:px-x-xl-desktop">
                     <div class="tablet:w-1/2 flex items-start mt-4 tablet:mt-0">
@@ -131,12 +135,11 @@ onMounted(() => {
                     <SignUpForm id="homepage-signup-box-2" class="" />
                 </div>
             </div>
+            <!-- Footer -->
+           <HomeFooter />
         </section>
-
-
     </div>
 </template>
-
 
 <style scoped>
 .background {
