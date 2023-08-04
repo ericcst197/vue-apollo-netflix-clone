@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import HomeHeader from '~/components/header/HomeHeader.vue'
 import HomeFooter from '~/components/footer/HomeFooter.vue'
-import SignUpForm from "~/components/SignUpForm.vue"
+import SignUpForm from "~/components/auth/SignUpForm.vue"
 import FaqDisclosure from '~/components/disclosure/FaqDisclosure.vue'
 
 // Images & Icons
