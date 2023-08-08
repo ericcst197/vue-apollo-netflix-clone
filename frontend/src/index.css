@@ -14,3 +14,7 @@ select {
     text-indent: 1px;
     text-overflow: '';
 }
+
+.bg-opacity-75 {
+    background-color: rgba(0, 0, 0, 0.75);
+}

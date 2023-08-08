@@ -15,13 +15,18 @@ interface Props {
 }
 
 const { navlinks = false, auth = false, sticky = false, border = false } = defineProps<Props>()
+
+// Composable Instances
+const router = useRouter()
+
+
 </script>
 
 <template>
     <nav ref="navbarRef" class="h-20 desktop:h-[86px] tablet:px-6 desktop:px-12 flex items-center"
         :class="[{ 'border-b border-gray-200': border }, { 'sticky z-50 top-0 inset-x-0': sticky }]">
         <div class="w-full tablet:px-8 desktop:px-12 max-w-screen-2xl mx-auto flex flex-row items-center justify-between">
-            <LogoMark id="logo" class="flex-grow desktop:flex-grow-0" />
+            <LogoMark id="logo" logo-class="w-[90px] h-8" class="flex-grow desktop:flex-grow-0" />
 
             <div class="flex flex-row p-[3px] items-center">
                 <div class="relative flex flex-row items-center h-8 w-auto bg-zinc-900 rounded border border-zinc-500">
@@ -33,7 +38,7 @@ const { navlinks = false, auth = false, sticky = false, border = false } = defin
                     <SvgIcon :src="ChevronDown" :height="16" :width="16" class="absolute right-3 left-auto stroke-2 stroke-white" />
                 </div>
 
-                <Button mode="primary" class="w-[4.5rem] h-8 text-sm font-medium ml-3">Sign In</Button>
+                <Button @click="router.push('/login')" mode="primary" class="w-[4.5rem] h-8 text-sm font-medium ml-3">Sign In</Button>
             </div>
         </div>
     </nav>
