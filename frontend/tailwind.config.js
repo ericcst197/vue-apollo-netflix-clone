@@ -12,10 +12,11 @@ module.exports = {
                 "spin-r": "spin-r 1s linear infinite",
             },
             screens: {
+                "tablet-sm": "500px",
                 tablet: "600px",
                 laptop: "960px",
                 desktop: "1280px",
-                "xl-desktop": "1920px",
+                "desktop-xl": "1920px",
             },
             fontSize: {
                 "display-2xl": ["88px", "100px"],
@@ -35,7 +36,7 @@ module.exports = {
                 "x-mobile": "min(10%, 1rem)",
                 "x-tablet": "min(10%, 6rem)",
                 "x-desktop": "min(10%, 6.25rem)",
-                "x-xl-desktop": "min(10%, 9.5rem)",
+                "x-desktop-xl": "min(10%, 9.5rem)",
             },
             transitionTimingFunction: {
                 "ease-in": "cubic-bezier(0.5, 0, 0.1, 1)",

@@ -4,16 +4,17 @@ export function useBreakpoints() {
     const width = ref<number>(0);
     const height = ref<number>(0);
     const widthBreaks = {
+        "tablet-sm": 500,
         tablet: 600,
         laptop: 960,
         desktop: 1280,
-        "xl-desktop": 1920,
+        "desktop-xl": 1920,
     };
 
     const getCurrentBreakpoint = computed(() => {
         if (width.value >= widthBreaks.tablet) return "tablet";
         if (width.value >= widthBreaks.desktop) return "desktop";
-        if (width.value >= widthBreaks["xl-desktop"]) return "xl-desktop";
+        if (width.value >= widthBreaks["desktop-xl"]) return "desktop-xl";
         return "mobile";
     });
 

@@ -25,7 +25,7 @@ import ChevronDown from "~/assets/icons/chevron-down.svg"
 <template>
     <div class="max-w-screen-2xl mt-6 w-full box-border">
         <footer
-            class="inline-flex flex-col pt-[3.75rem] desktop:pt-[5.875rem] px-x-mobile tablet:px-x-tablet desktop:px-x-desktop xl-desktop:px-x-xl-desktop pb-12 tablet:pb-16 desktop:pb-[6.25rem] xl-desktop:pb-[9.2rem]">
+            class="inline-flex flex-col pt-[3.75rem] desktop:pt-[5.875rem] px-x-mobile tablet:px-x-tablet desktop:px-x-desktop desktop-xl:px-x-desktop-xl pb-12 tablet:pb-16 desktop:pb-[6.25rem] desktop-xl:pb-[9.2rem]">
             <p class="">Questions? Call {{ netflix.INQUIRY_PHONE }}</p>
             <div class="mt-9">
                 <ul class="inline-flex flex-row flex-wrap">

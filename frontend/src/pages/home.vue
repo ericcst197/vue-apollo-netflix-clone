@@ -49,17 +49,17 @@ onMounted(() => {
 <template>
     <div class="bg-[#00081d] text-white tracking-normal">
         <!-- Hero section -->
-        <section class="relative background bg-cover min-h-[56.25rem] xl-desktop:min-h-[64.125rem] px-6 tablet:px-8 desktop:px-12 ">
+        <section class="relative background bg-cover min-h-[56.25rem] desktop-xl:min-h-[64.125rem] px-6 tablet:px-8 desktop:px-12 ">
             <HomeHeader />
 
             <div class="pb-[26.25rem]">
                 <div class="mx-auto max-w-[100rem] px-4 tablet:px-0">
-                    <div class="pt-[60px] desktop:pt-24 tablet:px-x-tablet desktop:px-x-desktop xl-desktop:px-x-xl-desktop">
+                    <div class="pt-[60px] desktop:pt-24 tablet:px-x-tablet desktop:px-x-desktop desktop-xl:px-x-desktop-xl">
                         <div class="tablet:w-3/4 my-4">
-                        <h1 class="text-display-md laptop:text-display-lg desktop:text-display-xl xl-desktop:text-display-2xl font-bold laptop:font-black">
+                        <h1 class="text-display-md laptop:text-display-lg desktop:text-display-xl desktop-xl:text-display-2xl font-bold laptop:font-black">
                                 Unlimited movies, TV shows, and more</h1>
 
-                            <p class="text-lg desktop:text-2xl xl-desktop:text-3xl font-medium mt-4">Watch anywhere. Cancel anytime.</p>
+                            <p class="text-lg desktop:text-2xl desktop-xl:text-3xl font-medium mt-4">Watch anywhere. Cancel anytime.</p>
                         </div>
 
                         <div class="mt-8 tablet:mt-10 desktop:mt-12 border-4 border-transparent rounded-lg p-4 laptop:py-6 laptop:px-11 text-lg sign-up-box">
@@ -75,7 +75,7 @@ onMounted(() => {
             <!-- Overview -->
             <div class="max-w-screen-2xl mt-6 w-full box-border bg-[#090626] rounded-lg">
                 <div
-                    class="flex flex-col-reverse tablet:flex-row-reverse items-center py-2.5 px-4 tablet:py-3 tablet:px-x-tablet desktop:px-x-desktop xl-desktop:px-x-xl-desktop">
+                    class="flex flex-col-reverse tablet:flex-row-reverse items-center py-2.5 px-4 tablet:py-3 tablet:px-x-tablet desktop:px-x-desktop desktop-xl:px-x-desktop-xl">
                     <div class="tablet:w-1/2 flex items-start mt-4 tablet:mt-0">
                         <img class="" :src="LayoutContent1" alt="layout-content-1">
                     </div>
@@ -87,7 +87,7 @@ onMounted(() => {
                 </div>
                 <divider />
                 <div
-                    class="flex flex-col-reverse tablet:flex-row items-center py-2.5 px-4 tablet:py-3 tablet:px-x-tablet desktop:px-x-desktop xl-desktop:px-x-xl-desktop">
+                    class="flex flex-col-reverse tablet:flex-row items-center py-2.5 px-4 tablet:py-3 tablet:px-x-tablet desktop:px-x-desktop desktop-xl:px-x-desktop-xl">
                     <div class="tablet:w-1/2 flex items-start mt-4 tablet:mt-0">
                         <img class="w-full" :src="LayoutContent2" alt="layout-content-1">
                     </div>
@@ -99,7 +99,7 @@ onMounted(() => {
                 </div>
                 <divider />
                 <div
-                    class="flex flex-col-reverse tablet:flex-row-reverse items-center py-2.5 px-4 tablet:py-3 tablet:px-x-tablet desktop:px-x-desktop xl-desktop:px-x-xl-desktop">
+                    class="flex flex-col-reverse tablet:flex-row-reverse items-center py-2.5 px-4 tablet:py-3 tablet:px-x-tablet desktop:px-x-desktop desktop-xl:px-x-desktop-xl">
                     <div class="tablet:w-1/2 flex items-start mt-4 tablet:mt-0">
                         <img class="w-full" :src="LayoutContent3" alt="layout-content-1">
                     </div>
@@ -111,7 +111,7 @@ onMounted(() => {
                 </div>
                 <divider />
                 <div
-                    class="flex flex-col-reverse tablet:flex-row items-center py-2.5 px-4 tablet:py-3 tablet:px-x-tablet desktop:px-x-desktop xl-desktop:px-x-xl-desktop">
+                    class="flex flex-col-reverse tablet:flex-row items-center py-2.5 px-4 tablet:py-3 tablet:px-x-tablet desktop:px-x-desktop desktop-xl:px-x-desktop-xl">
                     <div class="tablet:w-1/2 flex items-start mt-4 tablet:mt-0">
                         <img class="w-full" :src="LayoutContent4" alt="layout-content-1">
                     </div>
@@ -124,8 +124,8 @@ onMounted(() => {
             </div>
             <!-- FAQ -->
             <div class="max-w-screen-2xl mt-6 w-full box-border">
-                <div class="flex flex-col space-y-4 mt-12 tablet:mt-[52px] pt-[3.75rem] desktop:pt-[5.875rem] tablet:pt-16 pb-12 desktop:pb-[6.25rem] xl-desktop:pb-[9.2rem]
-                    px-x-mobile tablet:px-x-tablet desktop:px-x-desktop xl-desktop:px-x-xl-desktop">
+                <div class="flex flex-col space-y-4 mt-12 tablet:mt-[52px] pt-[3.75rem] desktop:pt-[5.875rem] tablet:pt-16 pb-12 desktop:pb-[6.25rem] desktop-xl:pb-[9.2rem]
+                    px-x-mobile tablet:px-x-tablet desktop:px-x-desktop desktop-xl:px-x-desktop-xl">
                     <h2 class="mt-4 text-display-sm tablet:text-display-md font-bold">Frequently Asked Questions</h2>
                     <div >
                         <FaqDisclosure v-for="(faq, i) in generalFAQs" :title="faq.data.question[0].text">
