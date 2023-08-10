@@ -15,11 +15,12 @@ interface Props {
     warn?: boolean,
     modelValue?: any,
     maxLength?: number | string,
-    theme?: 'light' | 'dark',
-    hasClicked?: boolean
+    theme?: 'light' | 'dark' | 'dark-2',
+    hasClicked?: boolean,
+    borderStyle?: string
 }
 
-const { id, type = 'text', label = "", placeholder , helperText = "", required, disabled = false, warn = false, modelValue, maxLength = null, theme = 'dark', hasClicked } = defineProps<Props>()
+const { id, type = 'text', label = "", placeholder , helperText = "", required, disabled = false, warn = false, modelValue, maxLength = null, theme = 'dark', hasClicked, borderStyle } = defineProps<Props>()
 const emit = defineEmits<{
     (e: 'update:modelValue', value: any): void
 }>()
@@ -28,8 +29,9 @@ const isFocused = ref(false)
 const isLabelEmpty = computed(() => label == "")
 const isPasswordShowed = ref(false)
 const themeClassMap = {
-    light: '!text-gray-700 !bg-[#333]',
-    dark: '!text-white !bg-zinc-900' // default
+    light: '!text-gray-300 !bg-white',
+    dark: '!text-gray-700 !bg-[#333]', // default
+    'dark-2': '!text-white !bg-zinc-900',
 }
 
 function setFocus(value: boolean) {
@@ -76,11 +78,11 @@ const handleInput = ($event) => {
                 <slot name="left"></slot>
             </div>
 
-            <div class="relative flex-auto">
+            <div class="relative flex-auto" :class="[borderStyle]">
                 <input :id="id" :value="modelValue" @input="handleInput" :type="inputType" @focusin="onFocus" @focusout="onUnFocus"
                     :disabled="disabled" :placeholder="placeholder || ' '" :required="required" :maxlength="maxLength"
-                    class="block px-2.5 pb-2.5 pt-5 w-full text-sm text-white bg-transparent appearance-none focus:outline-none focus:ring-0 focus:bg-[#454545] peer"
-                    :class="{'border-0 border-b-2 border-orange-500': warn}"/>
+                    class="block px-2.5 pb-2.5 pt-5 w-full text-sm bg-transparent appearance-none focus:outline-none focus:ring-0 peer"
+                    :class="{'border-0 border-b-2 border-orange-500': warn, 'focus:bg-[#454545]': theme.includes('dark')}"/>
                 <label :for="id"
                     class="absolute text-sm text-white dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-2.5
                     peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4">

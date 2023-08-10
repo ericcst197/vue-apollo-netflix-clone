@@ -37,11 +37,11 @@ const validateEmail = (email: string) => {
     <form action="#">
         <BaseInput id="login-email" label="Email" type="email" v-model="email" @focusout="hasClicked.email = true"
             :helperText="hasClicked.email && validity.email.isValid || email !== '' ? '' : validity.email.errorMessage"
-            :warn="hasClicked.email && !validity.email.isValid" theme="light" :hasClicked="hasClicked.email"
+            :warn="hasClicked.email && !validity.email.isValid" theme="dark" :hasClicked="hasClicked.email"
             class="pb-4"/>
         <BaseInput id="login-password" label="Password" type="password" v-model="password" @focusout="hasClicked.password = true"
             :helperText="hasClicked.password && validity.password.isValid || password !== ''  ? '' : validity.password.errorMessage"
-            :warn="hasClicked.password && !validity.password.isValid" theme="light" :hasClicked="hasClicked.password"/>
+            :warn="hasClicked.password && !validity.password.isValid" theme="dark" :hasClicked="hasClicked.password"/>
         <Button mode="primary" class="w-full max-w-full p-3 mt-6 mb-3 rounded"
             content-class="text-lg">
             Sign In
