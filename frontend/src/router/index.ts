@@ -14,6 +14,25 @@ const routes: RouteRecordRaw[] = [
         name: "login",
         path: "/login",
         component: () => import("~/pages/auth/login.vue"),
+    },
+    {
+        name: "signup",
+        path: "/signup",
+        component: () => import("~/pages/auth/signup.vue"),
+        children: [
+            {
+                name: "registration",
+                path: "registration",
+                component: () =>
+                    import("~/pages/auth/register.vue"),
+            },
+            {
+                name: "registration-form",
+                path: "regform",
+                component: () =>
+                    import("~/pages/auth/regform.vue"),
+            },
+        ]
     }
 ]
 

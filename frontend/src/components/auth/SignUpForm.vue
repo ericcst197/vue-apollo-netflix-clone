@@ -15,21 +15,61 @@ interface Props {
 
 const { id } = defineProps<Props>()
 
+// Composables Instances
+const router = useRouter()
+
+/**
+ * Input Validity
+ */
+const validity = computed(() => {
+    return {
+        email: {
+            isValid: validateEmail(email.value || ""),
+            errorMessage: "Please enter a valid email address."
+        },
+    }
+})
+
 // Input states
+const trySignUp = ref(false)
 const email = ref<string>("")
+
+const borderStyle = computed(() => {
+    if(trySignUp.value && validity.value.email.isValid) {
+        return 'border border-green-500'
+    } else if((trySignUp.value && !validity.value.email.isValid) || (trySignUp.value && email.value == '')) {
+        return 'border border-orange-500'
+    } else return 'border border-zinc-500'
+})
+
+const validateEmail = (email: string) => {
+    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
+};
+
+function signup(){
+    trySignUp.value = true
+    if(validity.value.email.isValid){
+        router.push('/signup/registration')
+    }
+}
+
+watchEffect(() => {
+
+})
 
 </script>
 
 <template>
     <form action="#">
-        <h3 class="text-start text-lg laptop:text-xl">Ready to watch? Enter your email to create or restart your membership.</h3>
+        <h3 class="text-start text-lg laptop:text-xl">
+            Ready to watch? Enter your email to create or restart your membership.
+        </h3>
         <div class="flex flex-col tablet:flex-row tablet:items-center pt-4">
-            <!-- <div class="flex flex-col flex-1 max-w-[24rem] relative bg-zinc-900 rounded border border-zinc-500">
-                <input :id="id" type="email" class="w-full bg-transparent pt-5 px-4 pb-2 get-start-email hover:cursor-text" placeholder=" " required>
-                <label :for="id" class="absolute inset-4 ease-[ease-in] duration-[150ms] hover:cursor-text text-zinc-300">Email Address</label>
-            </div> -->
-            <BaseInput :id="id" label="Email Address" type="email" v-model="email" class="max-w-[24rem] border border-zinc-500" theme="dark" />
-            <Button mode="primary" content-class="tablet:text-2xl" class="w-fit py-3.5 px-3 mt-4 tablet:mt-0 tablet:px-6 tablet:ml-2">
+            <BaseInput :id="id" label="Email Address" type="email" v-model="email" class="max-w-[24rem]"
+                :helperText="trySignUp && validity.email.isValid && email !== '' ? '' : validity.email.errorMessage" :hasClicked="trySignUp"
+                :warn="trySignUp && !validity.email.isValid" theme="dark" required :borderStyle="borderStyle"/>
+            <Button mode="primary" content-class="tablet:text-2xl" @click="signup" :class="{'!-mt-6' : borderStyle.includes('orange')}"
+                class="w-fit py-[11px] px-3 mt-4 tablet:mt-0 tablet:px-6 tablet:ml-2" >
                 <template #default>
                     Get Started
                 </template>
