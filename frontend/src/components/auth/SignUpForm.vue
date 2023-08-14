@@ -3,6 +3,9 @@ import BaseInput  from '~/components/BaseInput.vue'
 import Button from '~/components/Button.vue';
 import SvgIcon from '~/components/SvgIcon.vue';
 
+// Helpers
+import { validateEmail } from '~/helpers/validators'
+
 // Icon
 import ChevronRight from '~/assets/icons/chevron-right.svg'
 
@@ -41,10 +44,6 @@ const borderStyle = computed(() => {
         return 'border border-orange-500'
     } else return 'border border-zinc-500'
 })
-
-const validateEmail = (email: string) => {
-    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
-};
 
 function signup(){
     trySignUp.value = true

@@ -2,6 +2,9 @@
 import BaseInput  from '~/components/BaseInput.vue'
 import Button from '~/components/Button.vue';
 
+// Helpers
+import { validateEmail } from '~/helpers/validators'
+
 // Composable Instances
 const router = useRouter()
 
@@ -17,9 +20,7 @@ const router = useRouter()
     }
 })
 
-const validateEmail = (email: string) => {
-    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
-};
+
 
 // Input states
 const trySignUp = ref(false)

@@ -2,6 +2,9 @@
 import BaseInput  from '~/components/BaseInput.vue'
 import Button from '~/components/Button.vue';
 
+// Helpers
+import { validateEmail } from '~/helpers/validators'
+
 // Input states
 const email = ref<string>("")
 const password = ref<string>("")
@@ -26,10 +29,6 @@ const hasClicked = ref({
     email: false,
     password: false
 })
-
-const validateEmail = (email: string) => {
-    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
-};
 
 </script>
 
