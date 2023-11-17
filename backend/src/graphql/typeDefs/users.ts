@@ -7,23 +7,19 @@ const usersTypeDefs = gql`
         id: ID
         name: String!
         email: String!
-        password: String!
+        token: String
         image: String
-        firstName: String
-        lastName: String
         createdAt: DateTime
         updatedAt: DateTime
         createdById: String
         updatedById: String
-    }  
+    }
 
     input UserInput {
         name: String!
         email: String!
         password: String!
         image: String
-        firstName: String
-        lastName: String
     }
 
     # Query
@@ -34,9 +30,12 @@ const usersTypeDefs = gql`
 
     # Mutation
     type Mutation {
-        createUser(userInput: UserInput): User!
         updateUser(ID: ID!, userInput: UserInput): User!
         deleteUser(ID: ID!): User!
     }
 `
-export default usersTypeDefs  
+
+export default {
+    name: 'Users',
+    type: usersTypeDefs
+}

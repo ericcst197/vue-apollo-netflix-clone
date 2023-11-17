@@ -9,27 +9,30 @@ dotenv.config({ path: path.resolve(process.cwd(), ".env") });
 // as someone could skip these varibales or not setup a .env file at all
 
 interface ENV {
-    NODE_ENV: string | undefined;
-    PORT: number | undefined;
-    MONGODB: string | undefined;
-    MONGODB_PASSWORD: string | undefined;
+    NODE_ENV: string | undefined
+    PORT: number | undefined
+    MONGODB: string | undefined
+    MONGODB_PASSWORD: string | undefined
+    AUTH_TENANT_NAME: string | undefined
 }
 
 interface Config {
-    NODE_ENV: string;
-    PORT: number;
-    MONGODB: string;
-    MONGODB_PASSWORD: string;
+    NODE_ENV: string
+    PORT: number
+    MONGODB: string
+    MONGODB_PASSWORD: string
+    AUTH_TENANT_NAME: string
 }
 
 // Loading process.env as ENV interface
 
 const getConfig = (): ENV => {
     return {
-        NODE_ENV: process.env.VUE_APP_NODE_ENV,
-        PORT: process.env.VUE_APP_PORT ? parseInt(process.env.VUE_APP_PORT) : undefined,
-        MONGODB_PASSWORD: process.env.VUE_APP_MONGODB_PASSWORD,
-        MONGODB: process.env.VUE_APP_MONGODB
+        NODE_ENV: process.env.NODE_ENV,
+        PORT: process.env.APP_PORT ? parseInt(process.env.VUE_APP_PORT) : undefined,
+        MONGODB_PASSWORD: process.env.MONGODB_PASSWORD,
+        MONGODB: process.env.MONGODB_CONNECTION_STRING,
+        AUTH_TENANT_NAME: process.env.AUTH_TENANT_NAME
     };
 };
 

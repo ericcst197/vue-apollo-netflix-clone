@@ -5,11 +5,10 @@ interface UserInput {
     email: string
     password: string
     image: string
-    firstName?: string
-    lastName?: string
 }
 
 const usersResolvers = {
+    Name: "Users",
     Query: {
         // Get a user
         async user(_: any, args: Record<string, any>) {
@@ -17,30 +16,10 @@ const usersResolvers = {
         },
         // Get some users
         async users(_: any, args: Record<string, any>) {
-            return await User.find({ _id: { $in: args.IDS } })
+            return await User.find()
         }
     },
     Mutation: {
-        // Create user
-        async createUser(_: any , { userInput: {name, email, password, image} }: any) {
-            const createdUser = new User({
-                name,
-                email,
-                password,
-                image,
-                createdAt: new Date().toISOString()
-            })
-
-            const res = await createdUser.save() // MongoDB saving
-            
-            console.log('Testing: User created in mongoose')
-            console.log('Created result', res.toJSON())
-
-            return {
-                id: res._id,
-                ...res.toJSON()
-            }
-        },
         // Update user
         async updateUser(_: any, { ID, userInput: {name, email, password, image, createdAt} }: any) {
            const wasUpdated = await User.findByIdAndUpdate({ _id: ID }, {
