@@ -6,7 +6,7 @@ const authTypeDefs = gql`
     type AuthData {
         userId: ID!
         token: String!
-        tokenExpiration: Int!
+        tokenExpiration: Int
     }
 
     input RegisterInput {

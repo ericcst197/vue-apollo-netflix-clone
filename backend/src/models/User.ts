@@ -41,13 +41,8 @@ const userSchema = new Schema<IUser>({
         type: String,
         default: null,
     },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-    },
-    updatedAt: {
-        type: Date,
-    },
+}, {
+    timestamps: true
 })
 
 export default model('User', userSchema);

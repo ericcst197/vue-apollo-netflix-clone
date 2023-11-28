@@ -11,24 +11,23 @@ const usersResolvers = {
     Name: "Users",
     Query: {
         // Get a user
-        async user(_: any, args: Record<string, any>) {
+        async user(_: any, args: Record<string, any>, contextValue: any) {
             return await User.findById(args.ID)
         },
         // Get some users
-        async users(_: any, args: Record<string, any>) {
+        async users(_: any, args: Record<string, any>, contextValue: any) {
+            
             return await User.find()
         }
     },
     Mutation: {
         // Update user
-        async updateUser(_: any, { ID, userInput: {name, email, password, image, createdAt} }: any) {
+        async updateUser(_: any, { ID, userInput: {name, email, password, image} }: any) {
            const wasUpdated = await User.findByIdAndUpdate({ _id: ID }, {
                 name,
                 email,
                 password,
                 image,
-                createdAt,
-                updatedAt: new Date().toISOString()
             }, { new: true })
 
             console.log(`Testing: Updated user in mongoose`)
