@@ -3,8 +3,8 @@
 </script>
 
 <template>
-    <div class="flex flex-col min-h-screen">
-        <div id="global-content-container">
+    <div id="global-content-container">
+        <div class="flex flex-col min-h-screen">
             <slot>
                 <router-view></router-view>
             </slot>

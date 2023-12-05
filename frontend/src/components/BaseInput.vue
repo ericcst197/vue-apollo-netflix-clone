@@ -72,7 +72,7 @@ const handleInput = ($event) => {
 </script>
 
 <template>
-    <div class="relative flex flex-col flex-1">
+    <div class="relative flex flex-col flex-1 rounded-lg">
         <div class="flex flex-row items-center rounded text-white bg-zinc-900" :class="themeClassMap[theme]">
             <div :class="{ 'mr-2': $slots.left }">
                 <slot name="left"></slot>
@@ -81,11 +81,11 @@ const handleInput = ($event) => {
             <div class="relative flex-auto" :class="[borderStyle]">
                 <input :id="id" :value="modelValue" @input="handleInput" :type="inputType" @focusin="onFocus" @focusout="onUnFocus"
                     :disabled="disabled" :placeholder="placeholder || ' '" :required="required" :maxlength="maxLength"
-                    class="block px-2.5 pb-2.5 pt-5 w-full text-sm bg-transparent appearance-none focus:outline-none focus:ring-0 peer"
+                    class="block px-2.5 pb-2.5 pt-5 w-full text-white dark:text-gray-400 text-sm bg-transparent appearance-none focus:outline-none focus:ring-0 peer"
                     :class="{'border-0 border-b-2 border-orange-500': warn, 'focus:bg-[#454545]': theme.includes('dark')}"/>
                 <label :for="id"
-                    class="absolute text-sm text-white dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-2.5
-                    peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4">
+                    class="absolute text-sm text-white dark:text-gray-400 duration-300 transform -translate-y-4 scale-90 top-4 z-10 origin-[0] left-2.5
+                    peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-90 peer-focus:-translate-y-4">
                     {{ label }}</label>
             </div>
 

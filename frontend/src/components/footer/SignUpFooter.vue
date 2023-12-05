@@ -21,8 +21,8 @@ import ChevronDown from "~/assets/icons/chevron-down.svg"
 </script>
 
 <template>
-    <div class="bg-[#f3f3f3]">
-        <footer class="h-full w-[90%] tablet:max-w-5xl mx-auto pt-8 pb-5 text-[#737373]">
+    <footer class="bg-[#f3f3f3]">
+        <div class="h-full w-[90%] tablet:max-w-5xl mx-10 tablet:mx-20 desktop:mx-40 pt-8 pb-5 text-[#737373]">
             <p class="w-full mb-6">Questions? Call {{ netflix.INQUIRY_PHONE }}</p>
             <ul class="w-full inline-flex flex-row flex-wrap">
                 <li v-for="link in footerLinks" class="mb-2 flex-[0_0_50%] tablet:flex-[0_0_33%] laptop:flex-[0_0_25%]">
@@ -37,6 +37,6 @@ import ChevronDown from "~/assets/icons/chevron-down.svg"
                 </select>
                 <SvgIcon :src="ChevronDown" :height="16" :width="16" class="absolute right-3 left-auto stroke-2 stroke-[#737373]" />
             </div>
-        </footer>
-    </div>
+        </div>
+    </footer>
 </template>
