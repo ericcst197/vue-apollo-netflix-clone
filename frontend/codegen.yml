@@ -1,0 +1,17 @@
+schema:
+#   - "${VUE_APP_APOLLO_SERVER_BASE_URL}":
+    #   headers:
+    #     x-hasura-admin-secret: "${VUE_APP_HASURA_SECRET}"
+  - "${VUE_APP_AUTH_SERVER_BASE_URL}"
+#   - "http://localhost:8000/auth"
+documents: './src/**/*.gql'
+debug: true
+generates:
+  ./src/graphql/types.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-vue-apollo
+    config:
+      vueCompositionApiImportFrom: vue
+      useTypeImports: true
