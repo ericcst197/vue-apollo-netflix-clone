@@ -1,4 +1,13 @@
-import { createApp } from "vue"
+import { createApp, provide, h } from "vue"
+
+// Apollo
+import {
+    DefaultApolloClient,
+    provideApolloClient,
+    ApolloClients
+} from "@vue/apollo-composable";
+import { createApolloProvider } from "@vue/apollo-option";
+import combinedApolloClient from "./helpers/apollo";
 
 // Global components
 import ContentContainerVue from "~/layouts/ContentContainer.vue";
@@ -10,8 +19,16 @@ import App from "./App.vue"
 import router from "./router";
 import prismic from "~/prismic/prismic";
 
-const app = createApp(App)
+// Options API for Apollo
+provideApolloClient(combinedApolloClient);
+const apolloProvider = createApolloProvider({
+    defaultClient: combinedApolloClient,
+});
 
+const app = createApp(App);
+
+app.provide(DefaultApolloClient, combinedApolloClient);
+app.use(apolloProvider);
 app.use(router);
 app.use(prismic);
 
