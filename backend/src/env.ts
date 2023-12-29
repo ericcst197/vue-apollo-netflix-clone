@@ -9,46 +9,51 @@ dotenv.config({ path: path.resolve(process.cwd(), ".env") });
 // as someone could skip these varibales or not setup a .env file at all
 
 interface ENV {
-    NODE_ENV: string | undefined
-    PORT: number | undefined
-    MONGODB: string | undefined
-    MONGODB_PASSWORD: string | undefined
-    AUTH_TENANT_NAME: string | undefined
+	NODE_ENV: string | undefined;
+	PORT: number | undefined;
+	MONGODB: string | undefined;
+	MONGODB_PASSWORD: string | undefined;
+	AUTH_TENANT_NAME: string | undefined;
+	GRAPHQL_SECRET: string | undefined;
 }
 
 interface Config {
-    NODE_ENV: string
-    PORT: number
-    MONGODB: string
-    MONGODB_PASSWORD: string
-    AUTH_TENANT_NAME: string
+	NODE_ENV: string;
+	PORT: number;
+	MONGODB: string;
+	MONGODB_PASSWORD: string;
+	AUTH_TENANT_NAME: string;
+	GRAPHQL_SECRET: string;
 }
 
 // Loading process.env as ENV interface
 
 const getConfig = (): ENV => {
-    return {
-        NODE_ENV: process.env.NODE_ENV,
-        PORT: process.env.APP_PORT ? parseInt(process.env.VUE_APP_PORT) : undefined,
-        MONGODB_PASSWORD: process.env.MONGODB_PASSWORD,
-        MONGODB: process.env.MONGODB_CONNECTION_STRING,
-        AUTH_TENANT_NAME: process.env.AUTH_TENANT_NAME
-    };
+	return {
+		NODE_ENV: process.env.NODE_ENV,
+		PORT: process.env.APP_PORT
+			? parseInt(process.env.VUE_APP_PORT)
+			: undefined,
+		MONGODB_PASSWORD: process.env.MONGODB_PASSWORD,
+		MONGODB: process.env.MONGODB_CONNECTION_STRING,
+		AUTH_TENANT_NAME: process.env.AUTH_TENANT_NAME,
+		GRAPHQL_SECRET: process.env.GRAPHQL_SECRET,
+	};
 };
 
-// Throwing an Error if any field was undefined we don't 
-// want our app to run if it can't connect to DB and ensure 
+// Throwing an Error if any field was undefined we don't
+// want our app to run if it can't connect to DB and ensure
 // that these fields are accessible. If all is good return
-// it as Config which just removes the undefined from our type 
+// it as Config which just removes the undefined from our type
 // definition.
 
 const getSanitzedConfig = (config: ENV): Config => {
-    for (const [key, value] of Object.entries(config)) {
-        if (value === undefined) {
-            throw new Error(`Missing key ${key} in config.env`);
-        }
-    }
-    return config as Config;
+	for (const [key, value] of Object.entries(config)) {
+		if (value === undefined) {
+			throw new Error(`Missing key ${key} in config.env`);
+		}
+	}
+	return config as Config;
 };
 
 const config = getConfig();

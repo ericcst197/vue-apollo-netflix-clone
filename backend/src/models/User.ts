@@ -13,8 +13,8 @@ export interface IUser extends Document {
 const userSchema = new Schema<IUser>({
     name: {
         type: String,
-        required: [true, "Username can't be blank"],
-        match: [/^[a-zA-Z0-9\s]+$/, 'Please enter a valid username.'],
+        // required: [true, "Username can't be blank"],
+        // match: [/^[a-zA-Z0-9\s]+$/, 'Please enter a valid username.'],
         index: true,
         unique: true,
         trim: true,

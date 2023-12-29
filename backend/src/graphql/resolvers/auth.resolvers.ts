@@ -3,14 +3,9 @@ import { GraphQLError } from 'graphql';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import ProcessENV from '../../env';
+import moment from "moment"
 
-interface RegisterInput {
-    name: string
-    email: string
-    password: string
-};
-
-interface LoginInput {
+interface AuthInput {
     email: string
     password: string
 };
@@ -19,11 +14,11 @@ const authResolvers = {
     Name: "Auth",
     Mutation: {
         // Create user
-        async createUser(_: any , args: Record<string, any>) {
-            const { name, email, password }: RegisterInput = args.registerInput;
+        async createUser(_: any, args: Record<string, any>) {
+            const { email, password } = args.input as AuthInput;
             // See if an user exists with email attempting to register
             const oldUser = await User.findOne({ email });
-            
+
             // Throw error if that exists
             if (oldUser) {
                 throw new GraphQLError('A user is already registered with the email: ' + email, {
@@ -36,32 +31,20 @@ const authResolvers = {
 
             // Encrypt password
             let encryptedPassword = await bcrypt.hash(password, 10);
-            
+
             // Build out mongoose model
             const createdUser = new User({
-                name,
                 email: email.toLowerCase(),
                 password: encryptedPassword,
-                createdAt: new Date().toISOString()
             });
 
-            // Create our JWT (attach to our User model
-            const token = jwt.sign(
-                { user_id: createdUser._id.toString() , email }, 
-                ProcessENV.AUTH_TENANT_NAME,
-                { expiresIn: "24h"}
-            );
-
-            return {
-                userId: createdUser._id,
-                token
-            };
+            return createdUser._id
         },
         async loginUser(_: any, args: any) {
-            const { email, password }: LoginInput = args.loginInput;
+            const { email, password } = args.input as AuthInput;
             // See if a user exists with the email
             const user = await User.findOne({ email });
-            
+
             if (!user) {
                 throw new GraphQLError('Unable to login', {
                     extensions: {
@@ -81,17 +64,24 @@ const authResolvers = {
                     }
                 });
             };
-          
+
+            const duration = moment.duration(1, "d").asMilliseconds()
+            console.log(duration, "moment.js_____")
             // Create a NEW token
             const token = jwt.sign(
-                { user_id: user._id.toString() , email }, 
+                { user_id: user._id.toString(), email },
                 ProcessENV.AUTH_TENANT_NAME,
-                { expiresIn: "1d"}
+                { expiresIn: duration }
             );
- 
+
+            user.token = token
+            user.save()
+
             return {
                 userId: user._id,
-                token
+                token,
+                expiresIn: duration,
+                tokenType: "Bearer"
             };
         },
     }

@@ -6,16 +6,11 @@ const authTypeDefs = gql`
     type AuthData {
         userId: ID!
         token: String!
-        tokenExpiration: Int
+        expiresIn: Int!
+        tokenType: String!
     }
 
-    input RegisterInput {
-        name: String!
-        email: String!
-        password: String!
-    }
-
-    input LoginInput {
+    input AuthInput {
         email: String!
         password: String!
     }
@@ -29,12 +24,12 @@ const authTypeDefs = gql`
 
     # Mutation
     type Mutation {
-        createUser(registerInput: RegisterInput): AuthData!
-        loginUser(loginInput: LoginInput): AuthData!
+        createUser(input: AuthInput): ID!
+        loginUser(input: AuthInput): AuthData!
     }
 `
 
 export default {
     name: 'Auth',
-    type: authTypeDefs 
+    type: authTypeDefs
 }
