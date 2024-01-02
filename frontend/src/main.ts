@@ -1,4 +1,5 @@
-import { createApp, provide, h } from "vue"
+import { createApp } from "vue"
+import { createPinia } from "pinia";
 
 // Apollo
 import {
@@ -19,6 +20,7 @@ import App from "./App.vue"
 import router from "./router";
 import prismic from "~/prismic/prismic";
 
+
 // Options API for Apollo
 provideApolloClient(combinedApolloClient);
 const apolloProvider = createApolloProvider({
@@ -26,9 +28,11 @@ const apolloProvider = createApolloProvider({
 });
 
 const app = createApp(App);
+const pinia = createPinia();
 
 app.provide(DefaultApolloClient, combinedApolloClient);
 app.use(apolloProvider);
+app.use(pinia);
 app.use(router);
 app.use(prismic);
 
