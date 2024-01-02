@@ -19,12 +19,13 @@
         "@prismicio/vue": "^4.0.2",
         "@vue/apollo-composable": "4.0.0-beta.12",
         "@vue/apollo-option": "4.0.0-beta.12",
+        "@vueuse/core": "^10.7.0",
         "apollo-client": "^2.6.10",
         "eslint": "^8.42.0",
         "graphql-tag": "^2.12.6",
         "pinia": "^2.1.7",
         "vite-plugin-graphql-codegen": "^3.3.5",
-        "vue": "^3.2.47",
+        "vue": "^3.4.3",
         "vue-router": "^4.2.2"
     },
     "devDependencies": {

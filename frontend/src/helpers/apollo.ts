@@ -18,7 +18,7 @@ async function getHeaders() {
                 Authorization: "Bearer " + token,
                 "Content-Type": "application/json",
             };
-        }else {
+        } else {
             // If the token doesn't exist (e.g., user is not logged in), handle accordingly
             throw new Error('User is not logged in');
         }
@@ -48,12 +48,12 @@ const combinedApolloClient = new ApolloClient({
     link: authLink.concat(
         split(
             ({ query }) => {
-              const definition = getMainDefinition(query);
-              return definition.kind === 'OperationDefinition' && definition.operation !== 'subscription';
+                const definition = getMainDefinition(query);
+                return definition.kind === 'OperationDefinition' && definition.operation !== 'subscription';
             },
             // Use the HTTP link with middleware for normal operations
+            authHttpLink,
             httpLink,
-            authHttpLink
         )
     ),
     cache: new InMemoryCache(),
