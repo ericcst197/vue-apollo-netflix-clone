@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import BaseInput  from '~/components/BaseInput.vue'
+import BaseInput from '~/components/BaseInput.vue'
 import Button from '~/components/Button.vue';
 import SvgIcon from '~/components/SvgIcon.vue';
 
 // Helpers
 import { validateEmail } from '~/helpers/validators'
+
+// Composables
+import { useSignUpStore } from "~/pinia/user";
 
 // Icon
 import ChevronRight from '~/assets/icons/chevron-right.svg'
@@ -13,13 +16,14 @@ interface Props {
     /**
      * Compoennt ID
      */
-     id: string
+    id: string
 }
 
 const { id } = defineProps<Props>()
 
 // Composables Instances
 const router = useRouter()
+const signUpStore = useSignUpStore();
 
 /**
  * Input Validity
@@ -38,16 +42,21 @@ const trySignUp = ref(false)
 const email = ref<string>("")
 
 const borderStyle = computed(() => {
-    if(trySignUp.value && validity.value.email.isValid) {
+    if (trySignUp.value && validity.value.email.isValid) {
         return 'border border-green-500'
-    } else if((trySignUp.value && !validity.value.email.isValid) || (trySignUp.value && email.value == '')) {
+    } else if ((trySignUp.value && !validity.value.email.isValid) || (trySignUp.value && email.value == '')) {
         return 'border border-orange-500'
     } else return 'border border-zinc-500'
 })
 
-function signup(){
+function signup() {
     trySignUp.value = true
-    if(validity.value.email.isValid){
+
+    if (validity.value.email.isValid) {
+        signUpStore.user = {
+            ...signUpStore.emptyState,
+            email: email.value
+        }
         router.push('/signup/registration')
     }
 }
@@ -65,15 +74,17 @@ watchEffect(() => {
         </h3>
         <div class="flex flex-col tablet:flex-row tablet:items-center pt-4">
             <BaseInput :id="id" label="Email Address" type="email" v-model="email" class="max-w-[24rem]"
-                :helperText="trySignUp && validity.email.isValid && email !== '' ? '' : validity.email.errorMessage" :hasClicked="trySignUp"
-                :warn="trySignUp && !validity.email.isValid" theme="dark" required :borderStyle="borderStyle"/>
-            <Button mode="primary" content-class="tablet:text-2xl" @click="signup" :class="{'!-mt-6' : borderStyle.includes('orange')}"
-                class="w-fit py-[11px] px-3 mt-4 tablet:mt-0 tablet:px-6 tablet:ml-2" >
+                :helperText="trySignUp && validity.email.isValid && email !== '' ? '' : validity.email.errorMessage"
+                :hasClicked="trySignUp" :warn="trySignUp && !validity.email.isValid" theme="dark" required
+                :borderStyle="borderStyle" />
+            <Button mode="primary" content-class="tablet:text-2xl" @click="signup"
+                :class="{ '!-mt-6': borderStyle.includes('orange') }"
+                class="w-fit py-[11px] px-3 mt-4 tablet:mt-0 tablet:px-6 tablet:ml-2">
                 <template #default>
                     Get Started
                 </template>
                 <template #right>
-                    <SvgIcon :src="ChevronRight" class="stroke-[3px] stroke-white" :height="24" :width="24"/>
+                    <SvgIcon :src="ChevronRight" class="stroke-[3px] stroke-white" :height="24" :width="24" />
                 </template>
             </Button>
         </div>
