@@ -3,6 +3,24 @@ import gql from 'graphql-tag';
 const authTypeDefs = gql`
     scalar DateTime
 
+    type User {
+        id: ID
+        name: String!
+        email: String!
+        token: String
+        image: String
+        createdAt: DateTime
+        updatedAt: DateTime
+        createdById: String
+        updatedById: String
+    }
+
+    input userFilterInput {
+        id: ID
+        name: String
+        email: String
+    }
+
     type AuthData {
         userId: ID!
         token: String!
@@ -16,10 +34,9 @@ const authTypeDefs = gql`
     }
 
     # Qeury
-    # GraphQL not allow to have only 1 Query or none, the _dummy queries used to resolve the error
     type Query {
-        _dummy : Boolean
-        _dummy2 : Boolean
+        user(ID: ID!): User!
+        users(where: userFilterInput): [User!]!
     }
 
     # Mutation

@@ -12,6 +12,20 @@ interface AuthInput {
 
 const authResolvers = {
     Name: "Auth",
+    Query: {
+        // Get some users
+        async user(_: any, args: Record<string, any>, contextValue: any) {
+            const result = await User.findById(args.ID)
+
+            return result
+        },
+        // Get some users
+        async users(_: any, args: Record<string, any>, contextValue: any) {
+            const results = await User.find(args.where)
+
+            return results
+        }
+    },
     Mutation: {
         // Create user
         async createUser(_: any, args: Record<string, any>) {
@@ -38,6 +52,8 @@ const authResolvers = {
                 password: encryptedPassword,
             });
 
+            createdUser.save()
+
             return createdUser._id
         },
         async loginUser(_: any, args: any) {
@@ -46,7 +62,7 @@ const authResolvers = {
             const user = await User.findOne({ email });
 
             if (!user) {
-                throw new GraphQLError('Unable to login', {
+                throw new GraphQLError('Unable to login, email not exists', {
                     extensions: {
                         code: 'EMAIL_NOT_EXISTS',
                         argumentName: 'email',
@@ -57,7 +73,7 @@ const authResolvers = {
             // Check if the entered password equlas the encryted password
             const isMatch = await bcrypt.compare(password, user.password);
             if (!isMatch) {
-                throw new GraphQLError('Unable to login', {
+                throw new GraphQLError('Unable to login, incorrect password', {
                     extensions: {
                         code: 'INCORRECT_PASSWORD',
                         argumentName: 'password',
@@ -66,7 +82,7 @@ const authResolvers = {
             };
 
             const duration = moment.duration(1, "d").asMilliseconds()
-            console.log(duration, "moment.js_____")
+
             // Create a NEW token
             const token = jwt.sign(
                 { user_id: user._id.toString(), email },
