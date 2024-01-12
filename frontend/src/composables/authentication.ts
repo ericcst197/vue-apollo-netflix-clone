@@ -24,10 +24,7 @@ export function useAuth() {
             .then(async () => {
                 login(
                     signUpStore.user!.email,
-                    signUpStore.user!.password!,
-                    (response) => {
-                        successCallback && successCallback(response)
-                    }
+                    signUpStore.user!.password!
                 )
             })
             .catch((error: any) => {
@@ -65,7 +62,6 @@ export function useAuth() {
                 successCallback && successCallback(response);
             })
             .catch((error) => {
-                console.error(error)
                 errorCallback && errorCallback(error);
             })
             .finally(() => {

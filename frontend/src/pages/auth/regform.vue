@@ -78,14 +78,12 @@ async function signUp() {
     } as USER_CREDENTIALS;
 
     if (signUpStore.user && signUpStore.user.email && signUpStore.user.password) {
-        auth.signUp({
+        await auth.signUp({
             password: signUpStore.user.password,
             email: signUpStore.user.email
-        } as USER_CREDENTIALS,
-            (response) => {
-                router.replace("/profiles");
-            },
-        )
+        } as USER_CREDENTIALS)
+
+        await router.replace("/profiles");
     }
 };
 

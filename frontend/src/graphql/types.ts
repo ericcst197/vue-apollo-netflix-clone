@@ -64,8 +64,6 @@ export type MutationUpdateUserArgs = {
 
 export type Query = {
   __typename?: 'Query';
-  _dummy?: Maybe<Scalars['Boolean']['output']>;
-  _dummy2?: Maybe<Scalars['Boolean']['output']>;
   user: User;
   users: Array<User>;
 };
@@ -73,6 +71,11 @@ export type Query = {
 
 export type QueryUserArgs = {
   ID: Scalars['ID']['input'];
+};
+
+
+export type QueryUsersArgs = {
+  where?: InputMaybe<UserFilterInput>;
 };
 
 export type User = {
@@ -93,6 +96,12 @@ export type UserInput = {
   image?: InputMaybe<Scalars['String']['input']>;
   name: Scalars['String']['input'];
   password: Scalars['String']['input'];
+};
+
+export type UserFilterInput = {
+  email?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type CreateUserMutationVariables = Exact<{
@@ -119,6 +128,13 @@ export type GetUserQueryVariables = Exact<{
 
 
 export type GetUserQuery = { __typename?: 'Query', user: { __typename?: 'User', id?: string | null, name: string, email: string, token?: string | null, image?: string | null, createdAt?: any | null, updatedAt?: any | null, createdById?: string | null, updatedById?: string | null } };
+
+export type GetUserRoleAsAnonymousQueryVariables = Exact<{
+  email: Scalars['String']['input'];
+}>;
+
+
+export type GetUserRoleAsAnonymousQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id?: string | null }> };
 
 export const UserFragmentFragmentDoc = gql`
     fragment UserFragment on User {
@@ -224,3 +240,33 @@ export function useGetUserLazyQuery(variables: GetUserQueryVariables | VueCompos
   return VueApolloComposable.useLazyQuery<GetUserQuery, GetUserQueryVariables>(GetUserDocument, variables, options);
 }
 export type GetUserQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<GetUserQuery, GetUserQueryVariables>;
+export const GetUserRoleAsAnonymousDocument = gql`
+    query GetUserRoleAsAnonymous($email: String!) {
+  users(where: {email: $email}) {
+    id
+  }
+}
+    `;
+
+/**
+ * __useGetUserRoleAsAnonymousQuery__
+ *
+ * To run a query within a Vue component, call `useGetUserRoleAsAnonymousQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserRoleAsAnonymousQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param variables that will be passed into the query
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useGetUserRoleAsAnonymousQuery({
+ *   email: // value for 'email'
+ * });
+ */
+export function useGetUserRoleAsAnonymousQuery(variables: GetUserRoleAsAnonymousQueryVariables | VueCompositionApi.Ref<GetUserRoleAsAnonymousQueryVariables> | ReactiveFunction<GetUserRoleAsAnonymousQueryVariables>, options: VueApolloComposable.UseQueryOptions<GetUserRoleAsAnonymousQuery, GetUserRoleAsAnonymousQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetUserRoleAsAnonymousQuery, GetUserRoleAsAnonymousQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetUserRoleAsAnonymousQuery, GetUserRoleAsAnonymousQueryVariables>> = {}) {
+  return VueApolloComposable.useQuery<GetUserRoleAsAnonymousQuery, GetUserRoleAsAnonymousQueryVariables>(GetUserRoleAsAnonymousDocument, variables, options);
+}
+export function useGetUserRoleAsAnonymousLazyQuery(variables: GetUserRoleAsAnonymousQueryVariables | VueCompositionApi.Ref<GetUserRoleAsAnonymousQueryVariables> | ReactiveFunction<GetUserRoleAsAnonymousQueryVariables>, options: VueApolloComposable.UseQueryOptions<GetUserRoleAsAnonymousQuery, GetUserRoleAsAnonymousQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetUserRoleAsAnonymousQuery, GetUserRoleAsAnonymousQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetUserRoleAsAnonymousQuery, GetUserRoleAsAnonymousQueryVariables>> = {}) {
+  return VueApolloComposable.useLazyQuery<GetUserRoleAsAnonymousQuery, GetUserRoleAsAnonymousQueryVariables>(GetUserRoleAsAnonymousDocument, variables, options);
+}
+export type GetUserRoleAsAnonymousQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<GetUserRoleAsAnonymousQuery, GetUserRoleAsAnonymousQueryVariables>;

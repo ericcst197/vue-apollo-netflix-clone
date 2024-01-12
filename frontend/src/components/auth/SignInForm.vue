@@ -1,53 +1,172 @@
 <script setup lang="ts">
-import BaseInput  from '~/components/BaseInput.vue'
+import BaseInput from '~/components/BaseInput.vue'
 import Button from '~/components/Button.vue';
 
+// Composables
+import { useAuth } from "~/composables/authentication";
+import { useSavedLogin } from "~/composables/storage";
+
 // Helpers
-import { validateEmail } from '~/helpers/validators'
+import { validateEmail, validatePassword } from "~/helpers/validators";
 
-// Input states
-const email = ref<string>("")
-const password = ref<string>("")
 
-const validity = computed(() => {
+// GraphQLs
+import { useGetUserRoleAsAnonymousLazyQuery } from '~/graphql/types';
+
+// Composable Instances
+const router = useRouter();
+const savedLogin = useSavedLogin();
+const auth = useAuth();
+
+/**
+ * Login credential inputs
+ */
+const credentials = ref({
+    email: savedLogin.value.email,
+    password: savedLogin.value.password,
+    isRememberEnabled: savedLogin.value.email !== '' || savedLogin.value.password !== '',
+})
+
+const isLoginAllowed = computed(() => inputValidity.value.isAllValid)
+const loginError = ref<"email_error" | "password_error">()
+
+/**
+ * Validate inputs
+ */
+const inputValidity = computed<{
+    email: {
+        isValid: boolean
+        isWarn: boolean
+        message: string
+    }
+    password: {
+        isValid: boolean
+        isWarn: boolean
+        message: string
+    }
+    isAllValid: boolean
+}>(() => {
+    const emailValidation = validateEmail(credentials.value.email)
+    const passwordValidation = validatePassword(credentials.value.password)
+
     return {
         email: {
-            isValid: validateEmail(email.value || ""),
-            errorMessage: "Please enter a valid email"
+            isValid: emailValidation,
+            isWarn: credentials.value.email.length > 0,
+            get message() {
+                if (credentials.value.email.length === 0 && !emailValidation) {
+                    return "Email can't be empty"
+                } else if (credentials.value.email.length > 0 && !emailValidation) {
+                    return "Your email format is incorrect"
+                }
+                return ""
+            }
         },
         password: {
-            isValid: password.value.length > 3 && password.value.length < 61,
-            errorMessage: "Your password must contain between 4 and 60 characters."
-        }
+            isValid: passwordValidation,
+            isWarn: credentials.value.password.length > 0,
+            get message() {
+                if (credentials.value.password.length === 0 && !passwordValidation) {
+                    return "Password can't be empty"
+                } else if (credentials.value.password.length > 0 && !passwordValidation) {
+                    return "Must have at least one number, one uppercase letter and one lowercase letter"
+                }
+                return ""
+            }
+        },
+        isAllValid: emailValidation && passwordValidation
     }
 })
 
 /**
  * Return true when the BaseInput component has been clicked, otherwise return false
  */
-const hasClicked = ref({
-    email: false,
-    password: false
+const showValidity = ref<boolean>(false)
+const isFirstLoad = ref(true)
+/*
+FEATURE : ACCESS CONTROL (START)
+*/
+
+function logIn() {
+    showValidity.value = true
+    if (isLoginAllowed.value) {
+        if (isFirstLoad.value) {
+            getUsers(undefined, {
+                email: credentials.value.email
+            })
+            isFirstLoad.value = false
+        } else {
+            refetchUsers({
+                email: credentials.value.email
+            })
+        }
+    }
+}
+
+/* GQL : Get users */
+const {
+    load: getUsers,
+    onResult: onGetUsersResult,
+    onError: onGetUsersError,
+    loading: isGetUsersLoading,
+    refetch: refetchUsers
+} = useGetUserRoleAsAnonymousLazyQuery({
+    email: credentials.value.email
+}, {
+    fetchPolicy: 'network-only'
 })
 
+onGetUsersResult(async (param) => {
+    if (param.data.users.length > 0) {
+        await auth.login(
+            credentials.value.email,
+            credentials.value.password,
+            () => {
+                if (credentials.value.isRememberEnabled) {
+                    // Save
+                    savedLogin.value = {
+                        email: credentials.value.email,
+                        password: credentials.value.password
+                    }
+                }
+
+                loginError.value = undefined
+                router.push('/profiles')
+            },
+            (error) => {
+                // Safely check for the path
+                if (error.message.includes("incorrect password")) {
+                    loginError.value = "password_error"
+                    credentials.value.password = ""
+                }
+            }
+        )
+    } else {
+        loginError.value = "email_error"
+    }
+})
 </script>
 
 <template>
     <form action="#">
-        <BaseInput id="login-email" label="Email" type="email" v-model="email" @focusout="hasClicked.email = true"
-            :helperText="hasClicked.email && validity.email.isValid || email !== '' ? '' : validity.email.errorMessage"
-            :warn="hasClicked.email && !validity.email.isValid" theme="dark" :hasClicked="hasClicked.email"
-            class="pb-4"/>
-        <BaseInput id="login-password" label="Password" type="password" v-model="password" @focusout="hasClicked.password = true"
-            :helperText="hasClicked.password && validity.password.isValid || password !== ''  ? '' : validity.password.errorMessage"
-            :warn="hasClicked.password && !validity.password.isValid" theme="dark" :hasClicked="hasClicked.password"/>
-        <Button mode="primary" class="w-full max-w-full p-3 mt-6 mb-3 rounded"
-            content-class="text-lg">
+        <div v-if="loginError" class="bg-[#e87c03] py-2.5 px-5 text-sm rounded-lg mb-4">
+            <span v-if="loginError === 'password_error'">
+                <b>Incorrect password.</b> Please try again or you can reset your password.</span>
+            <span v-else> Sorry, we can't find an account with this email address. Please try
+                again or create a new account.</span>
+        </div>
+        <BaseInput id="login-email" label="Email" type="email" v-model="credentials.email"
+            :helperText="inputValidity.email.isValid && credentials.email !== '' ? '' : inputValidity.email.message"
+            :warn="showValidity && !inputValidity.email.isValid" theme="dark" class="pb-4" />
+        <BaseInput id="login-password" label="Password" type="password" v-model="credentials.password"
+            :helperText="inputValidity.password.isValid && credentials.password !== '' ? '' : inputValidity.password.message"
+            :warn="showValidity && !inputValidity.password.isValid" theme="dark" />
+        <Button @click="logIn" mode="primary" class="w-full max-w-full p-3 mt-6 mb-3 rounded" content-class="text-lg">
             Sign In
         </Button>
         <div class="flex flex-row text-xs text-[#b3b3b3]">
             <div class="flex-1">
-                <input type="checkbox" name="remember-me" id="rememberMe">
+                <input v-model="credentials.isRememberEnabled" type="checkbox" name="remember-me" id="rememberMe">
                 <label for="rememberMe" class="ml-2">Remember Me</label>
             </div>
             <p>Need help?</p>
