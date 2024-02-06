@@ -56,7 +56,7 @@ const authResolvers = {
 
             return createdUser._id
         },
-        async loginUser(_: any, args: any) {
+        async loginUser(_: any, args: Record<string, any>) {
             const { email, password } = args.input as AuthInput;
             // See if a user exists with the email
             const user = await User.findOne({ email });

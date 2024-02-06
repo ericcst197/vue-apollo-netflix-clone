@@ -5,10 +5,8 @@ const authTypeDefs = gql`
 
     type User {
         id: ID
-        name: String!
         email: String!
         token: String
-        image: String
         createdAt: DateTime
         updatedAt: DateTime
         createdById: String
@@ -17,7 +15,6 @@ const authTypeDefs = gql`
 
     input userFilterInput {
         id: ID
-        name: String
         email: String
     }
 

@@ -1,10 +1,8 @@
 import User from '../../models/User'
 
 interface UserInput {
-    name: string
     email: string
     password: string
-    image: string
 }
 
 const usersResolvers = {
@@ -16,18 +14,17 @@ const usersResolvers = {
         },
         // Get some users
         async users(_: any, args: Record<string, any>, contextValue: any) {
-            
-            return await User.find()
+            return await User.find(args.where)
         }
     },
     Mutation: {
         // Update user
-        async updateUser(_: any, { ID, userInput: {name, email, password, image} }: any) {
-           const wasUpdated = await User.findByIdAndUpdate({ _id: ID }, {
-                name,
+        async updateUser(_: any, args: Record<string, any>) {
+            const { email, password } = args.input as UserInput;
+
+            const wasUpdated = await User.findByIdAndUpdate({ _id: args.ID }, {
                 email,
                 password,
-                image,
             }, { new: true })
 
             console.log(`Testing: Updated user in mongoose`)
@@ -36,9 +33,9 @@ const usersResolvers = {
         },
         // Delete user
         async deleteUser(_: any, args: Record<string, any>) {
-            try {    
+            try {
                 const deletedUser = await User.findByIdAndDelete({ _id: args.ID })
-                
+
                 return deletedUser
             } catch (error) {
                 console.error(error)
