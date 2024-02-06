@@ -17,12 +17,13 @@ interface Props {
     maxLength?: number | string,
     theme?: 'light' | 'dark' | 'dark-2',
     hasClicked?: boolean,
-    borderStyle?: string
+    borderStyle?: string,
 }
 
 const { id, type = "text", label = "", placeholder, helperText = "", required, disabled = false, warn = false, modelValue, maxLength, theme = "dark", hasClicked, borderStyle } = defineProps<Props>()
 const emit = defineEmits<{
     (e: 'update:modelValue', value: any): void
+    (e: 'focusout'): void
 }>()
 
 const isFocused = ref(false)
@@ -44,6 +45,7 @@ function onFocus() {
 
 function onUnFocus() {
     setFocus(false)
+    emit('focusout')
 }
 
 function togglePassword() {

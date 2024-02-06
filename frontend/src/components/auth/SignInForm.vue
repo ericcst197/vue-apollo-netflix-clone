@@ -81,14 +81,20 @@ const inputValidity = computed<{
 /**
  * Return true when the BaseInput component has been clicked, otherwise return false
  */
-const showValidity = ref<boolean>(false)
+const showValidity = ref<{
+    [key: string]: boolean
+}>({
+    email: false,
+    password: false
+});
+
 const isFirstLoad = ref(true)
 /*
 FEATURE : ACCESS CONTROL (START)
 */
 
 function logIn() {
-    showValidity.value = true
+    Object.keys(showValidity.value).forEach(key => showValidity.value[key] = true)
     if (isLoginAllowed.value) {
         if (isFirstLoad.value) {
             getUsers(undefined, {
@@ -131,7 +137,7 @@ onGetUsersResult(async (param) => {
                 }
 
                 loginError.value = undefined
-                router.push('/profiles')
+                router.push('/simpleSetup/newProfiles')
             },
             (error) => {
                 // Safely check for the path
@@ -157,10 +163,12 @@ onGetUsersResult(async (param) => {
         </div>
         <BaseInput id="login-email" label="Email" type="email" v-model="credentials.email"
             :helperText="inputValidity.email.isValid && credentials.email !== '' ? '' : inputValidity.email.message"
-            :warn="showValidity && !inputValidity.email.isValid" theme="dark" class="pb-4" />
+            :warn="showValidity.email && !inputValidity.email.isValid" theme="dark" class="pb-4"
+            @focusout="showValidity.email = true" />
         <BaseInput id="login-password" label="Password" type="password" v-model="credentials.password"
             :helperText="inputValidity.password.isValid && credentials.password !== '' ? '' : inputValidity.password.message"
-            :warn="showValidity && !inputValidity.password.isValid" theme="dark" />
+            :warn="showValidity.password && !inputValidity.password.isValid" theme="dark"
+            @focusout="showValidity.password = true" />
         <Button @click="logIn" mode="primary" class="w-full max-w-full p-3 mt-6 mb-3 rounded" content-class="text-lg">
             Sign In
         </Button>
