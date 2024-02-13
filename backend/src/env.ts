@@ -14,7 +14,7 @@ interface ENV {
 	MONGODB: string | undefined;
 	MONGODB_PASSWORD: string | undefined;
 	AUTH_TENANT_NAME: string | undefined;
-	GRAPHQL_SECRET: string | undefined;
+	APOLLO_GRAPHQL_SECRET: string | undefined;
 }
 
 interface Config {
@@ -23,7 +23,7 @@ interface Config {
 	MONGODB: string;
 	MONGODB_PASSWORD: string;
 	AUTH_TENANT_NAME: string;
-	GRAPHQL_SECRET: string;
+	APOLLO_GRAPHQL_SECRET: string;
 }
 
 // Loading process.env as ENV interface
@@ -37,7 +37,7 @@ const getConfig = (): ENV => {
 		MONGODB_PASSWORD: process.env.MONGODB_PASSWORD,
 		MONGODB: process.env.MONGODB_CONNECTION_STRING,
 		AUTH_TENANT_NAME: process.env.AUTH_TENANT_NAME,
-		GRAPHQL_SECRET: process.env.GRAPHQL_SECRET,
+		APOLLO_GRAPHQL_SECRET: process.env.APOLLO_GRAPHQL_SECRET,
 	};
 };
 

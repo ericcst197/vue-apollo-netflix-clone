@@ -24,7 +24,7 @@ const context = async (context: ExpressContextFunctionArgument) => {
     const { req, res } = context;
     if (
         req.body.operationName === "IntrospectionQuery"
-        || req.headers["x-apollo-admin-secret"] === ProcessENV.GRAPHQL_SECRET
+        || req.headers["x-apollo-admin-secret"] === ProcessENV.APOLLO_GRAPHQL_SECRET
     ) {
         return {};
     }
