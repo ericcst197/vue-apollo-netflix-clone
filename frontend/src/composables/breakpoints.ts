@@ -12,11 +12,25 @@ export function useBreakpoints() {
     };
 
     const getCurrentBreakpoint = computed(() => {
-        if (width.value >= widthBreaks.tablet) return "tablet";
-        if (width.value >= widthBreaks.desktop) return "desktop";
         if (width.value >= widthBreaks["desktop-xl"]) return "desktop-xl";
+        if (width.value >= widthBreaks.desktop) return "desktop";
+        if (width.value >= widthBreaks.laptop) return "laptop";
+        if (width.value >= widthBreaks.tablet) return "tablet";
         return "mobile";
     });
+
+    const greater = (breakpoint: string) => {
+        return widthBreaks[breakpoint] && width.value > widthBreaks[breakpoint];
+    }
+
+    const smaller = (breakpoint: string) => {
+        return widthBreaks[breakpoint] && width.value < widthBreaks[breakpoint];
+    }
+
+    const between = (min: string, max: string) => {
+        return widthBreaks[min] && widthBreaks[max] && width.value > widthBreaks[min] && width.value < widthBreaks[max];
+    }
+
 
     onMounted(() => {
         update();
@@ -36,5 +50,5 @@ export function useBreakpoints() {
         height.value = window.innerHeight;
     }
 
-    return { width, height, getCurrentBreakpoint };
+    return { width, height, getCurrentBreakpoint, greater, smaller, between };
 }
