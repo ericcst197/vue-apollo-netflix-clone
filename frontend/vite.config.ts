@@ -5,6 +5,10 @@ import AutoImport from "unplugin-auto-import/vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+    define: {
+        // enable hydration mismatch details in production build
+        __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'true'
+    },
     resolve: {
         alias: {
             "~/": `${path.resolve(__dirname, "src")}/`,

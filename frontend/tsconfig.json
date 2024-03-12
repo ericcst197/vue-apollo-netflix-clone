@@ -9,8 +9,10 @@
         "noImplicitAny": false,
         "noFallthroughCasesInSwitch": true,
         "ignoreDeprecations": "5.0",
+        "lib": ["ES2022", "DOM"],
         "noUnusedLocals": false,
         "noUnusedParameters": false,
-        "types": ["vite/client"]
+        "types": ["vite/client"],
+        "strict": true
     },
 }
