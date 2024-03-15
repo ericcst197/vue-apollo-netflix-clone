@@ -51,7 +51,7 @@ onMounted(() => {
                 </ul>
             </nav>
             <BaseMenu v-else item-container-class="-left-12">
-                <div class="flex flex-row items-center tablet:ml-4">
+                <div class="flex flex-row items-center ml-4">
                     <h4 class="text-[10px]">Browse</h4>
                     <SvgIcon :src="ArrowIcon" class=" stroke-white ml-0.5" :height="16" :width="16" />
                 </div>
