@@ -1,15 +1,15 @@
-import { onMounted, onUnmounted, ref } from "vue";
+import { onMounted, onUnmounted, ref, readonly } from "vue";
 
 export function useBreakpoints() {
     const width = ref<number>(0);
     const height = ref<number>(0);
-    const widthBreaks = {
+    const widthBreaks = readonly({
         "tablet-sm": 500,
         tablet: 600,
         laptop: 960,
         desktop: 1280,
         "desktop-xl": 1920,
-    };
+    });
 
     const getCurrentBreakpoint = computed(() => {
         if (width.value >= widthBreaks["desktop-xl"]) return "desktop-xl";
@@ -50,5 +50,5 @@ export function useBreakpoints() {
         height.value = window.innerHeight;
     }
 
-    return { width, height, getCurrentBreakpoint, greater, smaller, between };
+    return { width, height, widthBreaks, getCurrentBreakpoint, greater, smaller, between };
 }
