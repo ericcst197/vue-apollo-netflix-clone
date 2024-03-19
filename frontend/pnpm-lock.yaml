@@ -52,6 +52,9 @@ dependencies:
   vue-router:
     specifier: ^4.2.2
     version: 4.2.2(vue@3.4.3)
+  vueperslides:
+    specifier: ^3.5.1
+    version: 3.5.1(vue@3.4.3)
 
 devDependencies:
   '@antfu/eslint-config':
@@ -87,6 +90,9 @@ devDependencies:
   tailwindcss:
     specifier: ^3.3.2
     version: 3.3.2
+  tailwindcss-3d:
+    specifier: ^1.0.5
+    version: 1.0.5(tailwindcss@3.3.2)
   typescript:
     specifier: ^5.0.2
     version: 5.0.2
@@ -1824,6 +1830,12 @@ packages:
       '@types/estree': 1.0.1
       estree-walker: 2.0.2
       picomatch: 2.3.1
+    dev: true
+
+  /@swc/helpers@0.5.6:
+    resolution: {integrity: sha512-aYX01Ke9hunpoCexYAgQucEpARGQ5w/cqHFrIR+e9gdKb1QWTsVJuTJ2ozQzIAxLyRQe/m+2RqzkyOOGiMKRQA==}
+    dependencies:
+      tslib: 2.6.2
     dev: true
 
   /@tailwindcss/aspect-ratio@0.4.2(tailwindcss@3.3.2):
@@ -5709,6 +5721,16 @@ packages:
     engines: {node: '>=0.10'}
     dev: false
 
+  /tailwindcss-3d@1.0.5(tailwindcss@3.3.2):
+    resolution: {integrity: sha512-LWniD56HUGHx1ucvxCfMYe5s23gRsfpTtHtZr+tsWb3kEs4JxRpPFawPegJY4ZlM+O4IMQ9U57e8+QEDFnfiqg==}
+    peerDependencies:
+      tailwindcss: '>=3.2.0'
+    dependencies:
+      '@swc/helpers': 0.5.6
+      lodash: 4.17.21
+      tailwindcss: 3.3.2
+    dev: true
+
   /tailwindcss@3.3.2:
     resolution: {integrity: sha512-9jPkMiIBXvPc2KywkraqsUfbfj+dHDb+JPWtSJa9MLFdrPyazI7q6WX2sUrm7R9eVR7qqv3Pas7EvQFzxKnI6w==}
     engines: {node: '>=14.0.0'}
@@ -6192,6 +6214,14 @@ packages:
       '@vue/server-renderer': 3.4.3(vue@3.4.3)
       '@vue/shared': 3.4.3
       typescript: 5.0.2
+
+  /vueperslides@3.5.1(vue@3.4.3):
+    resolution: {integrity: sha512-g/Lauv1svlSaERzLNeys0oeLmpDFiXkIa+lxg+lJma6m6wXqJKzKKVIi8Kvc95XPnl42n7PYYJyr0+FMV6WZGw==}
+    peerDependencies:
+      vue: ^2.6.14 || ^3.2.0
+    dependencies:
+      vue: 3.4.3(typescript@5.0.2)
+    dev: false
 
   /wcwidth@1.0.1:
     resolution: {integrity: sha512-XHPEwS0q6TaxcvG85+8EYkbiCux2XtWG2mkc47Ng2A77BQu9+DqIOJldST4HgPkuea7dvKSj5VgX3P1d4rW8Tg==}

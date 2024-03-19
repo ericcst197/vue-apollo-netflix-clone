@@ -14,6 +14,7 @@ import combinedApolloClient from "./helpers/apollo";
 import ContentContainerVue from "~/layouts/ContentContainer.vue";
 import Divider from "~/components/Divider.vue";
 
+import 'vueperslides/dist/vueperslides.css'
 import "./index.css"
 
 import App from "./App.vue"
