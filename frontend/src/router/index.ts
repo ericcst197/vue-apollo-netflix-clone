@@ -33,9 +33,26 @@ const routes: RouteRecordRaw[] = [
                     import("~/pages/auth/regform.vue"),
             },
         ]
+    },
+    {
+        name: "setup-new-profiles",
+        path: "/simpleSetup",
+        component: () => import("~/layouts/EmptyRouterPage.vue"),
+        children: [
+            {
+                name: "newProfiles",
+                path: "newProfiles",
+                component: () =>
+                    import("~/pages/simpleSetup.vue"),
+            },
+        ]
+    },
+    {
+        name: "browse",
+        path: "/browse",
+        component: () => import("~/pages/browse.vue"),
     }
 ]
-
 
 const router = createRouter({
     history: createWebHistory(),
