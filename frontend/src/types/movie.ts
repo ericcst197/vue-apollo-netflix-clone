@@ -17,8 +17,9 @@ export type movie = {
     image: any;
     runtime: any;
     video: {
-        clip: any;
-        trailer: any;
+        clip: string;
+        teaser: string
+        trailer: string;
     };
     age_restrict: string;
     genre: string[];

@@ -48,7 +48,9 @@ export const useFetchMoviesStore = defineStore("themoviedb", () => {
             description: movieDetailsResults.overview,
             logo: movieDetailsResults.images.logos.filter(logo => {
                 return logo.iso_639_1 === 'en' && logo.height < 1000
-            })[0],
+            }).reduce((max, current) => {
+                return current.vote_count > max.vote_count ? current : max;
+            }),
             image: movieDetailsResults.backdrop_path || "",
             runtime: movieDetailsResults.runtime,
             video: {
