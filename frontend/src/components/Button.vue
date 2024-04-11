@@ -23,12 +23,14 @@ const alignStyle = {
 </script>
 
 <template>
-    <button type="button" :class="{
-        'text-white rounded bg-[#e50914] hover:bg-[#c11119]': mode == 'primary',
-        'text-black rounded bg-white hover:bg-white/75' : mode == 'secondary',
-        'text-white rounded bg-[#6D6D6E]/70 hover:bg-[#6D6D6E]/40' : mode == 'secondary-gray',
-        'py-2 min-h-[40px] rounded-lg shadow-sm ': mode == 'template'
-    }" class="px-3 py-2 outline-none outline-offset-0 focus:outline-[3px]" :disabled="disabled || loading"
+    <button type="button" :class="[
+        {
+            'text-white rounded bg-[#e50914] enabled:hover:bg-[#c11119]': mode == 'primary',
+            'text-black rounded bg-white enabled:hover:bg-white/75' : mode == 'secondary',
+            'text-white rounded bg-[#6D6D6E]/70 enabled:hover:bg-[#6D6D6E]/40' : mode == 'secondary-gray',
+            'py-2 min-h-[40px] rounded-lg shadow-sm ': mode == 'template'
+        }, (disabled || loading) ? 'opacity-75 hover:cursor-not-allowed' : ''
+    ]" class="px-3 py-2 outline-none outline-offset-0 focus:outline-[3px]" :disabled="disabled || loading"
         @click="emit('click:submit')">
         <div class="flex flex-row items-center justify-center" :class="alignStyle[align]">
             <div :class="[{ 'mr-2': $slots.left }, leftClass]">
