@@ -5,6 +5,7 @@ import Button from '~/components/Button.vue';
 // Composables
 import { useAuth } from "~/composables/authentication";
 import { useSavedLogin } from "~/composables/storage";
+import { useSignUpStore } from "~/pinia/user";
 
 // Helpers
 import { validateEmail, validatePassword } from "~/helpers/validators";
@@ -17,12 +18,13 @@ import { useGetUserRoleAsAnonymousLazyQuery } from '~/graphql/types';
 const router = useRouter();
 const savedLogin = useSavedLogin();
 const auth = useAuth();
+const signUpStore = useSignUpStore();
 
 /**
  * Login credential inputs
  */
 const credentials = ref({
-    email: savedLogin.value.email,
+    email: savedLogin.value.email || signUpStore.user?.email || "",
     password: savedLogin.value.password,
     isRememberEnabled: savedLogin.value.email !== '' || savedLogin.value.password !== '',
 })
@@ -89,11 +91,13 @@ const showValidity = ref<{
 });
 
 const isFirstLoad = ref(true)
+const isLoginLoading = ref(false)
 /*
 FEATURE : ACCESS CONTROL (START)
 */
 
 function logIn() {
+    isLoginLoading.value = true
     Object.keys(showValidity.value).forEach(key => showValidity.value[key] = true)
     if (isLoginAllowed.value) {
         if (isFirstLoad.value) {
@@ -124,29 +128,33 @@ const {
 
 onGetUsersResult(async (param) => {
     if (param.data.users.length > 0) {
-        await auth.login(
-            credentials.value.email,
-            credentials.value.password,
-            () => {
-                if (credentials.value.isRememberEnabled) {
-                    // Save
-                    savedLogin.value = {
-                        email: credentials.value.email,
-                        password: credentials.value.password
+        try {
+            await auth.login(
+                credentials.value.email,
+                credentials.value.password,
+                () => {
+                    if (credentials.value.isRememberEnabled) {
+                        // Save
+                        savedLogin.value = {
+                            email: credentials.value.email,
+                            password: credentials.value.password
+                        }
+                    }
+
+                    loginError.value = undefined
+                    router.push("/browse");
+                },
+                (error) => {
+                    // Safely check for the path
+                    if (error.message.includes("incorrect password")) {
+                        loginError.value = "password_error"
+                        credentials.value.password = ""
                     }
                 }
-
-                loginError.value = undefined
-                router.push('/simpleSetup/newProfiles')
-            },
-            (error) => {
-                // Safely check for the path
-                if (error.message.includes("incorrect password")) {
-                    loginError.value = "password_error"
-                    credentials.value.password = ""
-                }
-            }
-        )
+            )
+        } catch (e) {
+            alert("Oops, something wrong happened! We are not able to process your request at this moment.")
+        }
     } else {
         loginError.value = "email_error"
     }
@@ -169,7 +177,8 @@ onGetUsersResult(async (param) => {
             :helperText="inputValidity.password.isValid && credentials.password !== '' ? '' : inputValidity.password.message"
             :warn="showValidity.password && !inputValidity.password.isValid" theme="dark"
             @focusout="showValidity.password = true" />
-        <Button @click="logIn" mode="primary" class="w-full max-w-full p-3 mt-6 mb-3 rounded" content-class="text-lg">
+        <Button @click="logIn" mode="primary" class="w-full max-w-full p-3 mt-6 mb-3 rounded" content-class="text-lg"
+            :loading="isLoginLoading">
             Sign In
         </Button>
         <div class="flex flex-row text-xs text-[#b3b3b3]">

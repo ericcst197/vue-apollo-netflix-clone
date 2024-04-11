@@ -12,6 +12,9 @@ import { useSignUpStore } from "~/pinia/user";
 // Icon
 import ChevronRight from '~/assets/icons/chevron-right.svg'
 
+// GraphQLs
+import { useGetUserRoleAsAnonymousLazyQuery } from '~/graphql/types';
+
 interface Props {
     /**
      * Compoennt ID
@@ -51,18 +54,34 @@ const borderStyle = computed(() => {
 
 function signup() {
     trySignUp.value = true
-
     if (validity.value.email.isValid) {
-        signUpStore.user = {
-            ...signUpStore.emptyState,
+        getUsers(undefined, {
             email: email.value
-        }
-        router.push('/signup/registration')
+        })
     }
 }
 
-watchEffect(() => {
+/* GQL : Get users */
+const {
+    load: getUsers,
+    loading: isGetUserLoading,
+    result: userResult,
+} = useGetUserRoleAsAnonymousLazyQuery({
+    email: email.value
+}, {
+    fetchPolicy: 'network-only'
+})
 
+watch(userResult, () => {
+    signUpStore.user = {
+        ...signUpStore.emptyState,
+        email: email.value
+    }
+    if (userResult.value && userResult.value.users.length > 0) {
+        router.push('login')
+    } else {
+        router.push('/signup/registration')
+    }
 })
 
 </script>
@@ -79,7 +98,8 @@ watchEffect(() => {
                 :borderStyle="borderStyle" />
             <Button mode="primary" content-class="tablet:text-2xl" @click="signup"
                 :class="{ '!-mt-6': borderStyle.includes('orange') }"
-                class="w-fit py-[11px] px-3 mt-4 tablet:mt-0 tablet:px-6 tablet:ml-2">
+                class="w-fit py-[11px] px-3 mt-4 tablet:mt-0 tablet:px-6 tablet:ml-2"
+                :loading="isGetUserLoading">
                 <template #default>
                     Get Started
                 </template>
