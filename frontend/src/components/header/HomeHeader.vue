@@ -38,7 +38,7 @@ const router = useRouter()
                     <SvgIcon :src="ChevronDown" :height="16" :width="16" class="absolute right-3 left-auto stroke-2 stroke-white" />
                 </div>
 
-                <Button @click="router.push('/login')" mode="primary" class="w-[4.5rem] h-8 text-sm font-medium ml-3">Sign In</Button>
+                <Button @click="router.push('/login')" mode="primary" class="w-[4.5rem] !py-1 h-8 text-sm font-medium ml-3">Sign In</Button>
             </div>
         </div>
     </nav>
