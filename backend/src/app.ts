@@ -2,6 +2,8 @@ import { ApolloServer } from "@apollo/server";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { expressMiddleware } from "@apollo/server/express4";
+import { WebSocketServer } from 'ws';
+import { useServer } from 'graphql-ws/lib/use/ws';
 
 import { json } from "body-parser";
 import mongoose from "mongoose";
@@ -36,7 +38,19 @@ const authSchema = makeExecutableSchema({
  */
 const server = new ApolloServer({
 	schema,
-	plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+	plugins: [
+		ApolloServerPluginDrainHttpServer({ httpServer }),
+		// Proper shutdown for the WebSocket server.
+		{
+			async serverWillStart() {
+				return {
+					async drainServer() {
+						await serverCleanup.dispose();
+					},
+				};
+			},
+		},
+	],
 	introspection: ProcessENV.NODE_ENV !== "production",
 });
 
@@ -48,6 +62,19 @@ const authServer = new ApolloServer({
 	plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
 	introspection: ProcessENV.NODE_ENV !== "production",
 });
+
+// Creating the WebSocket server
+const wsServer = new WebSocketServer({
+	// This is the `httpServer` we created in a previous step.
+	server: httpServer,
+	// Pass a different path here if app.use
+	// serves expressMiddleware at a different path
+	path: '/subscriptions',
+});
+
+// Hand in the schema we just created and have the
+// WebSocketServer start listening.
+const serverCleanup = useServer({ schema }, wsServer);
 
 /**
  * Connect database and start servers
