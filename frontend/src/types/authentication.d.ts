@@ -1,6 +1,6 @@
 export interface USER_CREDENTIALS {
     uuid?: string;
-    name: string;
+    name?: string;
     phoneNumber: string;
     email: string;
     password: string;
@@ -9,7 +9,8 @@ export interface USER_CREDENTIALS {
 
 export interface USER_AUTH_DATA {
     isLoading: boolean;
-    auth0Id?: string;
+    isFirstLogin: boolean;
+    userId?: string;
     token: string;
     accessToken?: string;
     refreshToken?: string;

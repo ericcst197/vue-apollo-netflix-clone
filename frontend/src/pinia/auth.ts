@@ -4,7 +4,8 @@ import type { USER_AUTH_DATA } from "~/types/authentication";
 export const useAuthStore = defineStore("auth", () => {
     const initialState: USER_AUTH_DATA = {
         isLoading: false,
-        auth0Id: "",
+        isFirstLogin: true,
+        userId: "",
         token: "",
         accessToken: "",
         refreshToken: "",

@@ -10,8 +10,6 @@ export const useSignUpStore = defineStore("sign-up-user", () => {
         email: "",
         password: "",
         phoneNumber: "",
-        name: "",
-        imageUrl: "",
     };
     const user = ref<Writeable<USER_CREDENTIALS> | undefined>(initialState);
     function reset() {
