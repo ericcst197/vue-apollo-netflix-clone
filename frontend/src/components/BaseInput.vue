@@ -83,7 +83,7 @@ const handleInput = ($event) => {
             <div class="relative flex-auto" :class="[borderStyle]">
                 <input :id="id" :value="modelValue" @input="handleInput" :type="inputType" @focusin="onFocus"
                     @focusout="onUnFocus" :disabled="disabled" :placeholder="placeholder || ' '" :required="required"
-                    :maxlength="maxLength"
+                    :maxlength="maxLength" autocomplete="off"
                     class="block px-2.5 pb-2.5 pt-5 w-full text-sm bg-transparent appearance-none focus:outline-none focus:ring-0 peer"
                     :class="{ 'border-0 border-b-2 border-orange-500': warn, 'focus:bg-[#454545]': theme.includes('dark') }" />
                 <label :for="id"

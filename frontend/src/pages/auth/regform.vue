@@ -81,9 +81,11 @@ async function signUp() {
         await auth.signUp({
             password: signUpStore.user.password,
             email: signUpStore.user.email
-        } as USER_CREDENTIALS)
+        } as USER_CREDENTIALS,
+        async () => {
+            await router.push('/simpleSetup/newProfiles')
+        })
 
-        await router.replace("/profiles");
     }
 };
 

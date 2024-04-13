@@ -6,19 +6,69 @@ import LogoMark from "~/components/LogoMark.vue";
 import SignUpFooter from "~/components/footer/SignUpFooter.vue";
 import SvgIcon from "~/components/SvgIcon.vue"
 
+// Composables
+import { useSignUpStore } from "~/pinia/user";
+import { useAuthStore } from "~/pinia/auth";
+import { useAuth } from "~/composables/authentication";
+
+// Icons
 import UserAddIcon from "~/assets/icons/user-plus-01.svg"
 import UserIcon from "~/assets/icons/user-01.svg"
 
-const profileName1 = ref<string>("")
-const profileName2 = ref<string>("")
-const profileName3 = ref<string>("")
-const profileName4 = ref<string>("")
-const profileName5 = ref<string>("")
+// GraphQL
+import {
+    useCreateProfilesMutation,
+    type ProfileInput,
+} from "~/graphql/types"
+import router from "~/router";
+
+// COMPOSABLE INSTANCES
+const userAuth = useAuthStore();
+const signUpStore = useSignUpStore();
+const auth = useAuth()
+
+// STATES: CORE
+
+const userId = computed(() => userAuth.data.userId || "6617a4853d453ff01d7a2711")
+
+const profileNames = ref<string[]>(Array.from({ length: 5 }).fill("") as string[])
 
 const allProfileNames = computed(() => {
-    return [profileName1.value, profileName2.value, profileName3.value, profileName4.value, profileName5.value].filter(name => name !== "")
+    return profileNames.value.filter(name => name !== "")
 })
 
+const {
+    mutate: createProfiles
+} = useCreateProfilesMutation({
+    variables: undefined
+})
+
+async function submit() {
+    try {
+        await auth.login(
+            signUpStore.user!.email,
+            signUpStore.user!.password!,
+            async () => {
+                 // Create profiles
+                if(userId.value) {
+                    const input = allProfileNames.value.map(name => {
+                        return {
+                            name,
+                            userId: userId.value,
+                            image: null
+                        } as ProfileInput
+                    })
+
+                    await createProfiles({ input: input })
+                    await router.push('/browse')
+                } else throw Error("User ID not found")
+            }
+        )
+    } catch (error) {
+        console.error(error)
+        alert("Something went wrong. Please try again later.")
+    }
+}
 </script>
 
 <template>
@@ -45,37 +95,25 @@ const allProfileNames = computed(() => {
                     <h5 class="text-sm font-semibold tracking-wide">Your profile</h5>
                     <div class="flex flex-row items-center">
                         <SvgIcon :src="UserIcon" class="stroke-2 stroke-gray-900" :height="24" :width="24" />
-                        <BaseInput id="login-email" label="Name" v-model="profileName1" theme="light" class="ml-4"
+                        <BaseInput id="login-name-1" label="Name" v-model="profileNames[0]" theme="light" class="ml-4"
                             :border-style="'text-gray-500 border border-zinc-500'" />
                     </div>
                 </div>
                 <div class="flex flex-col gap-y-2">
                     <h5 class="text-sm font-semibold tracking-wide">Add profiles?</h5>
-                    <div class="flex flex-row items-center">
-                        <SvgIcon :src="UserAddIcon" class="stroke-2 stroke-gray-900" :height="24" :width="24" />
-                        <BaseInput id="login-email" label="Name" v-model="profileName2" theme="light" class="ml-4"
-                            :border-style="'text-gray-500 border border-zinc-500'" />
-                    </div>
-                    <div class="flex flex-row items-center">
-                        <SvgIcon :src="UserAddIcon" class="stroke-2 stroke-gray-900" :height="24" :width="24" />
-                        <BaseInput id="login-email" label="Name" v-model="profileName3" theme="light" class="ml-4"
-                            :border-style="'text-gray-500 border border-zinc-500'" />
-                    </div>
-                    <div class="flex flex-row items-center">
-                        <SvgIcon :src="UserAddIcon" class="stroke-2 stroke-gray-900" :height="24" :width="24" />
-                        <BaseInput id="login-email" label="Name" v-model="profileName4" theme="light" class="ml-4"
-                            :border-style="'text-gray-500 border border-zinc-500'" />
-                    </div>
-                    <div class="flex flex-row items-center">
-                        <SvgIcon :src="UserAddIcon" class="stroke-2 stroke-gray-900" :height="24" :width="24" />
-                        <BaseInput id="login-email" label="Name" v-model="profileName5" theme="light" class="ml-4"
-                            :border-style="'text-gray-500 border border-zinc-500'" />
-                    </div>
+                    <template v-for="(profileName, index) in profileNames.slice(1)" :key="index">
+                        <div class="flex flex-row items-center">
+                            <SvgIcon :src="UserAddIcon" class="stroke-2 stroke-gray-900" :height="24" :width="24" />
+                            <BaseInput id="login-name-2" label="Name" v-model="profileNames[index + 1]" theme="light" class="ml-4"
+                                :border-style="'text-gray-500 border border-zinc-500'" />
+                        </div>
+                    </template>
                     <div class="mt-5 laptop:ml-10 p-5 bg-[#e7e7e7]">
                         Only people who live with you may use your account. <b>Learn more</b>.
                     </div>
                     <Button mode="primary" class="self-end w-1/2 laptop:w-1/4 p-4 mt-6 mb-3 rounded-sm"
-                        content-class="text-lg">Next</Button>
+                        content-class="text-lg" :disabled="allProfileNames.length < 1"
+                        @click="submit">Next</Button>
                 </div>
             </div>
         </div>
