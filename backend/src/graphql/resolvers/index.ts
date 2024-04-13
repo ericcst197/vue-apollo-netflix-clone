@@ -29,7 +29,9 @@ const resolvers = mergeResolvers([
 /*
  * AUTH server
  */ 
-const authResolversArray = allResolversArray.filter(e => e.Name === "Auth")
+const authResolversArray = allResolversArray.filter(e => {
+    return e.Name === "Auth" || e.name === 'User'
+})
 
 authResolversArray.forEach(e => {
     delete e.Name

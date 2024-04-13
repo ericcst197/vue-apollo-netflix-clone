@@ -3,12 +3,11 @@ import { createPinia } from "pinia";
 
 // Apollo
 import {
-    DefaultApolloClient,
-    provideApolloClient,
+    provideApolloClients,
     ApolloClients
 } from "@vue/apollo-composable";
 import { createApolloProvider } from "@vue/apollo-option";
-import combinedApolloClient from "./helpers/apollo";
+import { apolloAuthClient, apolloClient } from "./helpers/apollo";
 
 // Global components
 import ContentContainerVue from "~/layouts/ContentContainer.vue";
@@ -23,15 +22,27 @@ import prismic from "~/prismic/prismic";
 
 
 // Options API for Apollo
-provideApolloClient(combinedApolloClient);
+provideApolloClients({
+    default: apolloClient,
+    authClient: apolloAuthClient
+})
+
+
 const apolloProvider = createApolloProvider({
-    defaultClient: combinedApolloClient,
+    defaultClient: apolloClient,
+    clients: {
+        apolloClient,
+        apolloAuthClient,
+    },
 });
 
 const app = createApp(App);
 const pinia = createPinia();
 
-app.provide(DefaultApolloClient, combinedApolloClient);
+app.provide(ApolloClients, {
+    default: apolloClient,
+    authClient: apolloAuthClient
+})
 app.use(apolloProvider);
 app.use(pinia);
 app.use(router);

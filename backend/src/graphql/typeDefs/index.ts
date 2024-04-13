@@ -39,7 +39,9 @@ const typeDefs = mergeTypeDefs(typeDefsArray.map(e => e.type))
 /*
  * AUTH server
  */ 
-const authTypeDefsArray = allTypeDefsArray.filter(e => e.name === 'Auth')
+const authTypeDefsArray = allTypeDefsArray.filter(e => { 
+    return e.name === 'Auth' || e.name === 'User'
+})
 
 authTypeDefsArray.forEach(e => {
     delete e.Name

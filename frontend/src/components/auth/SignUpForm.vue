@@ -69,6 +69,7 @@ const {
 } = useGetUserRoleAsAnonymousLazyQuery({
     email: email.value
 }, {
+    clientId: "authClient",
     fetchPolicy: 'network-only'
 })
 

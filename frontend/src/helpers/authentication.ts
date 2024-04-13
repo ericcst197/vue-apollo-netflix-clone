@@ -1,11 +1,13 @@
 import { useCreateUserMutation, useLoginUserMutation } from "~/graphql/types";
 
 const { mutate: createUser } = useCreateUserMutation({
-    variables: undefined
+    variables: undefined,
+    clientId: 'authClient'
 });
 
 const { mutate: loginUser } = useLoginUserMutation({
-    variables: undefined
+    variables: undefined,
+    clientId: 'authClient'
 });
 
 export const calculateExpirationTime = (expiresIn: number) => {
