@@ -3,7 +3,7 @@ import { GraphQLError } from 'graphql';
 
 interface ProfileInput {
     name: string
-    image?: string
+    image?: string | null
     userId: string
 }
 
@@ -43,9 +43,7 @@ const profilesResolvers = {
         async createProfiles(_: any, args: Record<string, any>) {
             try {
                 const profiles = args.input as ProfileInput[];
-                const profilesInstances = profiles.map((profile) => new Profile(profile))
-
-                const createdProfiles = await Profile.insertMany(profilesInstances)
+                const createdProfiles = await Profile.insertMany(profiles)
 
                 return createdProfiles
             } catch (error: any) {

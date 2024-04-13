@@ -1,0 +1,25 @@
+query GetProfiles ($userId: String) {
+    profiles (where: { userId: $userId }) {
+        id
+        name
+        image
+    }
+}
+
+mutation CreateProfile($input: ProfileInput!) {
+    createProfile(input: $input) {
+        id
+        name
+        image
+        userId
+    }
+}
+
+mutation CreateProfiles($input: [ProfileInput!]!) {
+    createProfiles(input: $input) {
+        id
+        name
+        image
+        userId
+    }
+}

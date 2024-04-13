@@ -35,15 +35,34 @@ export type AuthInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createProfile: Profile;
+  createProfiles: Array<Profile>;
   createUser: Scalars['ID']['output'];
+  deleteProfile: Profile;
   deleteUser: User;
   loginUser: AuthData;
+  updateProfile: Profile;
   updateUser: User;
+};
+
+
+export type MutationCreateProfileArgs = {
+  input: ProfileInput;
+};
+
+
+export type MutationCreateProfilesArgs = {
+  input: Array<ProfileInput>;
 };
 
 
 export type MutationCreateUserArgs = {
   input?: InputMaybe<AuthInput>;
+};
+
+
+export type MutationDeleteProfileArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -57,15 +76,51 @@ export type MutationLoginUserArgs = {
 };
 
 
+export type MutationUpdateProfileArgs = {
+  id: Scalars['ID']['input'];
+  input: ProfileInput;
+};
+
+
 export type MutationUpdateUserArgs = {
   ID: Scalars['ID']['input'];
-  userInput?: InputMaybe<UserInput>;
+  input?: InputMaybe<UserInput>;
+};
+
+export type Profile = {
+  __typename?: 'Profile';
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  createdById?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['ID']['output']>;
+  image?: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  updatedById?: Maybe<Scalars['String']['output']>;
+  userId: Scalars['String']['output'];
+};
+
+export type ProfileInput = {
+  image?: InputMaybe<Scalars['String']['input']>;
+  name: Scalars['String']['input'];
+  userId: Scalars['String']['input'];
 };
 
 export type Query = {
   __typename?: 'Query';
+  profile: Profile;
+  profiles: Array<Profile>;
   user: User;
   users: Array<User>;
+};
+
+
+export type QueryProfileArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryProfilesArgs = {
+  where?: InputMaybe<ProfileFilterInput>;
 };
 
 
@@ -84,8 +139,6 @@ export type User = {
   createdById?: Maybe<Scalars['String']['output']>;
   email: Scalars['String']['output'];
   id?: Maybe<Scalars['ID']['output']>;
-  image?: Maybe<Scalars['String']['output']>;
-  name: Scalars['String']['output'];
   token?: Maybe<Scalars['String']['output']>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
   updatedById?: Maybe<Scalars['String']['output']>;
@@ -93,15 +146,17 @@ export type User = {
 
 export type UserInput = {
   email: Scalars['String']['input'];
-  image?: InputMaybe<Scalars['String']['input']>;
-  name: Scalars['String']['input'];
   password: Scalars['String']['input'];
+};
+
+export type ProfileFilterInput = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  userId?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UserFilterInput = {
   email?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['ID']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type CreateUserMutationVariables = Exact<{
@@ -120,14 +175,35 @@ export type LoginUserMutationVariables = Exact<{
 
 export type LoginUserMutation = { __typename?: 'Mutation', loginUser: { __typename?: 'AuthData', userId: string, token: string, expiresIn: number, tokenType: string } };
 
-export type UserFragmentFragment = { __typename?: 'User', id?: string | null, name: string, email: string, token?: string | null, image?: string | null, createdAt?: any | null, updatedAt?: any | null, createdById?: string | null, updatedById?: string | null };
+export type GetProfilesQueryVariables = Exact<{
+  userId?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type GetProfilesQuery = { __typename?: 'Query', profiles: Array<{ __typename?: 'Profile', id?: string | null, name: string, image?: string | null }> };
+
+export type CreateProfileMutationVariables = Exact<{
+  input: ProfileInput;
+}>;
+
+
+export type CreateProfileMutation = { __typename?: 'Mutation', createProfile: { __typename?: 'Profile', id?: string | null, name: string, image?: string | null, userId: string } };
+
+export type CreateProfilesMutationVariables = Exact<{
+  input: Array<ProfileInput> | ProfileInput;
+}>;
+
+
+export type CreateProfilesMutation = { __typename?: 'Mutation', createProfiles: Array<{ __typename?: 'Profile', id?: string | null, name: string, image?: string | null, userId: string }> };
+
+export type UserFragmentFragment = { __typename?: 'User', id?: string | null, email: string, token?: string | null, createdAt?: any | null, updatedAt?: any | null, createdById?: string | null, updatedById?: string | null };
 
 export type GetUserQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
-export type GetUserQuery = { __typename?: 'Query', user: { __typename?: 'User', id?: string | null, name: string, email: string, token?: string | null, image?: string | null, createdAt?: any | null, updatedAt?: any | null, createdById?: string | null, updatedById?: string | null } };
+export type GetUserQuery = { __typename?: 'Query', user: { __typename?: 'User', id?: string | null, email: string, token?: string | null, createdAt?: any | null, updatedAt?: any | null, createdById?: string | null, updatedById?: string | null } };
 
 export type GetUserRoleAsAnonymousQueryVariables = Exact<{
   email: Scalars['String']['input'];
@@ -139,10 +215,8 @@ export type GetUserRoleAsAnonymousQuery = { __typename?: 'Query', users: Array<{
 export const UserFragmentFragmentDoc = gql`
     fragment UserFragment on User {
   id
-  name
   email
   token
-  image
   createdAt
   updatedAt
   createdById
@@ -210,6 +284,102 @@ export function useLoginUserMutation(options: VueApolloComposable.UseMutationOpt
   return VueApolloComposable.useMutation<LoginUserMutation, LoginUserMutationVariables>(LoginUserDocument, options);
 }
 export type LoginUserMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<LoginUserMutation, LoginUserMutationVariables>;
+export const GetProfilesDocument = gql`
+    query GetProfiles($userId: String) {
+  profiles(where: {userId: $userId}) {
+    id
+    name
+    image
+  }
+}
+    `;
+
+/**
+ * __useGetProfilesQuery__
+ *
+ * To run a query within a Vue component, call `useGetProfilesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProfilesQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param variables that will be passed into the query
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useGetProfilesQuery({
+ *   userId: // value for 'userId'
+ * });
+ */
+export function useGetProfilesQuery(variables: GetProfilesQueryVariables | VueCompositionApi.Ref<GetProfilesQueryVariables> | ReactiveFunction<GetProfilesQueryVariables> = {}, options: VueApolloComposable.UseQueryOptions<GetProfilesQuery, GetProfilesQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetProfilesQuery, GetProfilesQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetProfilesQuery, GetProfilesQueryVariables>> = {}) {
+  return VueApolloComposable.useQuery<GetProfilesQuery, GetProfilesQueryVariables>(GetProfilesDocument, variables, options);
+}
+export function useGetProfilesLazyQuery(variables: GetProfilesQueryVariables | VueCompositionApi.Ref<GetProfilesQueryVariables> | ReactiveFunction<GetProfilesQueryVariables> = {}, options: VueApolloComposable.UseQueryOptions<GetProfilesQuery, GetProfilesQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetProfilesQuery, GetProfilesQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetProfilesQuery, GetProfilesQueryVariables>> = {}) {
+  return VueApolloComposable.useLazyQuery<GetProfilesQuery, GetProfilesQueryVariables>(GetProfilesDocument, variables, options);
+}
+export type GetProfilesQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<GetProfilesQuery, GetProfilesQueryVariables>;
+export const CreateProfileDocument = gql`
+    mutation CreateProfile($input: ProfileInput!) {
+  createProfile(input: $input) {
+    id
+    name
+    image
+    userId
+  }
+}
+    `;
+
+/**
+ * __useCreateProfileMutation__
+ *
+ * To run a mutation, you first call `useCreateProfileMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useCreateProfileMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useCreateProfileMutation({
+ *   variables: {
+ *     input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateProfileMutation(options: VueApolloComposable.UseMutationOptions<CreateProfileMutation, CreateProfileMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<CreateProfileMutation, CreateProfileMutationVariables>> = {}) {
+  return VueApolloComposable.useMutation<CreateProfileMutation, CreateProfileMutationVariables>(CreateProfileDocument, options);
+}
+export type CreateProfileMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<CreateProfileMutation, CreateProfileMutationVariables>;
+export const CreateProfilesDocument = gql`
+    mutation CreateProfiles($input: [ProfileInput!]!) {
+  createProfiles(input: $input) {
+    id
+    name
+    image
+    userId
+  }
+}
+    `;
+
+/**
+ * __useCreateProfilesMutation__
+ *
+ * To run a mutation, you first call `useCreateProfilesMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useCreateProfilesMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useCreateProfilesMutation({
+ *   variables: {
+ *     input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateProfilesMutation(options: VueApolloComposable.UseMutationOptions<CreateProfilesMutation, CreateProfilesMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<CreateProfilesMutation, CreateProfilesMutationVariables>> = {}) {
+  return VueApolloComposable.useMutation<CreateProfilesMutation, CreateProfilesMutationVariables>(CreateProfilesDocument, options);
+}
+export type CreateProfilesMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<CreateProfilesMutation, CreateProfilesMutationVariables>;
 export const GetUserDocument = gql`
     query GetUser($id: ID!) {
   user(ID: $id) {
