@@ -1,9 +1,8 @@
 schema:
   - "${VUE_APP_APOLLO_SERVER_BASE_URL}":
       headers:
-        x-apollo-admin-secret: "${VUE_APP_APOLLO_SECRET}"
+        x-apollo-admin-secret: "${VUE_APP_APOLLO_GRAPHQL_SECRET}"
   - "${VUE_APP_AUTH_SERVER_BASE_URL}"
-#   - "http://localhost:8000/auth"
 documents: './src/**/*.gql'
 debug: true
 generates:
