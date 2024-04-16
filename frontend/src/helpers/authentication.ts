@@ -11,7 +11,7 @@ const { mutate: loginUser } = useLoginUserMutation({
 });
 
 export const calculateExpirationTime = (expiresIn: number) => {
-    return Date.now() + expiresIn * 1000;
+    return Date.now() + expiresIn;
 };
 
 export async function signUp(

@@ -56,7 +56,7 @@ export const useFetchMoviesStore = defineStore("themoviedb", () => {
             video: {
                 clip: movieDetailsResults.videos.results.filter(video => {
                     return video.type === 'Clip' && video.site === 'YouTube'
-                })[0]?.key,
+                })[1]?.key,
                 teaser: movieDetailsResults.videos.results.filter(video => {
                     return video.type === 'Teaser' && video.site === 'YouTube'
                 })[0]?.key,

@@ -1,22 +1,26 @@
 <script setup lang="ts">
-import ProfileHeader from '~/components/header/ProfileHeader.vue';
-import SvgIcon from '~/components/SvgIcon.vue';
-import { VueperSlides, VueperSlide } from 'vueperslides'
-import Button from '~/components/Button.vue';
-import YouTubePlayer from 'youtube-player';
+import ProfileHeader from "~/components/header/ProfileHeader.vue";
+import SvgIcon from "~/components/SvgIcon.vue";
+import { VueperSlides, VueperSlide } from "vueperslides"
+import Button from "~/components/Button.vue";
+import ProfileFooter from "~/components/footer/ProfileFooter.vue";
 
 // Composable
-import { useFetchMoviesStore } from '~/pinia/movie'
+import { useFetchMoviesStore } from "~/pinia/movie";
 import { useBreakpoints } from "~/composables/breakpoints";
 
 // Helpers
-import { formatCamelCaseToSentence } from "~/helpers/string"
+import YouTubePlayer from 'youtube-player';
+import { formatCamelCaseToSentence } from "~/helpers/string";
 
 // Icon
-import ChevronRight from '~/assets/icons/chevron-right.svg';
-import ChevronLeft from '~/assets/icons/chevron-left.svg';
-import PlayIcon from '~/assets/icons/play-01.svg';
-import InfoCircleIcon from '~/assets/icons/info-circle-01.svg';
+import ChevronRight from "~/assets/icons/chevron-right.svg";
+import ChevronLeft from "~/assets/icons/chevron-left.svg";
+import PlayIcon from "~/assets/icons/play-01.svg";
+import InfoCircleIcon from "~/assets/icons/info-circle-01.svg";
+import SoundOnIcon from "~/assets/icons/sound-on.svg";
+import SoundOffIcon from "~/assets/icons/sound-off.svg";
+import ReplayIcon from "~/assets/icons/replay-icon.svg"
 
 // Types
 import type { movie } from "~/types/movie"
@@ -24,8 +28,6 @@ import type { movie } from "~/types/movie"
 // Composable Instances
 const { widthBreaks, smaller } = useBreakpoints();
 const { getMoviesList, moviesList, getPopularMovie } = useFetchMoviesStore()
-
-
 
 /* STATES */
 const state = ref<"choose-profile" | "movies">("choose-profile")
@@ -64,14 +66,6 @@ const movies = computed(() => {
 const movieToday = ref<movie>()
 
 const imgUrl = ref('https://image.tmdb.org/t/p/original')
-const videoUrl = ref('https://www.youtube.com/embed/');
-const videoMute = ref<0 | 1>(1)
-const embedVideoUrl = computed(() => {
-    if(movieToday.value?.video.clip || movieToday.value?.video.teaser) {
-        return videoUrl.value + (movieToday.value?.video.clip || movieToday.value?.video.teaser) + `?&autoplay=1&mute=${videoMute.value}&rel=0`
-    }
-    return imgUrl.value + movieToday.value?.image.backdrop_path
-})
 
 /**
  * Header movie template ref
@@ -84,6 +78,8 @@ const headerMovie = ref<HTMLDivElement | null>(null)
 const moviePlayer = ref<any>()
 const isMoviePlayed = ref(false)
 const movieTodayComponentKey = ref(0)
+const buttonIcon = ref(SoundOffIcon)
+const buttonIconComponentKey = ref(0)
 
 const slidesSettings = {
     [widthBreaks['desktop-xl']]:{
@@ -113,51 +109,41 @@ const slidesSettings = {
     }
 }
 /* STATES */
-const headerMovieVideo = ref()
-const mute = ref()
-
-function muteSound () {
-    console.log(headerMovieVideo.value)
-    // videoMute.value = 0
-    // if (headerMovieVideo.value.isMuted()) {
-    //     headerMovieVideo.value.unMute();
-    // } else {
-    //     headerMovieVideo.value.mute();
-    // }
-}
-// watchEffect(() => {
-//     console.log(headerMovieWidth.value)
-// })
-
-function clickHeaderMovie(evt) {
-    console.log(evt)
-}
 
 
+async function muteSound () {
+    if(!isMoviePlayed.value && buttonIcon.value === ReplayIcon) {
+        moviePlayer.value.playVideo();
+        moviePlayer.value.unMute()
+        buttonIcon.value = SoundOnIcon
+        buttonIconComponentKey.value++
+        return
+    }
 
-async function countDown(seconds) {
-    let timer = setInterval(function() {
-        if (seconds <= 0) {
-            clearInterval(timer);
-
-            setTimeout(() => {
-                isMoviePlayed.value = true
-            }, 1000)
-        } else {
-            seconds--;
-        }
-    }, 1000);
+    if(await moviePlayer.value.isMuted()) {
+        moviePlayer.value.unMute()
+        buttonIcon.value = SoundOnIcon
+    } else {
+        moviePlayer.value.mute()
+        buttonIcon.value = SoundOffIcon
+    }
+    buttonIconComponentKey.value++
 }
 
+function moreInfo() {
+    console.log("More Info click")
+}
+
+/* WATCHER */
 watch(headerMovie, () =>{
     if(headerMovie.value) {
-        console.log(movieToday.value?.video.clip, movieToday.value?.video.teaser)
-        moviePlayer.value = YouTubePlayer(headerMovie.value, {
+        moviePlayer.value = YouTubePlayer(headerMovie.value as HTMLElement, {
             videoId: movieToday.value?.video.clip || movieToday.value?.video.teaser,
             playerVars: {
                 autoplay: 1,
                 controls: 0,
                 rel: 0,
+                cc_lang_pref: "en",
             }
         }, true);
 
@@ -174,9 +160,12 @@ watch(headerMovie, () =>{
                     break;
                 case 0 :
                     isMoviePlayed.value = false
+                    buttonIcon.value = ReplayIcon
+                    buttonIconComponentKey.value++
                     break
                 default :
                     isMoviePlayed.value = false
+                    buttonIcon.value = SoundOffIcon
             }
         });
     }
@@ -200,11 +189,7 @@ onMounted(async() => {
 
     isFetchMovieListLoading.value = false
 })
-
-function moreInfo() {
-    console.log("More Info click")
-}
-
+/* WATCHER */
 </script>
 
 <template>
@@ -232,15 +217,17 @@ function moreInfo() {
         <div class="bg-[#141414]">
             <ProfileHeader class="z-20" />
 
+            <!-- Movie Container -->
             <div class="relative top-0 inset-x-0 pb-[40%] mb-5">
                 <div v-if="movieToday" class="absolute inset-0 h-[56.25vw]">
                     <img :key="movieTodayComponentKey" :src="movieToday.image? imgUrl + movieToday.image : ''"
                         class="absolute w-full h-full transition-opacity duration-500"
                         :class="[!isMoviePlayed ? 'opacity-100' : 'opacity-0']" />
+                    <!-- Movie Player -->
                     <div ref="headerMovie" class="absolute w-full h-full bottom-20 opacity-0 transition-opacity" id='player-1'></div>
-                    <!-- <iframe ref="headerMovieVideo" class="absolute w-full h-full bottom-16" :src="embedVideoUrl"
-                        allow="autoplay; accelerometer; gyroscope; encrypted-media; picture-in-picture"></iframe> -->
+                    <!-- Overlay shadow gradient 1 -->
                     <div class="absolute inset-y-0 left-0 right-1/4 bg-gradient-to-r from-[#000]/40 to-transparent to-80%"></div>
+                    <!-- Movie details -->
                     <div ref="fill-container" class="absolute inset-0">
                         <div ref="info" class="absolute left-[4%] bottom-[35%] top-0 flex flex-col justify-end w-[36%] z-10 text-white">
                             <div ref="logoAndText" class="w-full">
@@ -271,28 +258,41 @@ function moreInfo() {
                                         </template>
                                         <span class="font-medium text-base text-white desktop:text-xl">More Info</span>
                                     </Button>
-                                    <Button mode="primary" @click="muteSound" class="z-50 w-10 h-10 bg-yellow-300" ref="mute">MUTE</Button>
                                 </div>
                             </div>
                         </div>
+                        <div ref="sound" class="absolute right-0 bottom-[35%] flex flex-row items-center justify-end z-10 text-white">
+                            <Button ref="mute" mode="template" @click="muteSound" class="!p-1 !min-h-0 w-7 h-7 outline outline-2 outline-white rounded-full mr-[1.1vw]"
+                                left-class="!mr-0">
+                                <template #left>
+                                    <SvgIcon :key="buttonIconComponentKey" :src="buttonIcon" :height="20" :width="20"
+                                        class="stroke-2" />
+                                </template>
+                            </Button>
+                            <span
+                                class="flex items-center bg-[#333]/60 border-l-[3px] border-[#dcdcdc] border-solid py-[0.5vw] pr-[3.5vw] pl-[0.8vw] h-[2.4vw] text-[1.1vw]">
+                                <span>{{ movieToday.age_restrict || "G" }}</span>
+                            </span>
+                        </div>
                     </div>
+                    <!-- Overlay shadow gradient 2 -->
                     <div class="absolute w-full h-[14.7vw] top-auto bottom-0 bg-transparent bg-gradient-to-b from-transparent to-[#141414] to-50%"></div>
                 </div>
             </div>
 
-            <div class="relative bg-transparent text-white min-h-[1000px] border-box">
-                <div></div>
+            <!-- Movie lists -->
+            <div class="relative bg-transparent text-white min-h-[1000px] border-box pb-12">
                 <div v-for="(genre, index) in genres" class="my-[3vw]">
                     <h3 class="font-medium text-xs laptop:text-[1.4vw] min-w-[6em] w-fit text-[#e5e5e5] mx-[4%] mb-[0.75em]">{{ formatCamelCaseToSentence(genre) }}</h3>
                     <VueperSlides class="relative no-shadow px-4 laptop:px-16" :breakpoints="slidesSettings"
                         :visible-slides="5" :slide-ratio="1/8" :arrows-outside="true" slide-multiple :gap="1"
                         :bullets="false" :touchable="false">
                             <template #arrow-left>
-                                <img :src="ChevronLeft" class="stroke-[3px] stroke-white h-4 w-4 tablet:h-6 tablet:w-6 mb-6 laptop:h-10 laptop:w-10 desktop:mb-12"/>
+                                <img :src="ChevronLeft" class="stroke-[3px] stroke-white h-4 w-4 tablet:h-6 tablet:w-6 mb-4 laptop:h-10 laptop:w-10 desktop:mb-6"/>
                             </template>
 
                             <template #arrow-right>
-                                <img :src="ChevronRight" class="stroke-[3px] stroke-white h-4 w-4 tablet:h-6 tablet:w-6 mb-6 laptop:h-10 laptop:w-10 desktop:mb-12"/>
+                                <img :src="ChevronRight" class="stroke-[3px] stroke-white h-4 w-4 tablet:h-6 tablet:w-6 mb-4 laptop:h-10 laptop:w-10 desktop:mb-6"/>
                             </template>
 
                             <VueperSlide v-for="(movie, i) in movies[genre]" :key="movie.id">
@@ -306,6 +306,8 @@ function moreInfo() {
                     </VueperSlides>
                 </div>
             </div>
+
+            <ProfileFooter />
         </div>
     </template>
 </template>
