@@ -25,6 +25,7 @@ export type movie = {
     genre: string[];
     year: string;
     casts: any;
+    status: string;
     director: string;
     writers: any;
 }
