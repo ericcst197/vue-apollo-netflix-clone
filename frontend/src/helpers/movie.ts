@@ -48,7 +48,7 @@ export async function getMovieDetail(id: number | string){
         video: {
             clip: movieDetailsResults.videos.results.filter(video => {
                 return video.type === 'Clip' && video.site === 'YouTube'
-            })[1]?.key || undefined,
+            })[0]?.key || undefined,
             teaser: movieDetailsResults.videos.results.filter(video => {
                 return video.type === 'Teaser' && video.site === 'YouTube'
             })[0]?.key || undefined,

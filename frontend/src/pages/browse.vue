@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import ProfileHeader from "~/components/header/ProfileHeader.vue";
-import SvgIcon from "~/components/SvgIcon.vue";
-import { VueperSlides, VueperSlide } from "vueperslides"
-import Button from "~/components/Button.vue";
 import ProfileFooter from "~/components/footer/ProfileFooter.vue";
+import Button from "~/components/Button.vue";
+import SvgIcon from "~/components/SvgIcon.vue";
+import MovieDialog from "~/components/MovieDialog.vue";
+import { VueperSlides, VueperSlide } from "vueperslides"
 
 // Composable
 import { useFetchMoviesStore } from "~/pinia/movie";
@@ -12,6 +13,7 @@ import { useBreakpoints } from "~/composables/breakpoints";
 // Helpers
 import YouTubePlayer from 'youtube-player';
 import { formatCamelCaseToSentence } from "~/helpers/string";
+import { getMovieDetail } from "~/helpers/movie";
 
 // Icon
 import ChevronRight from "~/assets/icons/chevron-right.svg";
@@ -29,7 +31,7 @@ import type { movie } from "~/types/movie"
 const { widthBreaks, smaller } = useBreakpoints();
 const { getMoviesList, moviesList, getPopularMovie } = useFetchMoviesStore()
 
-/* STATES */
+/* STATES: CORE (START) */
 const state = ref<"choose-profile" | "movies">("choose-profile")
 
 const isFetchMovieListLoading = ref(true)
@@ -43,9 +45,8 @@ const genres = ref([
     'comedy',
     'horror',
     'romance',
-    'documentaries'
+    'music'
 ]);
-
 
 const movies = computed(() => {
     if(!isFetchMovieListLoading.value) {
@@ -62,25 +63,13 @@ const movies = computed(() => {
     return moviesList
 })
 
-
 const movieToday = ref<movie>()
 
 const imgUrl = ref('https://image.tmdb.org/t/p/original')
 
 /**
- * Header movie template ref
+ * Vueperslide slides settings
  */
-const headerMovie = ref<HTMLDivElement | null>(null)
-
-/**
- * Youtube player instance
- */
-const moviePlayer = ref<any>()
-const isMoviePlayed = ref(false)
-const movieTodayComponentKey = ref(0)
-const buttonIcon = ref(SoundOffIcon)
-const buttonIconComponentKey = ref(0)
-
 const slidesSettings = {
     [widthBreaks['desktop-xl']]:{
         visibleSlides: 5,
@@ -108,11 +97,38 @@ const slidesSettings = {
         slideRatio: 1/4,
     }
 }
-/* STATES */
+/* STATES: CORE (END)*/
 
+/*
+ * Youtube player instance (START)
+ */
+/**
+ * Header movie template ref
+ */
+const headerMovie = ref<HTMLDivElement | null>(null)
+
+/**
+ * Youtube API player instance
+ */
+const moviePlayer = ref<any>()
+const isMovieTodayPlayed = ref(false)
+/**
+ * Youtube API player.getPlayerState():Number
+    Returns the state of the player. Possible values are:
+    -1 – unstarted
+    0 – ended
+    1 – playing
+    2 – paused
+    3 – buffering
+    5 – video cued
+ */
+const movieTodayState = ref<number>(-1)
+const movieTodayComponentKey = ref(0)
+const buttonIcon = ref(SoundOffIcon)
+const buttonIconComponentKey = ref(0)
 
 async function muteSound () {
-    if(!isMoviePlayed.value && buttonIcon.value === ReplayIcon) {
+    if(!isMovieTodayPlayed.value && buttonIcon.value === ReplayIcon) {
         moviePlayer.value.playVideo();
         moviePlayer.value.unMute()
         buttonIcon.value = SoundOnIcon
@@ -130,12 +146,39 @@ async function muteSound () {
     buttonIconComponentKey.value++
 }
 
-function moreInfo() {
-    console.log("More Info click")
+/*
+* Youtube player instance (END)
+*/
+
+/*
+* Movie Dialog (START)
+*/
+/**
+ * Selected movie template ref
+ */
+const isMovieDialogShown = ref(false)
+
+const movieIdToShow = ref<string | number>("")
+const movieToShow = ref<movie>()
+
+function toggleMovieDialog(movieId?: string | number ) {
+    // Reset for rehydration
+    movieToShow.value = undefined
+    movieIdToShow.value = ""
+
+    if(movieId) {
+        movieIdToShow.value = movieId
+    }
+
+    isMovieDialogShown.value = !isMovieDialogShown.value
 }
 
+/*
+* Movie Dialog (END)
+*/
+
 /* WATCHER */
-watch(headerMovie, () =>{
+watch(headerMovie, () => {
     if(headerMovie.value) {
         moviePlayer.value = YouTubePlayer(headerMovie.value as HTMLElement, {
             videoId: movieToday.value?.video.clip || movieToday.value?.video.teaser,
@@ -154,31 +197,42 @@ watch(headerMovie, () =>{
 
         moviePlayer.value.on('stateChange', (event) => {
             isFirstLoad.value = false
+            movieTodayState.value = event.data
             switch(event.data) {
                 case 1 :
-                    isMoviePlayed.value = true
+                    isMovieTodayPlayed.value = true
                     break;
                 case 0 :
-                    isMoviePlayed.value = false
+                    isMovieTodayPlayed.value = false
                     buttonIcon.value = ReplayIcon
                     buttonIconComponentKey.value++
-                    break
+                    break;
                 default :
-                    isMoviePlayed.value = false
+                    isMovieTodayPlayed.value = false
                     buttonIcon.value = SoundOffIcon
             }
         });
     }
 })
 
-watch(isMoviePlayed, () => {
-    if(!isMoviePlayed.value) {
+watch(isMovieTodayPlayed, () => {
+    if(!isMovieTodayPlayed.value) {
         document.querySelector('#player-1')?.setAttribute('style', 'opacity: 0')
     } else {
         document.querySelector('#player-1')?.setAttribute('style', 'opacity: 1')
     }
     movieTodayComponentKey.value++
 })
+
+watch(movieIdToShow, async () => {
+    if(movieIdToShow.value) {
+        moviePlayer.value.pauseVideo()
+        movieToShow.value = await getMovieDetail(movieIdToShow.value)
+    } else if (!movieIdToShow.value && movieTodayState.value === 2) {
+        moviePlayer.value.playVideo()
+    }
+})
+/* WATCHER */
 
 onMounted(async() => {
     isFetchMovieListLoading.value = true
@@ -189,7 +243,6 @@ onMounted(async() => {
 
     isFetchMovieListLoading.value = false
 })
-/* WATCHER */
 </script>
 
 <template>
@@ -222,9 +275,9 @@ onMounted(async() => {
                 <div v-if="movieToday" class="absolute inset-0 h-[56.25vw]">
                     <img :key="movieTodayComponentKey" :src="movieToday.image? imgUrl + movieToday.image : ''"
                         class="absolute w-full h-full transition-opacity duration-500"
-                        :class="[!isMoviePlayed ? 'opacity-100' : 'opacity-0']" />
+                        :class="[!isMovieTodayPlayed ? 'opacity-100' : 'opacity-0']" />
                     <!-- Movie Player -->
-                    <div ref="headerMovie" class="absolute w-full h-full bottom-20 opacity-0 transition-opacity" id='player-1'></div>
+                    <div id="player-1" ref="headerMovie" class="absolute w-full h-full laptop:bottom-20 opacity-0 transition-opacity"></div>
                     <!-- Overlay shadow gradient 1 -->
                     <div class="absolute inset-y-0 left-0 right-1/4 bg-gradient-to-r from-[#000]/40 to-transparent to-80%"></div>
                     <!-- Movie details -->
@@ -233,14 +286,14 @@ onMounted(async() => {
                             <div ref="logoAndText" class="w-full">
                                 <!-- <div class="origin-bottom-left rotate-z-0 scale-100 delay-0 duration-[1300ms] pb-[1.2vw] min-h-[13.2vw]"> -->
                                 <div class="duration-[1300ms] origin-bottom-left mb-[1vw]"
-                                    :class="[isFirstLoad ? '' : isMoviePlayed ? 'video-played-logo' :'video-stopped-logo']"
+                                    :class="[isFirstLoad ? '' : isMovieTodayPlayed ? 'video-played-logo' :'video-stopped-logo']"
                                     :style="{
                                         'width': '70%'
                                     }">
                                     <img :src="movieToday.logo ? imgUrl + movieToday.logo.file_path : ''" />
                                 </div>
                                 <div ref="info-wrapper" class="w-full h-20 duration-[1300ms]"
-                                    :class="[isFirstLoad ? '' : isMoviePlayed ? 'video-played-info' :'video-stopped-info']">
+                                    :class="[isFirstLoad ? '' : isMovieTodayPlayed ? 'video-played-info' :'video-stopped-info']">
                                     <p class="h-full text-[1.2vw] laptop:leading-7 line-clamp-3">{{
                                         movieToday.description
                                     }}</p>
@@ -252,11 +305,11 @@ onMounted(async() => {
                                         </template>
                                         <span class="font-medium text-base desktop:text-xl">Play</span>
                                     </Button>
-                                    <Button @click="moreInfo" mode="secondary-gray" class="z-[5] px-5 mr-2 desktop:px-6">
+                                    <Button @click="toggleMovieDialog(movieToday?.id)" mode="secondary-gray" class="z-[5] px-5 mr-2 desktop:px-6">
                                         <template #left>
                                             <SvgIcon :src="InfoCircleIcon" :height="24" :width="24" />
                                         </template>
-                                        <span class="font-medium text-base text-white desktop:text-xl">More Info</span>
+                                        <span class="font-medium  text-xs tablet:text-base text-white desktop:text-xl">More Info</span>
                                     </Button>
                                 </div>
                             </div>
@@ -297,17 +350,24 @@ onMounted(async() => {
 
                             <VueperSlide v-for="(movie, i) in movies[genre]" :key="movie.id">
                                 <template #content>
-                                    <div class="flex flex-col justify-center w-full cursor-pointer rounded-lg overflow-hidden text-center">
-                                        <img :src="imgUrl + movie.backdrop_path" alt="" class="h-full object-cover object-center mx-auto">
-                                        <p class="text-xs desktop:text-base">{{ movie.title || movie.name }}</p>
+                                    <div class="flex flex-col justify-center w-full cursor-pointer overflow-hidden text-center">
+                                        <img :src="imgUrl + movie.backdrop_path" alt="" @click="toggleMovieDialog(movie.id)"
+                                            class="h-full object-cover object-center mx-auto rounded-lg" />
+                                        <p class="text-xs desktop:text-base truncate">{{ movie.title || movie.name }}</p>
                                     </div>
                                 </template>
                             </VueperSlide>
                     </VueperSlides>
                 </div>
             </div>
-
             <ProfileFooter />
+
+            <!-- Movie dialog -->
+            <template v-if="movieToShow">
+                <MovieDialog :title="movieToShow.title" :movie-to-show="movieToShow"
+                    :open="isMovieDialogShown" @close="toggleMovieDialog">
+                </MovieDialog>
+            </template>
         </div>
     </template>
 </template>
