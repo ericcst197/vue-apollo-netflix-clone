@@ -6,20 +6,33 @@ import { MenuItem } from '@headlessui/vue'
 // Composables
 import { useBreakpoints } from "~/composables/breakpoints";
 
+// Helpers
+import { navlinks } from "~/router/config";
+
 // Icons
 import SearchIcon from "~/assets/icons/search-02.svg";
 import NotificationIcon from "~/assets/icons/notification-02.svg";
 import ArrowIcon from "~/assets/icons/triangle-down.svg";
 
+//Types
+import type { NavigationObject } from "~/types/navigation";
+
+// Composables Instances
+const router = useRouter()
+
 const breakpoints = useBreakpoints();
 
-const navLinks = ref<string[]>(["Home", "TV Shows", "Movies", "New & Popular", "My List", "Browse by Language"])
+const navLinks = ref<NavigationObject[]>(navlinks)
 
 const onHoverProfile = ref(false)
 
 // Ref for header
 const profileHeader = ref()
 const isSticky = ref(false)
+
+function navigateTo(link: NavigationObject) {
+    router.push(link.path)
+}
 
 onMounted(() => {
     window.addEventListener('scroll', () => {
@@ -46,7 +59,10 @@ onMounted(() => {
                 <ul
                     class="flex justify-around cursor-pointer items-center laptop:text-[80%] desktop:text-sm font-medium desktop:ml-4">
                     <li v-for="link in navLinks" class="ml-4 desktop:ml-6">
-                        <router-link to="#" class="text-[#e5e5e5] hover:text-[#b3b3b3]">{{ link }}</router-link>
+                        <component :is="link.disabled ? 'span' : 'router-link'" :to="link.path"
+                            class="text-[#e5e5e5] hover:text-[#b3b3b3]">{{
+                            link.name
+                        }}</component>
                     </li>
                 </ul>
             </nav>
@@ -60,8 +76,8 @@ onMounted(() => {
                         <button :class="[
                             active ? 'bg-[#2c2c2c] ' : '',
                             'w-full bg-[#141414] px-2 py-2 text-[#b3b3b3] text-center text-sm',
-                        ]">
-                            {{ link }}
+                        ]" @click="navigateTo(link)" :disabled="link.disabled" >
+                            {{ link.name }}
                         </button>
                     </MenuItem>
                 </template>
