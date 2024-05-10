@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import type { USER_AUTH_DATA } from "~/types/authentication";
+import type { USER_AUTH_DATA, USER_PROFILE } from "~/types/authentication";
 
 export const useAuthStore = defineStore("auth", () => {
     const initialState: USER_AUTH_DATA = {
@@ -13,7 +13,16 @@ export const useAuthStore = defineStore("auth", () => {
         expirationDate: 0,
         tokenType: "Bearer",
     };
+
+    const profileState: USER_PROFILE = {
+        id: "",
+        image: "",
+        name: "",
+        userId: ""
+    };
+
     const data = ref<USER_AUTH_DATA>(initialState);
+    const profile = ref<USER_PROFILE>(profileState);
 
     const isAuthenticated = computed(
         () =>
@@ -25,5 +34,5 @@ export const useAuthStore = defineStore("auth", () => {
         data.value = initialState;
     }
 
-    return { data, isAuthenticated, reset };
+    return { data, profile, isAuthenticated, reset };
 });

@@ -7,13 +7,15 @@ import MovieDialog from "~/components/MovieDialog.vue";
 import { VueperSlides, VueperSlide } from "vueperslides"
 
 // Composable
+import { useAuthStore } from "~/pinia/auth";
 import { useFetchMoviesStore } from "~/pinia/movie";
 import { useBreakpoints } from "~/composables/breakpoints";
 
 // Helpers
 import YouTubePlayer from 'youtube-player';
-import { formatCamelCaseToSentence } from "~/helpers/string";
+import { formatCamelCaseToSentence, convertImageToBase64 } from "~/helpers/string";
 import { getMovieDetail } from "~/helpers/movie";
+import { useSessionStorage } from '@vueuse/core'
 
 // Icon
 import ChevronRight from "~/assets/icons/chevron-right.svg";
@@ -22,17 +24,37 @@ import PlayIcon from "~/assets/icons/play-01.svg";
 import InfoCircleIcon from "~/assets/icons/info-circle-01.svg";
 import SoundOnIcon from "~/assets/icons/sound-on.svg";
 import SoundOffIcon from "~/assets/icons/sound-off.svg";
-import ReplayIcon from "~/assets/icons/replay-icon.svg"
+import ReplayIcon from "~/assets/icons/replay-icon.svg";
+
+import ProfileImage1 from "~/assets/img/profile/netflix-profile-1.jpg"
+import ProfileImage2 from "~/assets/img/profile/netflix-profile-2.jpg"
+import ProfileImage3 from "~/assets/img/profile/netflix-profile-3.jpg"
+import ProfileImage4 from "~/assets/img/profile/netflix-profile-4.jpg"
+import ProfileImage5 from "~/assets/img/profile/netflix-profile-5.jpg"
 
 // Types
 import type { movie } from "~/types/movie"
 
+// GraphQLs
+import { useGetProfilesQuery } from '~/graphql/types';
+
 // Composable Instances
 const { widthBreaks, smaller } = useBreakpoints();
-const { getMoviesList, moviesList, getPopularMovie } = useFetchMoviesStore()
+const { getMoviesList, moviesList, getPopularMovie } = useFetchMoviesStore();
+const auth = useAuthStore()
+
+// INTERFACE
+interface Profile{
+    id: string;
+    name: string;
+    image: string;
+    [key: string]: any
+}
 
 /* STATES: CORE (START) */
 const state = ref<"choose-profile" | "movies">("choose-profile")
+
+const profiles = ref<Profile[]>([])
 
 const isFetchMovieListLoading = ref(true)
 const isFirstLoad = ref(true)
@@ -100,7 +122,46 @@ const slidesSettings = {
 /* STATES: CORE (END)*/
 
 /*
- * Youtube player instance (START)
+* FEATURE: Fetch user profiles (START)
+*/
+const { result: profilesResult } = useGetProfilesQuery({
+    userId: auth.data.userId || "661a88fe07f4de9dade293e1"
+})
+
+watch(profilesResult, async () => {
+    if(profilesResult.value) {
+        const images = [ProfileImage1, ProfileImage2, ProfileImage3, ProfileImage4, ProfileImage5]
+        const mapProfiles = await Promise.all(
+            profilesResult.value.profiles.map(async (profile, index) => {
+                const imageBase64 = await convertImageToBase64(images[index])
+                return {
+                    id: profile.id || index.toString(),
+                    image: profile.image || imageBase64,
+                    name: profile.name
+                }
+            })
+        )
+        profiles.value = mapProfiles
+    }
+})
+
+function selectProfile(profile: Profile ) {
+    auth.profile = {
+        id: profile.id,
+        image: profile.image,
+        name: profile.name,
+        userId: auth.data.userId
+    }
+    sessionStorage.removeItem("profile");
+    useSessionStorage('profile', auth.profile)
+    state.value ='movies'
+}
+/*
+* FEATURE: Fetch user profiles (END)
+*/
+
+/*
+ * FEATURE: Youtube player instance (START)
  */
 /**
  * Header movie template ref
@@ -251,14 +312,16 @@ onMounted(async() => {
             <div class="absolute inset-0 animate-profile flex flex-col items-center justify-center z-[100]">
                 <div>
                     <div class="my-4">
-                        <h1 class="text-white text-[3.5vw]">Who's watching</h1>
+                        <h1 class="text-white text-[3.5vw]">Who's watching?</h1>
                     </div>
-                    <ul class="flex flex-row my-4">
-                        <li v-for="index in 3" class="mr-[2vw] last:mr-0 cursor-pointer text-gray-400 hover:text-white" :key="index"
-                            @click="state ='movies'">
+                    <ul class="flex flex-row my-4 justify-center">
+                        <li v-for="(profile, i) in profiles" class="mr-[2vw] last:mr-0 cursor-pointer text-gray-400 hover:text-white" :key="profile.id!"
+                            @click="selectProfile(profile)">
                             <div class="">
-                                <div class="w-[10vw] h-[10vw] bg-green-300 rounded"></div>
-                                <span class="block text-center my-2.5 ">{{ index }}</span>
+                                <div class="w-[10vw] h-[10vw] rounded overflow-hidden">
+                                    <img :src="profile.image" :alt="`Image ${i + 1}`">
+                                </div>
+                                <span class="block text-center my-2.5 ">{{ profile.name }}</span>
                             </div>
                         </li>
                     </ul>

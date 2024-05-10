@@ -3,7 +3,8 @@ import SvgIcon from "~/components/SvgIcon.vue";
 import BaseMenu from "~/components/BaseMenu.vue";
 import { MenuItem } from '@headlessui/vue'
 
-// Composables
+// Composable
+import { useAuthStore } from "~/pinia/auth";
 import { useBreakpoints } from "~/composables/breakpoints";
 
 // Helpers
@@ -19,6 +20,7 @@ import type { NavigationObject } from "~/types/navigation";
 
 // Composables Instances
 const router = useRouter()
+const auth = useAuthStore()
 
 const breakpoints = useBreakpoints();
 
@@ -29,6 +31,15 @@ const onHoverProfile = ref(false)
 // Ref for header
 const profileHeader = ref()
 const isSticky = ref(false)
+const profileLogo = computed(() => {
+    const storedProfile = sessionStorage.getItem('profile')
+
+    if(storedProfile) {
+        return JSON.parse(storedProfile).image
+    }
+
+    return 'https://mir-s3-cdn-cf.behance.net/project_modules/disp/84c20033850498.56ba69ac290ea.png'
+})
 
 function navigateTo(link: NavigationObject) {
     router.push(link.path)
@@ -90,7 +101,7 @@ onMounted(() => {
             <BaseMenu item-container-class="w-40" @mouseover="onHoverProfile = true" @mouseleave="onHoverProfile = false">
                 <div class="bg-transparent p-0 flex flex-row items-center cursor-pointer laptop:mr-4">
                     <img class="w-8 h-8 rounded"
-                        src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/84c20033850498.56ba69ac290ea.png"
+                        :src="profileLogo"
                         alt="Netflix Logo">
                     <SvgIcon v-if="breakpoints.greater('laptop')" :src="ArrowIcon" :height="16" :width="16"
                         class=" stroke-white ml-2.5 duration-300" :class="{'rotate-180': onHoverProfile}" />
