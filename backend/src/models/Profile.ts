@@ -1,12 +1,6 @@
-import { model, Schema, Document } from "mongoose"
+import { model, Schema } from "mongoose"
 
-export interface IProfile extends Document {
-    name: string,
-    image?: string,
-    userId?: string,
-}
-
-const profileSchema = new Schema<IProfile>({
+const profileSchema = new Schema({
     name: {
         type: String,
         index: true,

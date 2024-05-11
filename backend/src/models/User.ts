@@ -1,14 +1,6 @@
-import { model, Schema, Document } from "mongoose"
+import { model, Schema } from "mongoose"
 
-export interface IUser extends Document {
-    email: string
-    password: string
-    token: string
-    createdAt: Date
-    updatedAt: Date | undefined
-}
-
-const userSchema = new Schema<IUser>({
+const userSchema = new Schema({
     email: {
         type: String,
         required: [true, "Email can't be blank"],
