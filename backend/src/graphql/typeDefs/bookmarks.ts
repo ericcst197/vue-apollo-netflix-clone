@@ -4,9 +4,9 @@ const bookmarksTypeDefs = gql`
     # Bookmark object
     type Bookmark {
         id: ID
-        movieId: ID!
+        movieId: String!
         profileId: ID!
-        userId: String!
+        userId: ID!
         createdAt: DateTime
         updatedAt: DateTime
         createdById: String
@@ -14,16 +14,16 @@ const bookmarksTypeDefs = gql`
     }
 
     input BookmarkInput {
-        movieId: ID!
+        movieId: String!
         profileId: ID!
-        userId: String!
+        userId: ID!
     }
 
     input bookmarkFilterInput {
         id: ID
-        movieId: ID
+        movieId: String
         profileId: ID
-        userId: String
+        userId: ID
     }
 
     # Query

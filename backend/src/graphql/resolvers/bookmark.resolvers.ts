@@ -1,9 +1,10 @@
 import { profile } from "console";
 import Bookmark from "../../models/Bookmark"
 import { GraphQLError } from 'graphql';
+import mongoose from "mongoose";
 
 interface BookmarkInput {
-    movieId: string
+    movieId: number
     profileId: string
     userId: string
 }
