@@ -154,9 +154,12 @@ onGetUsersResult(async (param) => {
             )
         } catch (e) {
             alert("Oops, something wrong happened! We are not able to process your request at this moment.")
+        } finally {
+            isLoginLoading.value = false
         }
     } else {
         loginError.value = "email_error"
+        isLoginLoading.value = false
     }
 })
 </script>
@@ -178,7 +181,7 @@ onGetUsersResult(async (param) => {
             :warn="showValidity.password && !inputValidity.password.isValid" theme="dark"
             @focusout="showValidity.password = true" />
         <Button @click="logIn" mode="primary" class="w-full max-w-full p-3 mt-6 mb-3 rounded" content-class="text-lg"
-            :loading="isLoginLoading">
+            :loading="isLoginLoading" :disabled="!inputValidity.isAllValid">
             Sign In
         </Button>
         <div class="flex flex-row text-xs text-[#b3b3b3]">
