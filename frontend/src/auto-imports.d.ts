@@ -55,6 +55,7 @@ declare global {
   const unref: typeof import('vue')['unref']
   const useAttrs: typeof import('vue')['useAttrs']
   const useAuth: typeof import('./composables/authentication')['useAuth']
+  const useBookmark: typeof import('./composables/bookmark')['useBookmark']
   const useBreakpoints: typeof import('./composables/breakpoints')['useBreakpoints']
   const useCssModule: typeof import('vue')['useCssModule']
   const useCssVars: typeof import('vue')['useCssVars']
@@ -129,6 +130,7 @@ declare module 'vue' {
     readonly unref: UnwrapRef<typeof import('vue')['unref']>
     readonly useAttrs: UnwrapRef<typeof import('vue')['useAttrs']>
     readonly useAuth: UnwrapRef<typeof import('./composables/authentication')['useAuth']>
+    readonly useBookmark: UnwrapRef<typeof import('./composables/bookmark')['useBookmark']>
     readonly useBreakpoints: UnwrapRef<typeof import('./composables/breakpoints')['useBreakpoints']>
     readonly useCssModule: UnwrapRef<typeof import('vue')['useCssModule']>
     readonly useCssVars: UnwrapRef<typeof import('vue')['useCssVars']>
@@ -196,6 +198,7 @@ declare module '@vue/runtime-core' {
     readonly unref: UnwrapRef<typeof import('vue')['unref']>
     readonly useAttrs: UnwrapRef<typeof import('vue')['useAttrs']>
     readonly useAuth: UnwrapRef<typeof import('./composables/authentication')['useAuth']>
+    readonly useBookmark: UnwrapRef<typeof import('./composables/bookmark')['useBookmark']>
     readonly useBreakpoints: UnwrapRef<typeof import('./composables/breakpoints')['useBreakpoints']>
     readonly useCssModule: UnwrapRef<typeof import('vue')['useCssModule']>
     readonly useCssVars: UnwrapRef<typeof import('vue')['useCssVars']>
