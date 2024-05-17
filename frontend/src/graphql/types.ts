@@ -33,16 +33,41 @@ export type AuthInput = {
   password: Scalars['String']['input'];
 };
 
+export type Bookmark = {
+  __typename?: 'Bookmark';
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  createdById?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['ID']['output']>;
+  movieId: Scalars['String']['output'];
+  profileId: Scalars['ID']['output'];
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  updatedById?: Maybe<Scalars['String']['output']>;
+  userId: Scalars['ID']['output'];
+};
+
+export type BookmarkInput = {
+  movieId: Scalars['String']['input'];
+  profileId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
+  createBookmark: Bookmark;
   createProfile: Profile;
   createProfiles: Array<Profile>;
   createUser: Scalars['ID']['output'];
+  deleteBookmark: Bookmark;
   deleteProfile: Profile;
   deleteUser: User;
   loginUser: AuthData;
   updateProfile: Profile;
   updateUser: User;
+};
+
+
+export type MutationCreateBookmarkArgs = {
+  input: BookmarkInput;
 };
 
 
@@ -58,6 +83,11 @@ export type MutationCreateProfilesArgs = {
 
 export type MutationCreateUserArgs = {
   input?: InputMaybe<AuthInput>;
+};
+
+
+export type MutationDeleteBookmarkArgs = {
+  input: BookmarkInput;
 };
 
 
@@ -107,10 +137,22 @@ export type ProfileInput = {
 
 export type Query = {
   __typename?: 'Query';
+  bookmark: Bookmark;
+  bookmarks: Array<Bookmark>;
   profile: Profile;
   profiles: Array<Profile>;
   user: User;
   users: Array<User>;
+};
+
+
+export type QueryBookmarkArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryBookmarksArgs = {
+  where?: InputMaybe<BookmarkFilterInput>;
 };
 
 
@@ -149,6 +191,13 @@ export type UserInput = {
   password: Scalars['String']['input'];
 };
 
+export type BookmarkFilterInput = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  movieId?: InputMaybe<Scalars['String']['input']>;
+  profileId?: InputMaybe<Scalars['ID']['input']>;
+  userId?: InputMaybe<Scalars['ID']['input']>;
+};
+
 export type ProfileFilterInput = {
   id?: InputMaybe<Scalars['ID']['input']>;
   userId?: InputMaybe<Scalars['String']['input']>;
@@ -174,6 +223,32 @@ export type LoginUserMutationVariables = Exact<{
 
 
 export type LoginUserMutation = { __typename?: 'Mutation', loginUser: { __typename?: 'AuthData', userId: string, token: string, expiresIn: number, tokenType: string } };
+
+export type GetMovieBookmarksQueryVariables = Exact<{
+  profileId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
+}>;
+
+
+export type GetMovieBookmarksQuery = { __typename?: 'Query', bookmarks: Array<{ __typename?: 'Bookmark', id?: string | null, movieId: string }> };
+
+export type CreateMovieBookmarkMutationVariables = Exact<{
+  movieId: Scalars['String']['input'];
+  profileId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
+}>;
+
+
+export type CreateMovieBookmarkMutation = { __typename?: 'Mutation', createBookmark: { __typename?: 'Bookmark', id?: string | null, movieId: string, profileId: string, userId: string } };
+
+export type DeleteMovieBookmarkMutationVariables = Exact<{
+  movieId: Scalars['String']['input'];
+  profileId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
+}>;
+
+
+export type DeleteMovieBookmarkMutation = { __typename?: 'Mutation', deleteBookmark: { __typename?: 'Bookmark', id?: string | null, movieId: string, profileId: string, userId: string } };
 
 export type GetProfilesQueryVariables = Exact<{
   userId?: InputMaybe<Scalars['String']['input']>;
@@ -284,6 +359,110 @@ export function useLoginUserMutation(options: VueApolloComposable.UseMutationOpt
   return VueApolloComposable.useMutation<LoginUserMutation, LoginUserMutationVariables>(LoginUserDocument, options);
 }
 export type LoginUserMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<LoginUserMutation, LoginUserMutationVariables>;
+export const GetMovieBookmarksDocument = gql`
+    query GetMovieBookmarks($profileId: ID!, $userId: ID!) {
+  bookmarks(where: {profileId: $profileId, userId: $userId}) {
+    id
+    movieId
+  }
+}
+    `;
+
+/**
+ * __useGetMovieBookmarksQuery__
+ *
+ * To run a query within a Vue component, call `useGetMovieBookmarksQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMovieBookmarksQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param variables that will be passed into the query
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useGetMovieBookmarksQuery({
+ *   profileId: // value for 'profileId'
+ *   userId: // value for 'userId'
+ * });
+ */
+export function useGetMovieBookmarksQuery(variables: GetMovieBookmarksQueryVariables | VueCompositionApi.Ref<GetMovieBookmarksQueryVariables> | ReactiveFunction<GetMovieBookmarksQueryVariables>, options: VueApolloComposable.UseQueryOptions<GetMovieBookmarksQuery, GetMovieBookmarksQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetMovieBookmarksQuery, GetMovieBookmarksQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetMovieBookmarksQuery, GetMovieBookmarksQueryVariables>> = {}) {
+  return VueApolloComposable.useQuery<GetMovieBookmarksQuery, GetMovieBookmarksQueryVariables>(GetMovieBookmarksDocument, variables, options);
+}
+export function useGetMovieBookmarksLazyQuery(variables: GetMovieBookmarksQueryVariables | VueCompositionApi.Ref<GetMovieBookmarksQueryVariables> | ReactiveFunction<GetMovieBookmarksQueryVariables>, options: VueApolloComposable.UseQueryOptions<GetMovieBookmarksQuery, GetMovieBookmarksQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetMovieBookmarksQuery, GetMovieBookmarksQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetMovieBookmarksQuery, GetMovieBookmarksQueryVariables>> = {}) {
+  return VueApolloComposable.useLazyQuery<GetMovieBookmarksQuery, GetMovieBookmarksQueryVariables>(GetMovieBookmarksDocument, variables, options);
+}
+export type GetMovieBookmarksQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<GetMovieBookmarksQuery, GetMovieBookmarksQueryVariables>;
+export const CreateMovieBookmarkDocument = gql`
+    mutation CreateMovieBookmark($movieId: String!, $profileId: ID!, $userId: ID!) {
+  createBookmark(
+    input: {movieId: $movieId, profileId: $profileId, userId: $userId}
+  ) {
+    id
+    movieId
+    profileId
+    userId
+  }
+}
+    `;
+
+/**
+ * __useCreateMovieBookmarkMutation__
+ *
+ * To run a mutation, you first call `useCreateMovieBookmarkMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useCreateMovieBookmarkMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useCreateMovieBookmarkMutation({
+ *   variables: {
+ *     movieId: // value for 'movieId'
+ *     profileId: // value for 'profileId'
+ *     userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useCreateMovieBookmarkMutation(options: VueApolloComposable.UseMutationOptions<CreateMovieBookmarkMutation, CreateMovieBookmarkMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<CreateMovieBookmarkMutation, CreateMovieBookmarkMutationVariables>> = {}) {
+  return VueApolloComposable.useMutation<CreateMovieBookmarkMutation, CreateMovieBookmarkMutationVariables>(CreateMovieBookmarkDocument, options);
+}
+export type CreateMovieBookmarkMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<CreateMovieBookmarkMutation, CreateMovieBookmarkMutationVariables>;
+export const DeleteMovieBookmarkDocument = gql`
+    mutation DeleteMovieBookmark($movieId: String!, $profileId: ID!, $userId: ID!) {
+  deleteBookmark(
+    input: {movieId: $movieId, profileId: $profileId, userId: $userId}
+  ) {
+    id
+    movieId
+    profileId
+    userId
+  }
+}
+    `;
+
+/**
+ * __useDeleteMovieBookmarkMutation__
+ *
+ * To run a mutation, you first call `useDeleteMovieBookmarkMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteMovieBookmarkMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useDeleteMovieBookmarkMutation({
+ *   variables: {
+ *     movieId: // value for 'movieId'
+ *     profileId: // value for 'profileId'
+ *     userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useDeleteMovieBookmarkMutation(options: VueApolloComposable.UseMutationOptions<DeleteMovieBookmarkMutation, DeleteMovieBookmarkMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<DeleteMovieBookmarkMutation, DeleteMovieBookmarkMutationVariables>> = {}) {
+  return VueApolloComposable.useMutation<DeleteMovieBookmarkMutation, DeleteMovieBookmarkMutationVariables>(DeleteMovieBookmarkDocument, options);
+}
+export type DeleteMovieBookmarkMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<DeleteMovieBookmarkMutation, DeleteMovieBookmarkMutationVariables>;
 export const GetProfilesDocument = gql`
     query GetProfiles($userId: String) {
   profiles(where: {userId: $userId}) {

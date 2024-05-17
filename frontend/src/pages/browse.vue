@@ -4,6 +4,7 @@ import ProfileFooter from "~/components/footer/ProfileFooter.vue";
 import Button from "~/components/Button.vue";
 import SvgIcon from "~/components/SvgIcon.vue";
 import MovieDialog from "~/components/MovieDialog.vue";
+import MovieCard from "~/components/MovieCard.vue";
 import { VueperSlides, VueperSlide } from "vueperslides"
 
 // Composable
@@ -16,8 +17,9 @@ import YouTubePlayer from 'youtube-player';
 import { formatCamelCaseToSentence, convertImageToBase64 } from "~/helpers/string";
 import { getMovieDetail } from "~/helpers/movie";
 import { useSessionStorage } from '@vueuse/core'
+import { getUserId } from "~/helpers/authentication";
 
-// Icon
+// Icons
 import ChevronRight from "~/assets/icons/chevron-right.svg";
 import ChevronLeft from "~/assets/icons/chevron-left.svg";
 import PlayIcon from "~/assets/icons/play-01.svg";
@@ -124,11 +126,14 @@ const slidesSettings = {
 /*
 * FEATURE: Fetch user profiles (START)
 */
-const { result: profilesResult } = useGetProfilesQuery({
-    userId: auth.data.userId || "661a88fe07f4de9dade293e1"
+const {
+    result: profilesResult,
+    refetch: refetchProfiles
+} = useGetProfilesQuery({
+    userId: auth.data.userId || getUserId()
 })
 
-watch(profilesResult, async () => {
+watchEffect(async () => {
     if(profilesResult.value) {
         const images = [ProfileImage1, ProfileImage2, ProfileImage3, ProfileImage4, ProfileImage5]
         const mapProfiles = await Promise.all(
@@ -303,6 +308,9 @@ onMounted(async() => {
     }
 
     isFetchMovieListLoading.value = false
+    refetchProfiles({
+        userId: auth.data.userId || getUserId()
+    })
 })
 </script>
 
@@ -413,11 +421,8 @@ onMounted(async() => {
 
                             <VueperSlide v-for="(movie, i) in movies[genre]" :key="movie.id">
                                 <template #content>
-                                    <div class="flex flex-col justify-center w-full cursor-pointer overflow-hidden text-center">
-                                        <img :src="imgUrl + movie.backdrop_path" alt="" @click="toggleMovieDialog(movie.id)"
-                                            class="h-full object-cover object-center mx-auto rounded-lg" />
-                                        <p class="text-xs desktop:text-base truncate">{{ movie.title || movie.name }}</p>
-                                    </div>
+                                    <MovieCard :key="movie + '-in-' + genre" :movie="movie" :genre="genre"
+                                        :backdrop-path="movie.backdrop_path" @toggle="toggleMovieDialog(movie.id)" />
                                 </template>
                             </VueperSlide>
                     </VueperSlides>

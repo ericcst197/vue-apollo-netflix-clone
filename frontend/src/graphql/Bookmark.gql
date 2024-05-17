@@ -1,0 +1,52 @@
+query GetMovieBookmarks(
+    $profileId: ID!
+    $userId: ID!
+) {
+    bookmarks(
+        where: {
+            profileId: $profileId
+            userId: $userId
+        }
+    ) {
+        id
+        movieId
+    }
+}
+
+mutation CreateMovieBookmark(
+    $movieId: String!
+    $profileId: ID!
+    $userId: ID!
+) {
+    createBookmark(
+        input: {
+            movieId: $movieId
+            profileId: $profileId
+            userId: $userId
+        }
+    ) {
+        id
+        movieId
+        profileId
+        userId
+    }
+}
+
+mutation DeleteMovieBookmark(
+    $movieId: String!
+    $profileId: ID!
+    $userId: ID!
+) {
+    deleteBookmark(
+        input: {
+            movieId: $movieId
+            profileId: $profileId
+            userId: $userId
+        }
+    ) {
+        id
+        movieId
+        profileId
+        userId
+    }
+}
