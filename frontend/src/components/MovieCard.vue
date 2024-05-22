@@ -99,7 +99,7 @@ watch(bookmarkedMovieResult, () => {
         <div class="relative w-full h-full rounded-lg overflow-hidden cursor-pointer"
             @mouseover="handleOnHover(genre, movie.id as string)" @mouseleave="handleOnLeave()">
             <div class="absolute top-2 right-2 z-20">
-                <Button variant="template" :loading="isBookmarkLoading" @click="toggleBookmark" preventDefault>
+                <Button variant="template" @click="toggleBookmark" preventDefault>
                     <SvgIcon :src="BookmarkIcon" :height="20" :width="20" class="stroke-2"
                         :class="[isBookmarked ? 'fill-red-600 stroke-red-600' : 'fill-none stroke-white']"/>
                 </Button>

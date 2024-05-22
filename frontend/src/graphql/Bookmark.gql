@@ -1,9 +1,11 @@
 query GetMovieBookmarks(
+    $movieId: String
     $profileId: ID!
     $userId: ID!
 ) {
     bookmarks(
         where: {
+            movieId: $movieId
             profileId: $profileId
             userId: $userId
         }

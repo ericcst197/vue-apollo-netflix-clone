@@ -225,6 +225,7 @@ export type LoginUserMutationVariables = Exact<{
 export type LoginUserMutation = { __typename?: 'Mutation', loginUser: { __typename?: 'AuthData', userId: string, token: string, expiresIn: number, tokenType: string } };
 
 export type GetMovieBookmarksQueryVariables = Exact<{
+  movieId?: InputMaybe<Scalars['String']['input']>;
   profileId: Scalars['ID']['input'];
   userId: Scalars['ID']['input'];
 }>;
@@ -360,8 +361,8 @@ export function useLoginUserMutation(options: VueApolloComposable.UseMutationOpt
 }
 export type LoginUserMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<LoginUserMutation, LoginUserMutationVariables>;
 export const GetMovieBookmarksDocument = gql`
-    query GetMovieBookmarks($profileId: ID!, $userId: ID!) {
-  bookmarks(where: {profileId: $profileId, userId: $userId}) {
+    query GetMovieBookmarks($movieId: String, $profileId: ID!, $userId: ID!) {
+  bookmarks(where: {movieId: $movieId, profileId: $profileId, userId: $userId}) {
     id
     movieId
   }
@@ -380,6 +381,7 @@ export const GetMovieBookmarksDocument = gql`
  *
  * @example
  * const { result, loading, error } = useGetMovieBookmarksQuery({
+ *   movieId: // value for 'movieId'
  *   profileId: // value for 'profileId'
  *   userId: // value for 'userId'
  * });

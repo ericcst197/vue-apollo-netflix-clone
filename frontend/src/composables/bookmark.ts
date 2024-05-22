@@ -1,8 +1,9 @@
 import { useQueryLoading } from "@vue/apollo-composable";
 
-import { getUserId, getProfileId } from "~/helpers/authentication"
+import { getUserId ,getProfileId } from "~/helpers/authentication"
 
 import {
+    useGetMovieBookmarksQuery,
     useCreateMovieBookmarkMutation,
     useDeleteMovieBookmarkMutation
 } from "~/graphql/types";
@@ -22,9 +23,36 @@ export function useBookmark(
     const loading = useQueryLoading();
 
     const movieId = ref<string | undefined>( id || undefined );
+    const bookmarkId = ref<string>();
+
     let onToggleCallback: (() => void) | undefined = undefined;
     let onCreateCallback: (() => void) | undefined = undefined;
     let onDeleteCallback: (() => void) | undefined = undefined;
+
+    const {
+        result: bookmarkedMovieResult,
+    } = useGetMovieBookmarksQuery({
+        movieId: id,
+        profileId: profileId.value,
+        userId: userId.value
+    }, () => ({
+        fetchPolicy: "network-only"
+    }))
+
+    watch(bookmarkedMovieResult, () => {
+        const result = bookmarkedMovieResult.value;
+
+        if(result && result.bookmarks.length > 0) {
+            const bookmarkedMovie = result.bookmarks.find((movie) => movie.movieId === id.toString())
+
+            isBookmarked.value = true
+            bookmarkId.value = bookmarkedMovie?.id ?? undefined
+            movieId.value = bookmarkedMovie?.movieId
+        } else {
+            isBookmarked.value = false
+            bookmarkId.value = undefined
+        }
+    })
 
     const { mutate: createBookmark } = useCreateMovieBookmarkMutation({
         variables: undefined,
