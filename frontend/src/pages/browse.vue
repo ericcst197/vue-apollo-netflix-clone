@@ -249,7 +249,7 @@ watch(headerMovie, () => {
         moviePlayer.value = YouTubePlayer(headerMovie.value as HTMLElement, {
             videoId: movieToday.value?.video.clip || movieToday.value?.video.teaser,
             playerVars: {
-                autoplay: 1,
+                autoplay: 0,
                 controls: 0,
                 rel: 0,
                 cc_lang_pref: "en",
@@ -258,6 +258,7 @@ watch(headerMovie, () => {
 
         moviePlayer.value.on('ready', async function () {
             moviePlayer.value.mute()
+            moviePlayer.value.playVideo()
             document.querySelector('#player-1')?.setAttribute('style', 'opacity: 1')
         });
 
