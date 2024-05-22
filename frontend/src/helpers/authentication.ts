@@ -43,23 +43,3 @@ export async function login(email: string, password: string) {
         return Promise.reject(error);
     }
 };
-
-export function getUserId() {
-    const storedUser = localStorage.getItem('netflix-clone-auth')
-
-    if(storedUser) {
-        return auth.data.userId || JSON.parse(storedUser).userId
-    }
-
-    return auth.data.userId;
-};
-
-export function getProfileId() {
-    const storedProfile = sessionStorage.getItem('profile')
-
-    if(storedProfile) {
-        return auth.profile.id || JSON.parse(storedProfile).id
-    }
-
-    return auth.profile.id;
-};

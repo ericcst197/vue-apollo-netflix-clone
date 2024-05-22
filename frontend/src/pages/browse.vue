@@ -17,7 +17,6 @@ import YouTubePlayer from 'youtube-player';
 import { formatCamelCaseToSentence, convertImageToBase64 } from "~/helpers/string";
 import { getMovieDetail } from "~/helpers/movie";
 import { useSessionStorage } from '@vueuse/core'
-import { getUserId } from "~/helpers/authentication";
 
 // Icons
 import ChevronRight from "~/assets/icons/chevron-right.svg";
@@ -54,7 +53,12 @@ interface Profile{
 }
 
 /* STATES: CORE (START) */
-const state = ref<"choose-profile" | "movies">("choose-profile")
+const initialState = computed(() => {
+    const profile = sessionStorage.getItem('profile')
+
+    return profile ? "movies" : "choose-profile"
+})
+const state = ref<"choose-profile" | "movies">(initialState.value)
 
 const profiles = ref<Profile[]>([])
 
@@ -130,7 +134,7 @@ const {
     result: profilesResult,
     refetch: refetchProfiles
 } = useGetProfilesQuery({
-    userId: auth.data.userId || getUserId()
+    userId: auth.data.userId
 })
 
 watchEffect(async () => {
@@ -310,7 +314,7 @@ onMounted(async() => {
 
     isFetchMovieListLoading.value = false
     refetchProfiles({
-        userId: auth.data.userId || getUserId()
+        userId: auth.data.userId
     })
 })
 </script>

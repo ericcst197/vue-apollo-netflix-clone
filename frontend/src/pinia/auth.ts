@@ -24,6 +24,23 @@ export const useAuthStore = defineStore("auth", () => {
     const data = ref<USER_AUTH_DATA>(initialState);
     const profile = ref<USER_PROFILE>(profileState);
 
+    const storedUser = localStorage.getItem('netflix-clone-auth')
+    const storedProfile = sessionStorage.getItem('profile')
+
+    if(storedUser) {
+        data.value = {
+            ...data.value,
+            ...JSON.parse(storedUser)
+        }
+    }
+
+    if(storedProfile) {
+        profile.value = {
+            ...profile.value,
+            ...JSON.parse(storedProfile)
+        }
+    }
+
     const isAuthenticated = computed(
         () =>
             data.value.token.length > 0 &&
@@ -32,6 +49,7 @@ export const useAuthStore = defineStore("auth", () => {
 
     function reset() {
         data.value = initialState;
+        profile.value = profileState;
     }
 
     return { data, profile, isAuthenticated, reset };

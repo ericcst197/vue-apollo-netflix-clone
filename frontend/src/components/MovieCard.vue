@@ -4,9 +4,7 @@ import SvgIcon from "~/components/SvgIcon.vue";
 
 // Composable
 import { useBookmark } from "~/composables/bookmark";
-
-// Helper
-import { getUserId, getProfileId } from "~/helpers/authentication"
+import { useAuthStore } from "~/pinia/auth";
 
 // GraphQL
 import {
@@ -32,6 +30,7 @@ const emit = defineEmits<{
     (e: "toggle"): void
 }>()
 
+const auth = useAuthStore()
 
 const {
     isBookmarked,
@@ -49,8 +48,8 @@ onToggleBookmark(() => {
 
 const imgUrl = ref('https://image.tmdb.org/t/p/original')
 
-const userId = computed(() => getUserId())
-const profileId = computed(() => getProfileId())
+const userId = computed(() => auth.data.userId)
+const profileId = computed(() => auth.profile.id)
 /**
  * Stored hovered movie id
  */

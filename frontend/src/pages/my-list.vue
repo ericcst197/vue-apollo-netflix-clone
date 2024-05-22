@@ -5,10 +5,10 @@ import MovieCard from "~/components/MovieCard.vue";
 
 // Composable
 import { useFetchMoviesStore } from "~/pinia/movie";
+import { useAuthStore } from "~/pinia/auth";
 
 // Helper
 import { getMovieDetail } from "~/helpers/movie";
-import { getUserId, getProfileId } from "~/helpers/authentication"
 
 // GraphQL
 import {
@@ -18,9 +18,9 @@ import {
 // Types
 import type { movie } from "~/types/movie"
 
-const { getMoviesList, moviesList } = useFetchMoviesStore();
-const userId = computed(() => getUserId())
-const profileId = computed(() => getProfileId())
+const auth = useAuthStore()
+const userId = computed(() => auth.data.userId)
+const profileId = computed(() => auth.profile.id)
 
 const bookmarkedMovies = ref<movie[]>([])
 

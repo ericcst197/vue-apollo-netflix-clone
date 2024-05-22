@@ -1,6 +1,5 @@
 import { useQueryLoading } from "@vue/apollo-composable";
-
-import { getUserId ,getProfileId } from "~/helpers/authentication"
+import { useAuthStore } from "~/pinia/auth";
 
 import {
     useGetMovieBookmarksQuery,
@@ -16,10 +15,11 @@ import {
 export function useBookmark(
     id: string,
 ) {
-    const isBookmarked = ref<boolean>(false)
-    const userId = computed(() => getUserId());
-    const profileId = computed(() => getProfileId());
+    const auth = useAuthStore()
+    const userId = computed(() => auth.data.userId);
+    const profileId = computed(() => auth.profile.id);
 
+    const isBookmarked = ref<boolean>(false)
     const loading = useQueryLoading();
 
     const movieId = ref<string | undefined>( id || undefined );

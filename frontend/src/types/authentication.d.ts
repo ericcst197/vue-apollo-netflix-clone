@@ -10,7 +10,7 @@ export interface USER_CREDENTIALS {
 export interface USER_AUTH_DATA {
     isLoading: boolean;
     isFirstLogin: boolean;
-    userId?: string;
+    userId: string;
     token: string;
     accessToken?: string;
     refreshToken?: string;
