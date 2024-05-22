@@ -47,6 +47,8 @@ function navigateTo(link: NavigationObject) {
 
 onMounted(() => {
     window.addEventListener('scroll', () => {
+        if(!profileHeader.value) return
+
         isSticky.value = window.scrollY > profileHeader.value.getBoundingClientRect().height
     });
 })

@@ -11,6 +11,25 @@ const routes: RouteRecordRaw[] = [
         component: () => import("~/pages/home.vue"),
     },
     {
+        name: "browse",
+        path: "/browse",
+        component: () => import("~/layouts/EmptyRouterPage.vue"),
+        children: [
+            {
+                name: "browse-movies",
+                path: "",
+                component: () =>
+                    import("~/pages/browse.vue"),
+            },
+            {
+                name: "browse-my-list",
+                path: "my-list",
+                component: () =>
+                    import("~/pages/my-list.vue"),
+            },
+        ]
+    },
+    {
         name: "login",
         path: "/login",
         component: () => import("~/pages/auth/login.vue"),
@@ -48,10 +67,10 @@ const routes: RouteRecordRaw[] = [
         ]
     },
     {
-        name: "browse",
-        path: "/browse",
-        component: () => import("~/pages/browse.vue"),
-    }
+        name: "not-found",
+        path: "/:path(.*)*",
+        redirect: "/",
+    },
 ]
 
 const router = createRouter({

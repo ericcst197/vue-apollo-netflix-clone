@@ -21,11 +21,11 @@ import BookmarkIcon from "~/assets/icons/bookmark-love-1.svg";
 
 interface Props {
     backdropPath: string
-    genre: string
+    genre?: string
     movie: movie
 }
 
-const props = defineProps<Props>()
+const { backdropPath, genre = '', movie } = defineProps<Props>()
 
 const emit = defineEmits<{
     (e: "bookmarkRemoved", movie: movie): void
@@ -38,7 +38,7 @@ const {
     loading: isBookmarkLoading,
     toggle: toggleBookmark,
     onToggle: onToggleBookmark
-} = useBookmark(props.movie.id.toString())
+} = useBookmark(movie.id.toString())
 
 onToggleBookmark(() => {
     refetchBookmarkedMovie({
@@ -87,7 +87,7 @@ const {
 
 watch(bookmarkedMovieResult, () => {
     if(bookmarkedMovieResult.value) {
-        const bookmarkedMovie = bookmarkedMovieResult.value.bookmarks.find((movie) => movie.movieId === props.movie.id.toString())
+        const bookmarkedMovie = bookmarkedMovieResult.value.bookmarks.find((result) => result.movieId === movie.id.toString())
 
         isBookmarked.value = !!bookmarkedMovie
     }
