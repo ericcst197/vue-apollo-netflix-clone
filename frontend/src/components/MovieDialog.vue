@@ -26,7 +26,6 @@ import PlayIcon from "~/assets/icons/play-01.svg";
 
 // DIALOG STATES (START)
 interface Props {
-    title: string,
     open?: boolean,
     movieToShow: movie,
 }

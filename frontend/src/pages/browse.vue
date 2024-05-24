@@ -437,9 +437,7 @@ onMounted(async() => {
 
             <!-- Movie dialog -->
             <template v-if="movieToShow">
-                <MovieDialog :title="movieToShow.title" :movie-to-show="movieToShow"
-                    :open="isMovieDialogShown" @close="toggleMovieDialog">
-                </MovieDialog>
+                <MovieDialog :movie-to-show="movieToShow" :open="isMovieDialogShown" @close="toggleMovieDialog" />
             </template>
         </div>
     </template>

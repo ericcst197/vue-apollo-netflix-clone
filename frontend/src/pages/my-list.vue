@@ -2,9 +2,9 @@
 import ProfileHeader from "~/components/header/ProfileHeader.vue";
 import ProfileFooter from "~/components/footer/ProfileFooter.vue";
 import MovieCard from "~/components/MovieCard.vue";
+import MovieDialog from "~/components/MovieDialog.vue";
 
 // Composable
-import { useFetchMoviesStore } from "~/pinia/movie";
 import { useAuthStore } from "~/pinia/auth";
 
 // Helper
@@ -61,6 +61,12 @@ function toggleMovieDialog(movieId?: string | number ) {
     isMovieDialogShown.value = !isMovieDialogShown.value
 }
 
+watch(movieIdToShow, async () => {
+    if(movieIdToShow.value) {
+        movieToShow.value = await getMovieDetail(movieIdToShow.value)
+    }
+})
+
 </script>
 
 <template>
@@ -87,10 +93,8 @@ function toggleMovieDialog(movieId?: string | number ) {
         <ProfileFooter class="mt-8" />
 
         <!-- Movie dialog -->
-        <!-- <template v-if="movieToShow">
-            <MovieDialog :title="movieToShow.title" :movie-to-show="movieToShow"
-                :open="isMovieDialogShown" @close="toggleMovieDialog">
-            </MovieDialog>
-        </template> -->
+        <template v-if="movieToShow">
+            <MovieDialog :movie-to-show="movieToShow" :open="isMovieDialogShown" @close="toggleMovieDialog" />
+        </template>
     </div>
 </template>
