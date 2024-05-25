@@ -26,3 +26,9 @@ mutation LoginUser(
         tokenType
     }
 }
+
+mutation LogoutUser($userId: ID!) {
+    logoutUser(ID: $userId) {
+        userId
+    }
+}

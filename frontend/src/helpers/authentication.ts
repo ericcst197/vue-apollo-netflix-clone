@@ -1,7 +1,5 @@
-import { useCreateUserMutation, useLoginUserMutation } from "~/graphql/types";
+import { useCreateUserMutation, useLoginUserMutation, useLogoutUserMutation } from "~/graphql/types";
 import { useAuthStore } from "~/pinia/auth";
-
-const auth = useAuthStore()
 
 const { mutate: createUser } = useCreateUserMutation({
     variables: undefined,
@@ -9,6 +7,11 @@ const { mutate: createUser } = useCreateUserMutation({
 });
 
 const { mutate: loginUser } = useLoginUserMutation({
+    variables: undefined,
+    clientId: 'authClient'
+});
+
+const { mutate: logoutUser } = useLogoutUserMutation({
     variables: undefined,
     clientId: 'authClient'
 });
@@ -43,3 +46,15 @@ export async function login(email: string, password: string) {
         return Promise.reject(error);
     }
 };
+
+export async function logout(userId: string) {
+    try {
+        await logoutUser({
+           userId
+        });
+
+        return Promise.resolve();
+    } catch (error) {
+        return Promise.reject(error);
+    }
+}

@@ -123,7 +123,8 @@ const {
 } = useGetUserRoleAsAnonymousLazyQuery({
     email: credentials.value.email
 }, {
-    fetchPolicy: 'network-only'
+    fetchPolicy: 'network-only',
+    clientId: 'authClient'
 })
 
 onGetUsersResult(async (param) => {

@@ -61,6 +61,7 @@ export type Mutation = {
   deleteProfile: Profile;
   deleteUser: User;
   loginUser: AuthData;
+  logoutUser: AuthData;
   updateProfile: Profile;
   updateUser: User;
 };
@@ -103,6 +104,11 @@ export type MutationDeleteUserArgs = {
 
 export type MutationLoginUserArgs = {
   input?: InputMaybe<AuthInput>;
+};
+
+
+export type MutationLogoutUserArgs = {
+  ID: Scalars['ID']['input'];
 };
 
 
@@ -223,6 +229,13 @@ export type LoginUserMutationVariables = Exact<{
 
 
 export type LoginUserMutation = { __typename?: 'Mutation', loginUser: { __typename?: 'AuthData', userId: string, token: string, expiresIn: number, tokenType: string } };
+
+export type LogoutUserMutationVariables = Exact<{
+  userId: Scalars['ID']['input'];
+}>;
+
+
+export type LogoutUserMutation = { __typename?: 'Mutation', logoutUser: { __typename?: 'AuthData', userId: string } };
 
 export type GetMovieBookmarksQueryVariables = Exact<{
   movieId?: InputMaybe<Scalars['String']['input']>;
@@ -360,6 +373,35 @@ export function useLoginUserMutation(options: VueApolloComposable.UseMutationOpt
   return VueApolloComposable.useMutation<LoginUserMutation, LoginUserMutationVariables>(LoginUserDocument, options);
 }
 export type LoginUserMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<LoginUserMutation, LoginUserMutationVariables>;
+export const LogoutUserDocument = gql`
+    mutation LogoutUser($userId: ID!) {
+  logoutUser(ID: $userId) {
+    userId
+  }
+}
+    `;
+
+/**
+ * __useLogoutUserMutation__
+ *
+ * To run a mutation, you first call `useLogoutUserMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useLogoutUserMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useLogoutUserMutation({
+ *   variables: {
+ *     userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useLogoutUserMutation(options: VueApolloComposable.UseMutationOptions<LogoutUserMutation, LogoutUserMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<LogoutUserMutation, LogoutUserMutationVariables>> = {}) {
+  return VueApolloComposable.useMutation<LogoutUserMutation, LogoutUserMutationVariables>(LogoutUserDocument, options);
+}
+export type LogoutUserMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<LogoutUserMutation, LogoutUserMutationVariables>;
 export const GetMovieBookmarksDocument = gql`
     query GetMovieBookmarks($movieId: String, $profileId: ID!, $userId: ID!) {
   bookmarks(where: {movieId: $movieId, profileId: $profileId, userId: $userId}) {

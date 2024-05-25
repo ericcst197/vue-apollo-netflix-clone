@@ -4,17 +4,14 @@ import { useStorage } from "@vueuse/core";
 import _ from "lodash";
 
 // Composables
-import { useSignUpStore } from "~/pinia/user";
 import { useAuthStore } from "~/pinia/auth";
 
 // Types
 import type { USER_CREDENTIALS, TokenType } from "~/types/authentication";
 
-// COMPOSABLE INSTANCES
-const userAuth = useAuthStore();
-const signUpStore = useSignUpStore();
-
 export function useAuth() {
+    const userAuth = useAuthStore();
+
     async function signUp(
         { email, password }: USER_CREDENTIALS,
         successCallback?: (response: any) => void,
@@ -32,7 +29,7 @@ export function useAuth() {
             .finally(() => {
                 userAuth.data.isFirstLogin = true
             });
-    }
+    };
 
     async function login(
         email: string,
@@ -68,10 +65,31 @@ export function useAuth() {
             .finally(() => {
                 userAuth.data.isLoading = false;
             });
+    };
+
+    async function logout(
+        successCallback?: (response: any) => void,
+        errorCallback?: (error: any) => void
+    ) {
+        userAuth.data.isLoading = true;
+        await auth.logout(userAuth.data.userId)
+            .then(async (response) => {
+                // Reset auth localStorage
+                localStorage.removeItem("netflix-clone-auth");
+                sessionStorage.removeItem("profile");
+                userAuth.reset();
+
+                successCallback && successCallback(response);
+            }).catch((error) => {
+                errorCallback && errorCallback(error);
+            }).finally(() => {
+                userAuth.data.isLoading = false;
+            })
     }
 
     return {
         signUp,
-        login
+        login,
+        logout,
     }
 }

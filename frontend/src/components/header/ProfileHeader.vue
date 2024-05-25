@@ -48,6 +48,14 @@ function navigateTo(link: NavigationObject) {
     router.push(link.path)
 }
 
+async function handleLogout() {
+    await auth.logout(
+        async () => {
+            router.push('/')
+        }
+    )
+}
+
 onMounted(() => {
     window.addEventListener('scroll', () => {
         if(!profileHeader.value) return
@@ -140,7 +148,7 @@ onMounted(() => {
                         </button>
                     </MenuItem>
                     <MenuItem v-slot="{ active }">
-                        <button :class="[
+                        <button @click="handleLogout" :class="[
                             active ? 'bg-[#2c2c2c] ' : '',
                             'w-full bg-[#141414] px-2 py-3 text-white text-left text-sm border-t-2 border-solid border-white',
                         ]" class="text-center hover:underline">
