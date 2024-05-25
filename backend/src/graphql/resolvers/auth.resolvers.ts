@@ -100,6 +100,19 @@ const authResolvers = {
                 tokenType: "Bearer"
             };
         },
+        async logoutUser(_: any, args: Record<string, any>) {
+            // Delete the token
+            const user = await User.findOne({ _id: args.ID });
+
+            if(user) {
+                user.token = undefined
+                user.save()
+                
+                return {
+                    userId: user._id,
+                }
+            }
+        }
     }
 }
 

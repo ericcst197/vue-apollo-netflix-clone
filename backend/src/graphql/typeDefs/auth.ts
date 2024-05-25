@@ -40,6 +40,7 @@ const authTypeDefs = gql`
     type Mutation {
         createUser(input: AuthInput): ID!
         loginUser(input: AuthInput): AuthData!
+        logoutUser(ID: ID!): AuthData!
     }
 `
 
