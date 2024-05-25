@@ -4,11 +4,14 @@ import {
     type RouteRecordRaw,
 } from "vue-router";
 
+import { useAuthStore } from "~/pinia/auth";
+
 const routes: RouteRecordRaw[] = [
     {
         name: "home",
         path: "/",
         component: () => import("~/pages/home.vue"),
+        meta: { noAuthOnly: true },
     },
     {
         name: "browse",
@@ -27,12 +30,15 @@ const routes: RouteRecordRaw[] = [
                 component: () =>
                     import("~/pages/my-list.vue"),
             },
-        ]
+        ],
+        redirect: "/browse",
+        meta: { requiresAuth: true }
     },
     {
         name: "login",
         path: "/login",
         component: () => import("~/pages/auth/login.vue"),
+        meta: { noAuthOnly: true },
     },
     {
         name: "signup",
@@ -51,7 +57,8 @@ const routes: RouteRecordRaw[] = [
                 component: () =>
                     import("~/pages/auth/regform.vue"),
             },
-        ]
+        ],
+        meta: { noAuthOnly: true },
     },
     {
         name: "setup-new-profiles",
@@ -64,7 +71,8 @@ const routes: RouteRecordRaw[] = [
                 component: () =>
                     import("~/pages/simpleSetup.vue"),
             },
-        ]
+        ],
+        meta: { noAuthOnly: true },
     },
     {
         name: "not-found",
@@ -81,7 +89,6 @@ const router = createRouter({
         // Exists when Browser's back/forward pressed
         if (savedPosition) {
             return savedPosition;
-            // For anchors
         }
 
         if (to.hash) {
@@ -96,5 +103,23 @@ const router = createRouter({
         return { top: 0 };
     },
 });
+
+router.beforeEach(async (to, from) => {
+    const authStore = useAuthStore();
+
+    if (to.meta.requiresAuth && !authStore.isAuthenticated && !from.path.includes("login")) {
+        return {
+            path: '/login'
+        }
+    }
+
+    if (to.meta.noAuthOnly && authStore.isAuthenticated) {
+        return {
+            path: "/browse",
+        };
+    }
+
+    return true;
+})
 
 export default router;
