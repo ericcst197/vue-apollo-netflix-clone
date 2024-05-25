@@ -4,7 +4,7 @@ import BaseMenu from "~/components/BaseMenu.vue";
 import { MenuItem } from '@headlessui/vue'
 
 // Composable
-import { useAuthStore } from "~/pinia/auth";
+import { useAuth } from "~/composables/authentication"
 import { useBreakpoints } from "~/composables/breakpoints";
 
 // Helpers
@@ -14,13 +14,16 @@ import { navlinks } from "~/router/config";
 import SearchIcon from "~/assets/icons/search-02.svg";
 import NotificationIcon from "~/assets/icons/notification-02.svg";
 import ArrowIcon from "~/assets/icons/triangle-down.svg";
+import HelpCircleIcon from "~/assets/icons/help-circle-01.svg";
+import UserIcon from "~/assets/icons/user-02.svg";
+import EditIcon from "~/assets/icons/pencil-icon.svg"
 
 //Types
 import type { NavigationObject } from "~/types/navigation";
 
 // Composables Instances
 const router = useRouter()
-const auth = useAuthStore()
+const auth = useAuth()
 
 const breakpoints = useBreakpoints();
 
@@ -112,25 +115,36 @@ onMounted(() => {
                     <MenuItem v-slot="{ active }">
                         <button :class="[
                             active ? 'bg-[#2c2c2c] ' : '',
-                            'w-full bg-[#141414] px-2 py-2 text-[#b3b3b3] text-left text-sm',
-                        ]">
-                            Manage Profiles
+                            'w-full bg-[#141414] px-2 py-2 text-left text-sm',
+                        ]" class="flex gap-x-2 px-2">
+                            <SvgIcon :src="EditIcon" :height="20" :width="20" class="stroke-2 stroke-[#b3b3b3] fill-[#b3b3b3]" />
+                            <span class="inline text-white">Manage Profiles</span>
                         </button>
                     </MenuItem>
                     <MenuItem v-slot="{ active }">
                         <button :class="[
                             active ? 'bg-[#2c2c2c] ' : '',
-                            'w-full bg-[#141414] px-2 py-2 text-[#b3b3b3] text-left text-sm',
-                        ]">
-                            Account
+                            'w-full bg-[#141414] px-2 py-2 text-left text-sm',
+                        ]" class="flex gap-x-2 px-2">
+                            <SvgIcon :src="UserIcon" :height="20" :width="20" class="stroke-1 stroke-[#b3b3b3] fill-[#b3b3b3]" />
+                            <span class="inline text-white">Account</span>
                         </button>
                     </MenuItem>
                     <MenuItem v-slot="{ active }">
                         <button :class="[
                             active ? 'bg-[#2c2c2c] ' : '',
-                            'w-full bg-[#141414] px-2 py-2 text-[#b3b3b3] text-left text-sm',
-                        ]">
-                            Help Center
+                            'w-full bg-[#141414] px-2 py-2 text-left text-sm',
+                        ]" class="flex gap-x-2 px-2">
+                            <SvgIcon :src="HelpCircleIcon" :height="20" :width="20" class="stroke-2 stroke-[#b3b3b3] fill-[#b3b3b3]" />
+                            <span class="inline text-white">Help Center</span>
+                        </button>
+                    </MenuItem>
+                    <MenuItem v-slot="{ active }">
+                        <button :class="[
+                            active ? 'bg-[#2c2c2c] ' : '',
+                            'w-full bg-[#141414] px-2 py-3 text-white text-left text-sm border-t-2 border-solid border-white',
+                        ]" class="text-center hover:underline">
+                            Sign out
                         </button>
                     </MenuItem>
                 </template>
