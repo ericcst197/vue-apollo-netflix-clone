@@ -31,8 +31,8 @@ interface Config {
 const getConfig = (): ENV => {
 	return {
 		NODE_ENV: process.env.NODE_ENV,
-		PORT: process.env.APP_PORT
-			? parseInt(process.env.VUE_APP_PORT)
+		PORT: process.env.PORT
+			? parseInt(process.env.PORT)
 			: undefined,
 		MONGODB_PASSWORD: process.env.MONGODB_PASSWORD,
 		MONGODB: process.env.MONGODB_CONNECTION_STRING,
