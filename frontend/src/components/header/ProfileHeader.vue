@@ -121,7 +121,7 @@ onMounted(() => {
                 </div>
                 <template #items>
                     <MenuItem v-slot="{ active }">
-                        <button :class="[
+                        <button @click="router.push('/profiles/manage')" :class="[
                             active ? 'bg-[#2c2c2c] ' : '',
                             'w-full bg-[#141414] px-2 py-2 text-left text-sm',
                         ]" class="flex gap-x-2 px-2">
