@@ -18,6 +18,7 @@ interface Props {
     theme?: 'light' | 'dark' | 'dark-2',
     hasClicked?: boolean,
     borderStyle?: string,
+    inputStyle?: string,
 }
 
 const { id, type = "text", label = "", placeholder, helperText = "", required, disabled = false, warn = false, modelValue, maxLength, theme = "dark", hasClicked, borderStyle } = defineProps<Props>()
@@ -85,7 +86,7 @@ const handleInput = ($event) => {
                     @focusout="onUnFocus" :disabled="disabled" :placeholder="placeholder || ' '" :required="required"
                     :maxlength="maxLength" autocomplete="off"
                     class="block px-2.5 pb-2.5 pt-5 w-full text-sm bg-transparent appearance-none focus:outline-none focus:ring-0 peer"
-                    :class="{ 'border-0 border-b-2 border-orange-500': warn, 'focus:bg-[#454545]': theme.includes('dark') }" />
+                    :class="[{ 'border-0 border-b-2 border-orange-500': warn, 'focus:bg-[#454545]': theme.includes('dark') }, inputStyle]" />
                 <label :for="id"
                     class="absolute text-sm duration-300 transform -translate-y-4 scale-90 top-4 z-10 origin-[0] left-2.5
                     peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-90 peer-focus:-translate-y-4">

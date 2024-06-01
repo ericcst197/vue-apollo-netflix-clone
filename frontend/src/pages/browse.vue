@@ -444,21 +444,6 @@ onMounted(async() => {
 </template>
 
 <style scoped>
-.animate-profile {
-    animation: animateProfileGate 0.45s forwards
-}
-
-@keyframes animateProfileGate {
-    from {
-        opacity: 0;
-        transform: scale(1.1);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
 .video-played-logo {
     animation: videoPlayedLogo 1300ms 3000ms forwards;
 }
