@@ -285,6 +285,15 @@ export type CreateProfilesMutationVariables = Exact<{
 
 export type CreateProfilesMutation = { __typename?: 'Mutation', createProfiles: Array<{ __typename?: 'Profile', id?: string | null, name: string, image?: string | null, userId: string }> };
 
+export type UpdateProfileMutationVariables = Exact<{
+  profileId: Scalars['ID']['input'];
+  name: Scalars['String']['input'];
+  userId: Scalars['String']['input'];
+}>;
+
+
+export type UpdateProfileMutation = { __typename?: 'Mutation', updateProfile: { __typename?: 'Profile', id?: string | null, name: string, image?: string | null, userId: string } };
+
 export type UserFragmentFragment = { __typename?: 'User', id?: string | null, email: string, token?: string | null, createdAt?: any | null, updatedAt?: any | null, createdById?: string | null, updatedById?: string | null };
 
 export type GetUserQueryVariables = Exact<{
@@ -603,6 +612,40 @@ export function useCreateProfilesMutation(options: VueApolloComposable.UseMutati
   return VueApolloComposable.useMutation<CreateProfilesMutation, CreateProfilesMutationVariables>(CreateProfilesDocument, options);
 }
 export type CreateProfilesMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<CreateProfilesMutation, CreateProfilesMutationVariables>;
+export const UpdateProfileDocument = gql`
+    mutation UpdateProfile($profileId: ID!, $name: String!, $userId: String!) {
+  updateProfile(id: $profileId, input: {name: $name, userId: $userId}) {
+    id
+    name
+    image
+    userId
+  }
+}
+    `;
+
+/**
+ * __useUpdateProfileMutation__
+ *
+ * To run a mutation, you first call `useUpdateProfileMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateProfileMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useUpdateProfileMutation({
+ *   variables: {
+ *     profileId: // value for 'profileId'
+ *     name: // value for 'name'
+ *     userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useUpdateProfileMutation(options: VueApolloComposable.UseMutationOptions<UpdateProfileMutation, UpdateProfileMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<UpdateProfileMutation, UpdateProfileMutationVariables>> = {}) {
+  return VueApolloComposable.useMutation<UpdateProfileMutation, UpdateProfileMutationVariables>(UpdateProfileDocument, options);
+}
+export type UpdateProfileMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<UpdateProfileMutation, UpdateProfileMutationVariables>;
 export const GetUserDocument = gql`
     query GetUser($id: ID!) {
   user(ID: $id) {

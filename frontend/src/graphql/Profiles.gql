@@ -23,3 +23,22 @@ mutation CreateProfiles($input: [ProfileInput!]!) {
         userId
     }
 }
+
+mutation UpdateProfile(
+    $profileId: ID!
+    $name: String!
+    $userId: String!
+) {
+    updateProfile(
+        id: $profileId,
+        input: {
+            name: $name,
+            userId: $userId
+        }
+    ) {
+        id
+        name
+        image
+        userId
+    }
+}
