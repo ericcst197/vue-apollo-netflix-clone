@@ -71,6 +71,10 @@ const passwordBorderStyle = computed(() => {
 
 async function signUp() {
     trySignUp.value = true
+
+    // Check if inputs are valid before sign up process
+    if(!validity.value.email.isValid || !validity.value.password.isValid) return
+
     signUpStore.user = {
         ...signUpStore.user,
         email: email.value,
