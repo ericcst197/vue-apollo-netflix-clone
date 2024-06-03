@@ -21,7 +21,7 @@ import chalk from "chalk";
 
 const app = express();
 const httpServer = http.createServer(app);
-const port = ProcessENV.PORT || 8000;
+const port = ProcessENV.PORT || 8080;
 
 const schema = makeExecutableSchema({
 	typeDefs,
