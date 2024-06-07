@@ -7,7 +7,9 @@
         "preview": "vite preview --port 4173",
         "type-check": "vue-tsc --noEmit",
         "lint": "eslint .",
-        "codegen": "cross-env DOTENV_CONFIG_PATH=.env graphql-codegen --config ./codegen.yml --require dotenv/config"
+        "codegen": "cross-env DOTENV_CONFIG_PATH=.env graphql-codegen --config ./codegen.yml --require dotenv/config",
+        "build-staging": "NODE_OPTIONS=--max-old-space-size=8192 vite build --mode staging",
+        "build-production": "NODE_OPTIONS=--max-old-space-size=8192 vite build --mode production"
     },
     "dependencies": {
         "@apollo/client": "^3.8.8",

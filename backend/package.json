@@ -5,8 +5,9 @@
   "main": "app.ts",
   "scripts": {
     "compile": "rimraf dist && tsc",
-    "start": "nodemon dist/app.js",
-    "dev": "concurrently \"pnpm tsc -w\"  pnpm:start"
+    "serve": "nodemon dist/app.js",
+    "dev": "concurrently \"pnpm tsc -w\" pnpm:serve",
+    "start": "pnpm compile && node dist/app.js"
   },
   "keywords": [],
   "author": "",
