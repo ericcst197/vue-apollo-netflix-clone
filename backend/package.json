@@ -7,10 +7,10 @@
     "compile": "rimraf dist && tsc",
     "serve": "nodemon dist/app.js",
     "dev": "concurrently \"pnpm tsc -w\" pnpm:serve",
-    "start": "pnpm compile && node dist/app.js"
+    "start": "node dist/app.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "", 
   "license": "ISC",
   "devDependencies": {
     "@types/bcrypt": "^5.0.1",
