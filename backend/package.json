@@ -7,6 +7,7 @@
     "compile": "rimraf dist && tsc",
     "serve": "nodemon dist/app.js",
     "dev": "concurrently \"pnpm tsc -w\" pnpm:serve",
+    "build": "tsc",
     "start": "node dist/app.js"
   },
   "keywords": [],
