@@ -19,6 +19,7 @@ import moment from 'moment';
 import type { movie } from "~/types/movie"
 
 // Icons
+import CloseIcon from "~/assets/icons/close-01.svg"
 import SoundOnIcon from "~/assets/icons/sound-on.svg";
 import SoundOffIcon from "~/assets/icons/sound-off.svg";
 import ReplayIcon from "~/assets/icons/replay-icon.svg";
@@ -147,8 +148,12 @@ watch(isMovieShownPlayed, () => {
                         enter-to="opacity-100 scale-100" leave="duration-200 ease-in" leave-from="opacity-100 scale-100"
                         leave-to="opacity-0 scale-95">
                         <DialogPanel
-                            class="w-5/6 max-w-4xl min-h-screen transform overflow-hidden rounded-2xl bg-[#181818] text-white text-left align-middle shadow-xl transition-all">
+                            class="w-full max-w-4xl min-h-screen transform overflow-hidden rounded-2xl bg-[#181818] text-white text-left align-middle shadow-xl transition-all">
                             <div class="relative w-full h-[45vw] desktop:h-[35vw] transition-opacity duration-500">
+                                <div @click="emits('close')"
+                                    class="z-10 absolute top-4 right-4 flex items-center justify-center h-10 w-10 rounded-full bg-[#181818] cursor-pointer">
+                                    <SvgIcon :src="CloseIcon" :height="20" :width="20" />
+                                </div>
                                 <img :key="movieShownComponentKey"
                                     :src="movieToShow.image ? imgUrl + movieToShow.image : ''"
                                     class="absolute inset-0 transition-opacity duration-500"
