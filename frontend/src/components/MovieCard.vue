@@ -97,7 +97,7 @@ watch(bookmarkedMovieResult, () => {
     <div class="flex flex-col justify-center w-full overflow-hidden text-center">
         <div class="relative w-full h-full rounded-lg overflow-hidden cursor-pointer"
             @mouseover="handleOnHover(genre, movie.id as string)" @mouseleave="handleOnLeave()">
-            <div class="absolute top-2 right-2 z-10">
+            <div class="absolute top-0 right-0 z-10">
                 <Button variant="template" @click="toggleBookmark" preventDefault>
                     <SvgIcon :src="BookmarkIcon" :height="20" :width="20" class="stroke-2"
                         :class="[isBookmarked ? 'fill-red-600 stroke-red-600' : 'fill-none stroke-white']"/>
@@ -108,7 +108,7 @@ watch(bookmarkedMovieResult, () => {
                 class="absolute inset-0 flex justify-center items-center bg-black/40">
                 <a class="text-xs hover:underline">Show Details</a>
             </div>
-            <img :src="imgUrl + backdropPath" alt="" class="h-full object-cover object-center mx-auto " />
+            <img :src="imgUrl + backdropPath" alt="" class="h-20 tablet:h-full object-cover object-center mx-auto " />
         </div>
         <p class="text-xs desktop:text-base truncate">{{ movie.title }}</p>
     </div>

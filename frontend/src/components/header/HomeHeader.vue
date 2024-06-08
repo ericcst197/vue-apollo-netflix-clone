@@ -29,9 +29,9 @@ const router = useRouter()
             <LogoMark id="logo" logo-class="w-[90px] h-8" class="flex-grow desktop:flex-grow-0" />
 
             <div class="flex flex-row p-[3px] items-center">
-                <div class="relative flex flex-row items-center h-8 w-auto bg-zinc-900 rounded border border-zinc-500">
+                <div class="relative flex flex-row items-center h-8 w-fit bg-zinc-900 rounded border border-zinc-500">
                     <SvgIcon :src="NetworkIcon" class="absolute left-3 right-auto stroke-2 stroke-white" />
-                    <select name="language" class="z-10 w-0 tablet:w-full font-normal px-8 tablet:px-10 py-1 outline-white rounded bg-transparent text-white">
+                    <select name="language" class="z-10 mx-auto tablet:w-full font-normal px-8 tablet:px-10 py-1 outline-white rounded bg-transparent text-white">
                         <option value="my-en">English</option>
                         <option value="my">Bahasa Melayu</option>
                     </select>
