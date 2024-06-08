@@ -45,7 +45,13 @@
 
 ### Live Site Demo
 
-Demo: [Link](https://vue-netflix-ericcst.vercel.app/)
+- Demo: [Link](https://vue-netflix-ericcst.vercel.app/)
+
+You can sign up with any account you like or sign in with the demo account below:
+
+- Demo Account (sign-in): demo1@example.com 
+
+- Password: 1234Demo
 
 ### 📸 Screenshots <a id="screenshots"></a>
 
