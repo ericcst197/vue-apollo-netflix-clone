@@ -55,55 +55,39 @@ You can sign up with any account you like or sign in with the demo account below
 
 ### 📸 Screenshots <a id="screenshots"></a>
 
-Homepage
-![1 - homepage-1](https://github.com/ericcst197/vue-apollo-netflix-clone/assets/90197574/22921c07-c5a9-4bee-8ea7-30bba41fc588)
-
-![2 - homepage-2](https://github.com/ericcst197/vue-apollo-netflix-clone/assets/90197574/bd400ab1-0c89-48c8-b1dd-e1ab734ea2c6)
-
-![3 - homepage-3](https://github.com/ericcst197/vue-apollo-netflix-clone/assets/90197574/f2d06068-a10b-4bd4-b0e0-da21157c3636)
-
-Register (Invalid Email)
-![4- register-invalid-email](https://github.com/ericcst197/vue-apollo-netflix-clone/assets/90197574/1b9dff3a-ff89-4e91-984b-17c76b4eb4f7)
-
-Register (Valid Email)
-![5 - register-valid-email](https://github.com/ericcst197/vue-apollo-netflix-clone/assets/90197574/70bb3872-7461-4cd3-8b91-6cf3133b97ee)
-
-Register (Invalid password)
-![7- register-invalid-1](https://github.com/ericcst197/vue-apollo-netflix-clone/assets/90197574/8f18b8f3-bf3d-4da5-8eb6-d2222c267029)
-
-![8 - register-invalid-2](https://github.com/ericcst197/vue-apollo-netflix-clone/assets/90197574/61e49231-f592-454d-8a56-54d9fdd3d4e8)
-
-Register (Valid password)
-![9 - register-valid](https://github.com/ericcst197/vue-apollo-netflix-clone/assets/90197574/6d4cfbe5-9fcc-48c9-afc2-f320511c8a05)
-
-Create multiple profiles in sign-up process
-![10 - profiles-before](https://github.com/ericcst197/vue-apollo-netflix-clone/assets/90197574/18f985ec-4b18-48fe-a26b-67c86d279ebd)
-
-Choose profiles
-![11 - profiles-after](https://github.com/ericcst197/vue-apollo-netflix-clone/assets/90197574/59016b24-4dc9-4ff4-bdf1-97bc9ca87675)
-
-Homepage
-![12 - homepage-1](https://github.com/ericcst197/vue-apollo-netflix-clone/assets/90197574/e67cb80b-c4d4-4583-8ff6-2ccabe23f60e)
-
-![14 - homepage -2](https://github.com/ericcst197/vue-apollo-netflix-clone/assets/90197574/2d77cadf-1619-4bd3-8da9-2a392fa4acd6)
-
-Movie Dialog
-![15 - homepage 3 movie dialog](https://github.com/ericcst197/vue-apollo-netflix-clone/assets/90197574/e093a2ec-4f3f-42f5-860a-de53e56bac30)
-
-Bookmark movie
-![16 - bookmark-1](https://github.com/ericcst197/vue-apollo-netflix-clone/assets/90197574/418bafff-d05a-4563-adb4-4c7fae3b5cac)
-
-![17 - bookmark-2](https://github.com/ericcst197/vue-apollo-netflix-clone/assets/90197574/294718fa-74e8-4789-a4bb-95557c9e190d)
-
-Change profile (no movie bookmarked in a different profile)
-![18 - change profile (1)](https://github.com/ericcst197/vue-apollo-netflix-clone/assets/90197574/807771ab-f60e-4a78-8df7-08ac3b13c879)
-
-![19 - change profile (2)](https://github.com/ericcst197/vue-apollo-netflix-clone/assets/90197574/6caa03b0-b19d-4907-bf36-066ef70b328c)
-
-Edit profile name
-![20 - edit profile name - 1](https://github.com/ericcst197/vue-apollo-netflix-clone/assets/90197574/563617bf-6387-4d26-b41b-a5e363385840)
-
-![21 - edit profile - 2](https://github.com/ericcst197/vue-apollo-netflix-clone/assets/90197574/188c02e5-9e63-433b-94cc-6702898d23a4)
+<div align="center">
+  <p align="left">Home Page</p>
+    <img src="./screenhots/1%20-%20homepage-1.png" alt="Logo" width="100%" height="100%">
+    <img src="./screenhots/2%20-%20homepage-2.png" alt="Logo" width="100%" height="100%">
+    <img src="./screenhots/3%20-%20homepage-3.png" alt="Logo" width="100%" height="100%">
+  <p align="left">Register (Invalid Email)</p>
+    <img src="./screenhots/4%20-%20register-invalid-email.png" alt="Logo" width="100%" height="100%">
+  <p align="left">Register (Valid Email)</p>
+    <img src="./screenhots/5%20-%20register-valid-email.png" alt="Logo" width="100%" height="100%">
+  <p align="left">Register (Invalid password)</p>
+    <img src="./screenhots/7%20-%20register-invalid-1.png" alt="Logo" width="100%" height="100%">
+    <img src="./screenhots/8%20-%20register-invalid-2.png" alt="Logo" width="100%" height="100%">
+  <p align="left">Register (Valid password)</p>
+    <img src="./screenhots/9%20-%20register-valid.png" alt="Logo" width="100%" height="100%">
+  <p align="left">Create multiple profiles in sign-up process</p>
+    <img src="./screenhots/10%20-%20profiles-before.png" alt="Logo" width="100%" height="100%">
+  <p align="left">Choose profiles</p>
+    <img src="./screenhots/11%20-%20profiles-after.png" alt="Logo" width="100%" height="100%">
+  <p align="left">Homepage</p>
+    <img src="./screenhots/12%20-%20homepage-1.png" alt="Logo" width="100%" height="100%">
+    <img src="./screenhots/13%20-%20homepage-2.png" alt="Logo" width="100%" height="100%">
+  <p align="left">Movie Dialog</p>
+    <img src="./screenhots/14%20-%20homepage%203%20movie%20dialog.png" alt="Logo" width="100%" height="100%">
+  <p align="left">Bookmark movie</p>
+    <img src="./screenhots/15%20-%20bookmark-1.png" alt="Logo" width="100%" height="100%">
+    <img src="./screenhots/16%20-%20bookmark-2.png" alt="Logo" width="100%" height="100%">
+  <p align="left">Change profile (no movie bookmarked in a different profile)</p>
+    <img src="./screenhots/17%20-%20change%20profile-1.png" alt="Logo" width="100%" height="100%">
+    <img src="./screenhots/18%20-%20change%20profile-2.png" alt="Logo" width="100%" height="100%">
+  <p align="left">Edit profile name</p>
+    <img src="./screenhots/19%20-%20edit profile%20name-1.png" alt="Logo" width="100%" height="100%">
+    <img src="./screenhots/20%20-%20edit profile-2.png" alt="Logo" width="100%" height="100%">
+</div>
 
 ## Tech Stack
 
