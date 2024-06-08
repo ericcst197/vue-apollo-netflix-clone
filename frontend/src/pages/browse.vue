@@ -247,10 +247,6 @@ function toggleMovieDialog(movieId?: string | number ) {
 * Movie Dialog (END)
 */
 
-function isMobile() {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
- }
-
 /* WATCHER */
 watch(headerMovie, () => {
     if(headerMovie.value) {
@@ -417,45 +413,23 @@ onMounted(async() => {
             <div class="relative bg-transparent text-white min-h-[1000px] border-box pb-12">
                 <div v-for="(genre, index) in genres" class="my-[3vw]">
                     <h3 class="font-medium text-xs laptop:text-[1.4vw] min-w-[6em] w-fit text-[#e5e5e5] mx-[4%] mb-[0.75em]">{{ formatCamelCaseToSentence(genre) }}</h3>
-                    <template v-if="isMobile()">
-                        <VueperSlides class="relative no-shadow px-4 laptop:px-16" :breakpoints="slidesSettings"
-                             :gap="1" :bullets="false" touchable slide-multiple>
-                                <template #arrow-left>
-                                    <img :src="ChevronLeft" class="stroke-[3px] stroke-white h-4 w-4 tablet:h-6 tablet:w-6 mb-4 laptop:h-10 laptop:w-10 desktop:mb-6"/>
-                                </template>
+                    <VueperSlides class="relative no-shadow px-4 laptop:px-16" :breakpoints="slidesSettings"
+                        slide-multiple :gap="1" :bullets="false" :touchable="false">
+                        <template #arrow-left>
+                            <img :src="ChevronLeft" class="stroke-[3px] stroke-white h-4 w-4 tablet:h-6 tablet:w-6 mb-4 laptop:h-10 laptop:w-10 desktop:mb-6"/>
+                        </template>
 
-                                <template #arrow-right>
-                                    <img :src="ChevronRight" class="stroke-[3px] stroke-white h-4 w-4 tablet:h-6 tablet:w-6 mb-4 laptop:h-10 laptop:w-10 desktop:mb-6"/>
-                                </template>
+                        <template #arrow-right>
+                            <img :src="ChevronRight" class="stroke-[3px] stroke-white h-4 w-4 tablet:h-6 tablet:w-6 mb-4 laptop:h-10 laptop:w-10 desktop:mb-6"/>
+                        </template>
 
-                                <VueperSlide v-for="(movie, i) in movies[genre]" :key="movie.id">
-                                    <template #content>
-                                        <MovieCard :key="movie + '-in-' + genre" :movie="movie" :genre="genre"
-                                            :backdrop-path="movie.backdrop_path" @toggle="toggleMovieDialog(movie.id)" />
-                                    </template>
-                                </VueperSlide>
-                        </VueperSlides>
-                    </template>
-                    <template v-else>
-                        <VueperSlides class="relative no-shadow px-4 laptop:px-16" :breakpoints="slidesSettings"
-                            :visible-slides="5" :slide-ratio="1/8" :arrows-outside="true" slide-multiple :gap="1"
-                            :bullets="false" :touchable="false">
-                                <template #arrow-left>
-                                    <img :src="ChevronLeft" class="stroke-[3px] stroke-white h-4 w-4 tablet:h-6 tablet:w-6 mb-4 laptop:h-10 laptop:w-10 desktop:mb-6"/>
-                                </template>
-
-                                <template #arrow-right>
-                                    <img :src="ChevronRight" class="stroke-[3px] stroke-white h-4 w-4 tablet:h-6 tablet:w-6 mb-4 laptop:h-10 laptop:w-10 desktop:mb-6"/>
-                                </template>
-
-                                <VueperSlide v-for="(movie, i) in movies[genre]" :key="movie.id">
-                                    <template #content>
-                                        <MovieCard :key="movie + '-in-' + genre" :movie="movie" :genre="genre"
-                                            :backdrop-path="movie.backdrop_path" @toggle="toggleMovieDialog(movie.id)" />
-                                    </template>
-                                </VueperSlide>
-                        </VueperSlides>
-                    </template>
+                        <VueperSlide v-for="(movie, i) in movies[genre]" :key="movie.id">
+                            <template #content>
+                                <MovieCard :key="movie + '-in-' + genre" :movie="movie" :genre="genre"
+                                    :backdrop-path="movie.backdrop_path" @toggle="toggleMovieDialog(movie.id)" />
+                            </template>
+                        </VueperSlide>
+                    </VueperSlides>
                 </div>
             </div>
             <ProfileFooter />
