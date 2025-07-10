@@ -42,36 +42,36 @@
 
 <div align="center">
   <p align="left">Home Page</p>
-    <img src="./screenhots/1%20-%20homepage-1.png" alt="Logo" width="100%" height="100%">
-    <img src="./screenhots/2%20-%20homepage-2.png" alt="Logo" width="100%" height="100%">
-    <img src="./screenhots/3%20-%20homepage-3.png" alt="Logo" width="100%" height="100%">
+    <img src="./screenhots/1%20-%20homepage-1.png" alt="Logo" width="100%" style="object-fit: contain;">
+    <img src="./screenhots/2%20-%20homepage-2.png" alt="Logo" width="100%" style="object-fit: contain;">
+    <img src="./screenhots/3%20-%20homepage-3.png" alt="Logo" width="100%" style="object-fit: contain;">
   <p align="left">Register (Invalid Email)</p>
-    <img src="./screenhots/4%20-%20register-invalid-email.png" alt="Logo" width="100%" height="100%">
+    <img src="./screenhots/4%20-%20register-invalid-email.png" alt="Logo" width="100%" style="object-fit: contain;">
   <p align="left">Register (Valid Email)</p>
-    <img src="./screenhots/5%20-%20register-valid-email.png" alt="Logo" width="100%" height="100%">
+    <img src="./screenhots/5%20-%20register-valid-email.png" alt="Logo" width="100%" style="object-fit: contain;">
   <p align="left">Register (Invalid password)</p>
-    <img src="./screenhots/7%20-%20register-invalid-1.png" alt="Logo" width="100%" height="100%">
-    <img src="./screenhots/8%20-%20register-invalid-2.png" alt="Logo" width="100%" height="100%">
+    <img src="./screenhots/7%20-%20register-invalid-1.png" alt="Logo" width="100%" style="object-fit: contain;">
+    <img src="./screenhots/8%20-%20register-invalid-2.png" alt="Logo" width="100%" style="object-fit: contain;">
   <p align="left">Register (Valid password)</p>
-    <img src="./screenhots/9%20-%20register-valid.png" alt="Logo" width="100%" height="100%">
+    <img src="./screenhots/9%20-%20register-valid.png" alt="Logo" width="100%" style="object-fit: contain;">
   <p align="left">Create multiple profiles in sign-up process</p>
-    <img src="./screenhots/10%20-%20profiles-before.png" alt="Logo" width="100%" height="100%">
+    <img src="./screenhots/10%20-%20profiles-before.png" alt="Logo" width="100%" style="object-fit: contain;">
   <p align="left">Choose profiles</p>
-    <img src="./screenhots/11%20-%20profiles-after.png" alt="Logo" width="100%" height="100%">
+    <img src="./screenhots/11%20-%20profiles-after.png" alt="Logo" width="100%" style="object-fit: contain;">
   <p align="left">Homepage</p>
-    <img src="./screenhots/12%20-%20homepage-1.png" alt="Logo" width="100%" height="100%">
-    <img src="./screenhots/13%20-%20homepage-2.png" alt="Logo" width="100%" height="100%">
+    <img src="./screenhots/12%20-%20homepage-1.png" alt="Logo" width="100%" style="object-fit: contain;">
+    <img src="./screenhots/13%20-%20homepage-2.png" alt="Logo" width="100%" style="object-fit: contain;">
   <p align="left">Movie Dialog</p>
-    <img src="./screenhots/14%20-%20homepage%203%20movie%20dialog.png" alt="Logo" width="100%" height="100%">
+    <img src="./screenhots/14%20-%20homepage%203%20movie%20dialog.png" alt="Logo" width="100%" style="object-fit: contain;">
   <p align="left">Bookmark movie</p>
-    <img src="./screenhots/15%20-%20bookmark-1.png" alt="Logo" width="100%" height="100%">
-    <img src="./screenhots/16%20-%20bookmark-2.png" alt="Logo" width="100%" height="100%">
+    <img src="./screenhots/15%20-%20bookmark-1.png" alt="Logo" width="100%" style="object-fit: contain;">
+    <img src="./screenhots/16%20-%20bookmark-2.png" alt="Logo" width="100%" style="object-fit: contain;">
   <p align="left">Change profile (no movie bookmarked in a different profile)</p>
-    <img src="./screenhots/17%20-%20change%20profile-1.png" alt="Logo" width="100%" height="100%">
-    <img src="./screenhots/18%20-%20change%20profile-2.png" alt="Logo" width="100%" height="100%">
+    <img src="./screenhots/17%20-%20change%20profile-1.png" alt="Logo" width="100%" style="object-fit: contain;">
+    <img src="./screenhots/18%20-%20change%20profile-2.png" alt="Logo" width="100%" style="object-fit: contain;">
   <p align="left">Edit profile name</p>
-    <img src="./screenhots/19%20-%20edit profile%20name-1.png" alt="Logo" width="100%" height="100%">
-    <img src="./screenhots/20%20-%20edit profile-2.png" alt="Logo" width="100%" height="100%">
+    <img src="./screenhots/19%20-%20edit profile%20name-1.png" alt="Logo" width="100%" style="object-fit: contain;">
+    <img src="./screenhots/20%20-%20edit profile-2.png" alt="Logo" width="100%" style="object-fit: contain;">
 </div>
 
 ## Tech Stack
